@@ -1,3 +1,10 @@
+import angular from 'angular';
+import ngRoute from 'angular-route';
+
+import MapController from './controllers/map.controller';
+
+
+
 var myApp = angular.module('myApp', ['ngRoute']);
 
 /// Routes ///
