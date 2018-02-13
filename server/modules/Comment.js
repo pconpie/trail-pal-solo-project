@@ -1,11 +1,19 @@
 const mongoose = require('mongoose');
 
 let schema = new mongoose.Schema({
-    name: {
+    username: {
         type: String,
         required: false
     },
-    message: {
+    trailName: {
+        type: String,
+        required: false
+    },
+    trail: {
+        type: String,
+        required: false
+    },
+    comment: {
         type: String
     }
     

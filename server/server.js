@@ -10,6 +10,7 @@ const db = require('./modules/db.config.js');
 
 const userRouter = require('./routes/user.router');
 const geoRouter = require('./routes/geo.router');
+const favoritesRouter = require('./routes/favorites.router');
 
 app.use(express.static('server/public/'));
 app.use(bodyParser.json());
@@ -24,6 +25,7 @@ app.use(passport.session());
 
 app.use('/api/user', userRouter);
 app.use('/geoInfo', geoRouter);
+app.use('/favorites', favoritesRouter);
 
 
 

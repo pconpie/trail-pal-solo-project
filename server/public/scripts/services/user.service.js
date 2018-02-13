@@ -94,6 +94,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
                 console.log('user', self.userObject.loggedIn);
                 self.userObject.loggedIn = true;
                 console.log('user', self.userObject.loggedIn);
+                self.hide();
                 $location.path('/favorites');
               } else {
                 console.log('failure error post: ', response);
