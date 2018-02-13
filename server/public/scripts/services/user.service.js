@@ -1,8 +1,9 @@
 app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, $location, $mdDialog) {
   console.log('UserService Loaded');
   var self = this;
-  self.userObject = {};
-  self.userLoggedIn = true;
+  self.userObject = {
+    loggedIn: false
+  };
 
   self.getuser = function () {
     console.log('UserService -- getuser');
@@ -28,8 +29,8 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
     console.log('UserService -- logout');
     $http.get('/api/user/logout').then(function (response) {
       console.log('UserService -- logout -- logged out');
-      self.userLoggedIn = false;
-      $location.path("/map");
+      self.userObject.loggedIn = false;
+      $location.path("/");
     });
   }
 
@@ -54,7 +55,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
   function DialogController($mdDialog, UserService) {
     const self = this;
     self.displayLogin = true;
-    self.userLoggedIn = UserService.userLoggedIn;
+    self.userObject = UserService.userObject;
     self.switchView = function () {
       console.log('switch');
       self.displayLogin = !self.displayLogin;
@@ -90,9 +91,9 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
               if (response.status == 200) {
                 console.log('success: ', response.data);
                 // location works with SPA (ng-route)
-                console.log('user', self.userLoggedIn);
-                self.userLoggedIn = !self.userLoggedIn;
-                console.log('user', self.userLoggedIn);
+                console.log('user', self.userObject.loggedIn);
+                self.userObject.loggedIn = true;
+                console.log('user', self.userObject.loggedIn);
                 $location.path('/favorites');
               } else {
                 console.log('failure error post: ', response);
