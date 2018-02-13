@@ -1,39 +1,36 @@
-var myApp = angular.module('myApp', ['ngRoute']);
+let app = angular.module('app', ['ngRoute', 'ngMaterial']);
 
-/// Routes ///
-myApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
-  console.log('myApp -- config')
-  $routeProvider
-    .when('/', {
-      redirectTo: 'home'
-    })
-    .when('/home', {
-      templateUrl: '/views/templates/home.html',
-      controller: 'LoginController as vm',
-    })
-    .when('/register', {
-      templateUrl: '/views/templates/register.html',
-      controller: 'LoginController as vm'
-    })
-    .when('/user', {
-      templateUrl: '/views/templates/user.html',
-      controller: 'UserController as vm',
-      resolve: {
-        getuser : function(UserService){
-          return UserService.getuser();
-        }
-      }
-    })
-    .when('/info', {
-      templateUrl: '/views/templates/info.html',
-      controller: 'InfoController as vm',
-      resolve: {
-        getuser : function(UserService){
-          return UserService.getuser();
-        }
-      }
-    })
-    .otherwise({
-      template: '<h1>404</h1>'
-    });
-}]);
+
+app.config(function ($routeProvider, $mdThemingProvider) {
+    console.log('config loaded');
+
+    // $mdThemingProvider.theme('default')
+    // .dark();
+
+    $routeProvider
+        .when('/', {
+            redirectTo: 'map'
+        })
+        .when('/map', {
+            templateUrl: '/views/map.html',
+            controller: 'MapController as vm'
+        })
+        .when('/details/:trail_lat/:trail_lon/:id', {
+            templateUrl: '/views/trail-detail.html',
+            controller: 'DetailsController as vm'
+        })
+        .when('/favorites', {
+            templateUrl: '/views/favorites.html',
+            controller: 'UserController as vm',
+            resolve: {
+                getuser: function (UserService) {
+                    return UserService.getuser();
+                }
+            }
+        })
+        .otherwise({
+            template: '<h1>404</h1>'
+        })
+
+
+});

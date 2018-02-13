@@ -1,0 +1,62 @@
+<div layout>
+    <md-card md-theme-watch layout="row" flex="60">
+        <md-card-title flex="80">
+            <md-card-title-text>
+                <span class="md-headline" style="font-weight: bold; text-align:center;">{{vm.trailName}}</span>
+                <span class="md-subhead" ng-hide="vm.trailDescription == null">Description:
+                    <br/>{{vm.trailDescription}}
+                </span>
+                <span class="md-subhead" ng-repeat="trail in vm.trailInfo.activities" ng-show="trail.description" style="text-transform:capitalize;">{{trail.activity_type_name}} Description:
+                    <br/>{{trail.description}}
+                </span>
+                <span ng-repeat="trail in vm.trailInfo.activities" ng-if="(trail.description == null && vm.trailDescription == null)" style="text-align:center;">
+                    We are sorry, but there are no descriptions available at this time. Please try our 'Research Trail' button on the side to find more information!
+                </span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content flex="20" layout="column" layout-align="space-around">
+            <div class="md-media-xl card-media"></div>
+            <md-card-actions layout="column">
+                <md-button class="md-icon-button" aria-label="Favorite">
+                    <md-icon md-svg-icon="images/ic_favorite_black_24px.svg"></md-icon>
+            </md-card-actions>
+        </md-card-content>
+    </md-card>
+    <div>
+        <h4>Location:<br/>
+            <span>{{vm.trailInfo.city}}, {{vm.trailInfo.state}} {{vm.trailInfo.country}}</span>
+        </h4>
+        <h4>Links to website with directions/fees/other info:<br/>
+            <span ng-repeat="trail in vm.trailInfo.activities">
+                <a ng-href="{{trail.url}}" target="_blank">{{trail.url}}</a><br/>
+            </span>
+        </h4>
+        <h4>
+            Link to helpful page:<br/>
+            <span>
+                <a ng-href="http://www.google.com/search#q={{vm.trailName}}&btnI" target="_blank">Research Trail!</a>
+            </span>
+        </h4>
+        <span ng-repeat="trail in vm.trailInfo.activities">
+            <img ng-src="{{trail.thumbnail}}" style="max-height:300px; max-width:300px;"></img>
+        </span>
+    </div>
+</div>
+
+<!-- Comment input -->
+<div layout="row" layout="column">
+    <div flex="60" ng-cloak class="md-inline-form">
+        <md-content layout-padding>
+            <form name="userForm">
+                <div layout-gt-sm="column">
+                    <md-input-container class="md-block">
+                        <label>Leave a Comment</label>
+                        <textarea ng-model="user.biography" md-maxlength="150" rows="2" md-select-on-focus></textarea>
+                    </md-input-container>
+                </div>
+            </form>
+        </md-content>
+    </div>
+</div>
+
+<!-- Comment output -->

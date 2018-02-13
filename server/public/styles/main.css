@@ -1,0 +1,32 @@
+md-toast {
+  position: fixed !important;
+  width: 100%;
+  background-color: beige !important;
+}
+
+h2 {
+  text-align: center;
+}
+
+.gif{
+  min-height: 600px;
+}
+
+#mapid { 
+  min-height: 800px; 
+  width: 80%;
+}
+.md-button{
+  width: 100% !important;
+}
+
+#button-wrapper {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  z-index: 2352;
+}
+.reset-map-button{
+  height: 50px;
+  width: 100px;
+}
