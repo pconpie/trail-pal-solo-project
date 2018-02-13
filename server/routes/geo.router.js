@@ -3,7 +3,6 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const axios = require('axios');
 
-
 let geoJsons = [];
 
 function parseGeoInfo(array) {
@@ -26,7 +25,7 @@ function parseGeoInfo(array) {
         geoData.geometry.coordinates[1] = object.lon;
         geoData.properties.name = object.name;
         geoData.properties.id = object.unique_id;
-        geoData.properties.description = object.description;  
+        geoData.properties.description = object.description;
         geoJsons.push(geoData);
         geoData = {
             "type": 'Feature',
@@ -39,7 +38,7 @@ function parseGeoInfo(array) {
             }
         };
     }
-    
+
     // for (const geoJson of geoJsons) {
     //     // console.log('name: ', geoJson.properties.name, '; coordinates: ', geoJson.geometry.coordinates, );
     // }
@@ -47,32 +46,45 @@ function parseGeoInfo(array) {
 }
 
 /* GET REQUESTS */
-router.get('/single/:lat/:lon/:id', (req, res)=>{
+// router.get('/mapSetup', (req, res) => {
+//     let mapSetup = {
+//         mapData: L.tileLayer(`https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=${MAPBOX_ACCESS_TOKEN}`, {
+//             id: 'mapbox.light',
+//             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com>Mapbox</a>"'
+//         }).addTo(self.myMap)
+//     }
+//     res.send(mapSetup);
+// })
+
+router.get('/single/:lat/:lon/:id', (req, res) => {
     let trail_lat = req.params.lat;
     let trail_lon = req.params.lon;
     // console.log('lat, ', req.params.lat, 'lon, ', req.params.lon, 'id ', req.params.id);
-    
+
     axios.get(`https://trailapi-trailapi.p.mashape.com/?lat=${trail_lat}&lon=${trail_lon}`, {
-        headers: {  "X-Mashape-Key": `${process.env.X_MASHAPE_KEY}`, "Accept": "text/plain" }
-    })
-        .then((response)=>{
+            headers: {
+                "X-Mashape-Key": `${process.env.X_MASHAPE_KEY}`,
+                "Accept": "text/plain"
+            }
+        })
+        .then((response) => {
             for (let i = 0; i < response.data.places.length; i++) {
                 const element = response.data.places[i];
                 if (element.unique_id == req.params.id) {
                     console.log('MATCH', element);
                     res.send(element);
-                } 
+                }
             }
             // console.log(response.data.places, 'response from single search');
         })
-        .catch((err)=>{
+        .catch((err) => {
             console.log('err on single ', err);
-            
+
         })
 })
 
 router.get('/:state', (req, res) => {
-    
+
     axios.get(`https://trailapi-trailapi.p.mashape.com/?limit=100&q[state_cont]=${req.params.state}`, {
             headers: {
                 "X-Mashape-Key": `${process.env.X_MASHAPE_KEY}`,
@@ -87,7 +99,7 @@ router.get('/:state', (req, res) => {
             res.send(parseGeoInfo(result.data.places));
             geoJsons = [];
         })
-        .catch((err)=>{
+        .catch((err) => {
             console.log('err on get, ', err);
         })
 }); //end GET
