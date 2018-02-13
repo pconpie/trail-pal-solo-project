@@ -24,8 +24,8 @@
     <script src="/vendors/angular-material.min.js" charset="utf-8"></script>
     <!--Client side code-->
     <script src="/scripts/client.js"></script>
-    <script src="/scripts/service/map.service.js"></script>
-    <script src="/scripts/service/user.service.js"></script>
+    <script src="/scripts/services/map.service.js"></script>
+    <script src="/scripts/services/user.service.js"></script>
     <script src="/scripts/controllers/map.controller.js"></script>
     <script src="/scripts/controllers/login.controller.js"></script>
     <script src="/scripts/controllers/user.controller.js"></script>
@@ -37,7 +37,7 @@
 <body ng-app="app">
     <header ng-include="'/views/navbar.html'"></header>
 
-    <main ng-view></main>
+    <ng-view></ng-view>
 
 </body>
 

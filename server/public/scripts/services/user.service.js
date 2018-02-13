@@ -61,7 +61,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
       }
 
       self.registerUser = function (user) {
-          if (user.username === '' || us  er.password === '') {
+          if (user.username === '' || user.password === '') {
               self.message = "Choose a username and password!";
           } else {
               console.log('sending to server...', user);
