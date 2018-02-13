@@ -1,9 +1,9 @@
 <div ng-controller="LoginController as vm">
     <div>
-        <button ng-click="vm.loginDialog()" ng-if="!vm.userLoggedIn" style="float:right; padding-right:10px;">
+        <button ng-click="vm.loginDialog()" ng-if="!vm.userObject.loggedIn" style="float:right; padding-right:10px;">
             Login
         </button>
-        <button ng-click="vm.logout()" ng-if="vm.userLoggedIn" style="float:right; padding-right:10px;">
+        <button ng-click="vm.logout()" ng-if="vm.userObject.loggedIn" style="float:right; padding-right:10px;">
             Logout
         </button>
     </div>
@@ -13,7 +13,7 @@
             <md-nav-item md-nav-href="#!map" name="map" style="width:50%;">
                 Map
             </md-nav-item>
-            <md-nav-item md-nav-href="#!favorites" ng-if="vm.userLoggedIn" name="favorites" style="width:50%;">
+            <md-nav-item md-nav-href="#!favorites" ng-if="vm.userObject.loggedIn" name="favorites" style="width:50%;">
                 Favorites
             </md-nav-item>
             <!-- these require actual routing with ui-router or ng-route, so they

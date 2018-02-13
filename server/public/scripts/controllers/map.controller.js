@@ -1,4 +1,4 @@
-app.controller('MapController', ['$mdDialog', '$http', 'MapService', 'UserService', function ($mdDialog, $http, MapService, UserService) {
+app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService', 'UserService', function ($mdDialog, $http, $compile, MapService, UserService) {
     const self = this;
     console.log('in map service');
     self.userService = UserService;
@@ -4637,31 +4637,66 @@ app.controller('MapController', ['$mdDialog', '$http', 'MapService', 'UserServic
             })
     }
 
+    let favoriteButton = `<button ng-click="vm.favoriteTrail()">Favorite Me!</button>`;
+    let compiledButton = $compile(favoriteButton)(self);
+
+    function markerDescription(description) {
+        if (description == null) {
+            return 'No description available at this time.'
+        } else {
+            return `${description.substring(0, 200)}...`;
+        }
+    }
+
+    // function popup(element) {
+    //     return L.popup.angular({
+    //         template: `<div ng-controller="MapController as vm">
+    //         <a href="/#!/details/${element.geometry.coordinates[0]}/${element.geometry.coordinates[1]}/${element.properties.id}">${element.properties.name}</a>
+    //         <br/>
+    //         <p>Description: ${markerDescription(element.properties.description)}</p>
+    //         <p>Click on name to get more details!</p>
+    //         <button ng-click="vm.favoriteTrail()">Favorite Me!</button>
+    //         </div>
+    //         `,
+    //         controllerAs: 'vm',
+    //         controller: [function () {
+    //             const self = this;
+    //             self.favoriteTrail = function () {
+    //                 console.log('FAVORITE!');
+    //             }
+    //         }]
+    //     });
+    // }
+
+
     function mapGeoJSONs(array) {
         var markers = L.markerClusterGroup({
             showCoverageOnHover: false,
         });
         for (let i = 0; i < array.length; i++) {
             const element = array[i];
+            let popup = L.popup.angular({
+                template: `<div>
+                        <a href="/#!/details/${element.geometry.coordinates[0]}/${element.geometry.coordinates[1]}/${element.properties.id}">${element.properties.name}</a>
+                        <br/>
+                        <p>Description: ${markerDescription(element.properties.description)}</p>
+                        <p>Click on name to get more details!</p>
+                        <button ng-click="vm.favoriteTrail()">Favorite Me!</button>
+                        </div>
+                        `,
+                controllerAs: 'vm',
+                controller: ['MapService', function (MapService) {
+                    const self = this;
+                    self.favoriteTrail = function () {
+                        console.log('FAVORITE!');
+                        console.log('this trail', element);
+                        MapService.favoriteTrail();
+                    }
+                }]
+            });
 
-            function markerDescription(description) {
-                if (description == null) {
-                    return 'No description available at this time.'
-                } else {
-                    return `${description.substring(0, 200)}...`;
-                }
-            }
-            let popup =
-                `<a href="/#!/details/${element.geometry.coordinates[0]}/${element.geometry.coordinates[1]}/${element.properties.id}">${element.properties.name}</a>
-            <br/>
-            <p>Description: ${markerDescription(element.properties.description)}</p>
-            <p>Click on name to get more details!</p>
-            <button>Favorite Me!</button>
-            `;
-            let marker = L.marker(element.geometry.coordinates).bindPopup(popup);
+            let marker = L.marker(element.geometry.coordinates).bindPopup(popup).openPopup();
             markers.addLayer(marker);
-
-            // myLayer.addData(element);
         }
         map.addLayer(markers);
     }

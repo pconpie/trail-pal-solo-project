@@ -1,10 +1,12 @@
 app.controller('LoginController', ['$location', 'UserService', function ($location, UserService) {
   console.log('LoginController created');
   var self = this;
-  self.userLoggedIn = UserService.userLoggedIn;
+  self.userObject = UserService.userObject;
 
   self.loginDialog = function () {
     UserService.loginDialog();
+    console.log('user logged', self.userObject.loggedIn);
+    
     console.log('login clicked');
   }
   self.user = {
@@ -12,7 +14,6 @@ app.controller('LoginController', ['$location', 'UserService', function ($locati
     password: ''
   };
 
-  self.userLoggedIn = UserService.userLoggedIn;
   self.logout = UserService.logout;
   // console.log('logged out, ');
   
