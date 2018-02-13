@@ -1,0 +1,42 @@
+<div style="z-index: 3;">
+    <md-dialog aria-label="Add an Item to the Shelf">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 ng-if="vm.displayLogin">Login</h2>
+                    <h2 ng-if="!vm.displayLogin">Register</h2>
+                    <span flex></span>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <h2 ng-if="vm.displayLogin">Enter your login information and login!</h2>
+                    <h2 ng-if="!vm.displayLogin">To register select a unique username and password!</h2>
+                    Username:
+                    <input ng-model="vm.user.username">
+                    <br> Password:
+                    <input ng-model="vm.user.password">
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button ng-if="vm.displayLogin" ng-click="vm.switchView()">
+                    Register
+                </md-button>
+                <md-button ng-if="!vm.displayLogin" ng-click="vm.switchView()">
+                    Login
+                </md-button>
+                <md-button ng-click="vm.cancel()">
+                    Cancel
+                </md-button>
+                <md-button ng-if="vm.displayLogin" ng-click="vm.login(vm.user)" class="md-primary center">
+                    Login
+                </md-button>
+                <md-button ng-if="!vm.displayLogin" ng-click="vm.registerUser(vm.user)" class="md-primary center">
+                    Register
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</div>
