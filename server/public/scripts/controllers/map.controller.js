@@ -3,10 +3,11 @@ app.controller('MapController', ['$mdDialog', '$http', 'MapService', 'UserServic
     console.log('in map service');
     self.userService = UserService;
 
-
-    self.myMap = L.map('mapid').setView([37.8, -96], 4);
-    // self.myMap.remove();
-
+    let defaultCoords = [37.8, -96];
+    let map = L.map('mapid').setView(defaultCoords, 5);
+    self.mapReset = function () {
+        map.setView(defaultCoords, 5);
+    }
     var statesData = {
         "type": "FeatureCollection",
         "features": [
@@ -4551,15 +4552,12 @@ app.controller('MapController', ['$mdDialog', '$http', 'MapService', 'UserServic
         ]
     };
 
-    self.getMapSetup = function(){
-        MapService.getMapSetup();
-    }
-  
     L.tileLayer(`https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicGF0cmlja2Nvbm5lbGx5OTUiLCJhIjoiY2pkNmZvaHFnNWZtYjJ4bnNraXFoaHgzbyJ9.W_MKgqXNF6CQf1ROquv8ZQ`, {
         id: 'mapbox.light',
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    }).addTo(self.myMap);
-    
+    }).addTo(map);
+    // setTimeout(function () { map.invalidateSize() }, 1200);
+
     var geojson;
 
     function getColor(d) {
@@ -4593,7 +4591,7 @@ app.controller('MapController', ['$mdDialog', '$http', 'MapService', 'UserServic
     function zoomToFeature(e) {
         console.log('State: ', e.target.feature.properties.name);
         findStateTrails(e.target.feature.properties.name);
-        self.myMap.fitBounds(e.target.getBounds());
+        map.fitBounds(e.target.getBounds());
     }
 
     function style(feature) {
@@ -4617,10 +4615,10 @@ app.controller('MapController', ['$mdDialog', '$http', 'MapService', 'UserServic
     geojson = L.geoJson(statesData, {
         style: style,
         onEachFeature: onEachFeature
-    }).addTo(self.myMap);
+    }).addTo(map);
 
     let geoJSONs = [];
-    var myLayer = L.geoJSON().addTo(self.myMap);
+    var myLayer = L.geoJSON().addTo(map);
 
     function findStateTrails(state) {
         $http.get(`/geoInfo/${state}`)
@@ -4665,10 +4663,10 @@ app.controller('MapController', ['$mdDialog', '$http', 'MapService', 'UserServic
 
             // myLayer.addData(element);
         }
-        self.myMap.addLayer(markers);
+        map.addLayer(markers);
     }
 
-    // self.myMap.on('click', function(ev) {
+    // map.on('click', function(ev) {
     //     alert(ev.containerPoint); // ev is an event object (MouseEvent in this case)
     // });
 

@@ -19,3 +19,14 @@ h2 {
 .md-button{
   width: 100% !important;
 }
+
+#button-wrapper {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  z-index: 2352;
+}
+.reset-map-button{
+  height: 50px;
+  width: 100px;
+}

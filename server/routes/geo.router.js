@@ -46,15 +46,6 @@ function parseGeoInfo(array) {
 }
 
 /* GET REQUESTS */
-// router.get('/mapSetup', (req, res) => {
-//     let mapSetup = {
-//         mapData: L.tileLayer(`https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=${MAPBOX_ACCESS_TOKEN}`, {
-//             id: 'mapbox.light',
-//             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com>Mapbox</a>"'
-//         }).addTo(self.myMap)
-//     }
-//     res.send(mapSetup);
-// })
 
 router.get('/single/:lat/:lon/:id', (req, res) => {
     let trail_lat = req.params.lat;
@@ -71,7 +62,7 @@ router.get('/single/:lat/:lon/:id', (req, res) => {
             for (let i = 0; i < response.data.places.length; i++) {
                 const element = response.data.places[i];
                 if (element.unique_id == req.params.id) {
-                    console.log('MATCH', element);
+                    // console.log('MATCH', element);
                     res.send(element);
                 }
             }
