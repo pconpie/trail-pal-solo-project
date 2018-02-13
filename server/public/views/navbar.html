@@ -1,0 +1,30 @@
+<div ng-controller="LoginController as vm">
+    <div>
+        <button ng-click="vm.loginDialog()" ng-if="!vm.userLoggedIn" style="float:right; padding-right:10px;">
+            Login
+        </button>
+        <button ng-click="vm.logout()" ng-if="vm.userLoggedIn" style="float:right; padding-right:10px;">
+            Logout
+        </button>
+    </div>
+
+    <md-content class="md-padding" style="margin:0;">
+        <md-nav-bar md-no-ink-bar="disableInkBar" md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+            <md-nav-item md-nav-href="#!map" name="map" style="width:50%;">
+                Map
+            </md-nav-item>
+            <md-nav-item md-nav-href="#!favorites" ng-if="vm.userLoggedIn" name="favorites" style="width:50%;">
+                Favorites
+            </md-nav-item>
+            <!-- these require actual routing with ui-router or ng-route, so they
+      won't work in the demo
+      <md-nav-item md-nav-href="#page4" name="page5">Page Four</md-nav-item>
+      <md-nav-item md-nav-sref="app.page5" name="page4">Page Five</md-nav-item>
+      You can also add options for the <code>ui-sref-opts</code> attribute.
+      <md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">
+        Page Six
+      </md-nav-item>
+      -->
+        </md-nav-bar>
+    </md-content>
+</div>

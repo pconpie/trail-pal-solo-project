@@ -20,7 +20,7 @@ mongoose.connection.on('error', function (err) {
     if (err) {
         console.log("MONGO ERROR: ", err);
     }
-    res.sendStatus(500);
+    // res.sendStatus(500);
 });
 
 mongoose.connection.on('open', function () {

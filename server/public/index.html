@@ -1,25 +1,44 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Solo Project</title>
-        <link rel="stylesheet" href="styles/style.css">
+<!-- webpack <script src="/dist/solo-trail-pal-webpack.bundle.js"></script> -->
 
-        <!-- <script type="text/javascript" src="vendors/angular/angular.min.js"></script>
-        <script type="text/javascript" src="vendors/angular-route/angular-route.min.js"></script> -->
-        <!-- <script type="text/javascript" src="scripts/client.js"></script> -->
-        <!-- <script type="text/javascript" src="scripts/controllers/info.controller.js"></script> -->
-        <!-- <script type="text/javascript" src="scripts/controllers/login.controller.js"></script> -->
-        <!-- <script type="text/javascript" src="scripts/controllers/user.controller.js"></script> -->
-        <!-- <script type="text/javascript" src="scripts/services/user.service.js"></script> -->
+<head>
+    <title>Leaflet Testing
+    </title>
+    <link href="/vendors/leaflet.css" rel="stylesheet" type="text/css">
+    <script src="/vendors/leaflet.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="/vendors/MarkerCluster.css">
+    <link rel="stylesheet" href="/vendors/MarkerCluster.Default.css">
+    <script src="/vendors/leaflet.markercluster.js"></script>
+    <!-- <script src="/vendors/leaflet.markercluster.js.map"></script> -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="/vendors/angular.min.js" charset="utf-8"></script>
+    <script src="/vendors/angular-route.min.js"></script>
+    <!--Angular Material-->
+    <link href="/vendors/angular-material.min.css" rel="stylesheet" type="text/css">
 
-        <script src="/my-first-webpack.bundle.js"></script>
+    <script src="/vendors/angular-animate.min.js" charset="utf-8"></script>
+    <script src="/vendors/angular-aria.min.js" charset="utf-8"></script>
+    <script src="/vendors/angular-messages.min.js" charset="utf-8"></script>
+    <script src="/vendors/angular-material.min.js" charset="utf-8"></script>
+    <!--Client side code-->
+    <script src="/scripts/client.js"></script>
+    <script src="/scripts/service/map.service.js"></script>
+    <script src="/scripts/service/user.service.js"></script>
+    <script src="/scripts/controllers/map.controller.js"></script>
+    <script src="/scripts/controllers/login.controller.js"></script>
+    <script src="/scripts/controllers/user.controller.js"></script>
+    <script src="/scripts/controllers/details.controller.js"></script>
 
-    </head>
 
-    <body ng-app="myApp">
-      <header ng-include="'/views/partials/header.html'"></header>
+</head>
 
-      <main ng-view></main>
+<body ng-app="app">
+    <header ng-include="'/views/navbar.html'"></header>
 
-    </body>
+    <main ng-view></main>
+
+</body>
+
 </html>
