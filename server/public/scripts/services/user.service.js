@@ -1,9 +1,34 @@
 app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, $location, $mdDialog) {
   console.log('UserService Loaded');
   var self = this;
-  self.userObject = {
-    loggedIn: false
-  };
+  
+  localStorage.getItem('loggedIn');
+  // console.log(localStorage.getItem('loggedIn'));
+  
+  self.favorites = { list: [] };
+  
+  self.getFavorites = function () {
+    $http.get('/favorites')
+      .then((response) => {
+        self.favorites.list = response.data;
+        console.log('get favorites ', response);
+      })
+      .catch((err) => {
+        alert(err + '!');
+        console.log('err on get favorites ', err);
+      })
+  }
+  if (localStorage.getItem('loggedIn') == 'true') {
+    self.userObject = {
+      loggedIn: true
+    };
+    self.getFavorites();
+
+  } else {
+    self.userObject = {
+      loggedIn: false
+    };
+  }
 
   self.getuser = function () {
     console.log('UserService -- getuser');
@@ -62,7 +87,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
       console.log(self.displayLogin);
 
     }
-    
+
     self.registerUser = function (user) {
       if (user.username === '' || user.password === '') {
         self.message = "Choose a username and password!";
@@ -79,6 +104,9 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
             });
       }
     }
+    self.favorites = UserService.favorites;
+
+    self.getFavorites = UserService.getFavorites;
 
     self.login = function (user) {
       console.log('user ', user);
@@ -93,9 +121,11 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
                 // location works with SPA (ng-route)
                 console.log('user', self.userObject.loggedIn);
                 self.userObject.loggedIn = true;
+                localStorage.setItem('loggedIn', true);
                 console.log('user', self.userObject.loggedIn);
                 self.hide();
                 $location.path('/favorites');
+                self.getFavorites();
               } else {
                 console.log('failure error post: ', response);
                 self.message = "Incorrect credentials. Please try again.";

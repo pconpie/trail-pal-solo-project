@@ -4690,7 +4690,7 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
                     self.favoriteTrail = function () {
                         console.log('FAVORITE!');
                         console.log('this trail', element);
-                        MapService.favoriteTrail();
+                        MapService.favoriteTrail(element);
                     }
                 }]
             });
