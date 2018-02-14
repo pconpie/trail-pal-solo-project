@@ -1,12 +1,24 @@
 app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, $location, $mdDialog) {
   console.log('UserService Loaded');
   var self = this;
-  
+  self.trailExplored = false;
   localStorage.getItem('loggedIn');
   // console.log(localStorage.getItem('loggedIn'));
   
   self.favorites = { list: [] };
-  
+  self.removeFavorite = function (fave) {
+    let faveId = fave._id;
+    $http.delete(`/favorites/${faveId}`)
+      .then((response)=>{
+        self.getFavorites();
+        console.log('delete favorite response ', response);
+      })
+      .catch((err)=>{
+        alert('Error deleting favorite! Please try again later.')
+        console.log('delete favorite error ', err);
+      })
+  }
+
   self.getFavorites = function () {
     $http.get('/favorites')
       .then((response) => {
@@ -18,6 +30,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         console.log('err on get favorites ', err);
       })
   }
+
   if (localStorage.getItem('loggedIn') == 'true') {
     self.userObject = {
       loggedIn: true

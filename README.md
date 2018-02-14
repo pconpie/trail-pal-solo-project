@@ -1,10 +1,22 @@
 # Name of Project
 
-One Paragraph of project description goes here. Link to the live version of the app if it's hosted on Heroku.
+Trail Pal is a full stack web application that will enable users to find trails easier than ever before. Novice hikers and experienced hikers looking for new trails close by or interesting trails not far off can view trails organized by state and get quick info all in one view. If the user wants more detail on a specific trail they can click on that trail name to open a detailed trail view where comments can be added and viewed by logged in users.
 
 ## Built With
-
-List technologies and frameworks here
+* Technologies
+    * MongoDB
+    * Express.js
+    * AngularJs
+    * Node.js
+    * HTML5
+    * CSS3
+    * Angular Material
+    * Mongoose
+    * Passport.js
+    * bcrypt
+    * Trailapi for trail info
+    * Leaflet.js for interactive map
+    * Heroku
 
 ## Getting Started
 
@@ -49,7 +61,7 @@ Add additional notes about how to deploy this on a live system
 
 ## Authors
 
-* Name of author(s)
+* Patrick Connelly (pconpie)
 
 
 ## Acknowledgments
