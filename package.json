@@ -1,13 +1,19 @@
 {
-  "name": "prime-solo-base-project",
+  "name": "trail-pal-solo-project",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A trail finding web application for novice hikers and others looking for new trails across the USA developed with the MEAN stack",
+  "main": "client.js",
   "scripts": {
     "test": "mocha test/*.test.js",
     "start": "node server/server.js",
     "build": "webpack --config webpack.config.js"
   },
+  "author": "Patrick Connelly (Github - pconpie)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pconpie/trail-pal-solo-project.git"
+  },
+  "homepage": "https://github.com/pconpie/trail-pal-solo-project#readme",
   "license": "ISC",
   "dependencies": {
     "angular": "^1.6.9",
