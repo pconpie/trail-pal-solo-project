@@ -2,6 +2,16 @@ app.service('MapService', ['$http', function ($http) {
     const self = this;
     self.trailInfo = {};
 
+    // self.getFavorites = function (){
+    //     $http.get('/favorites')
+    //         .then((response)=>{
+    //             console.log('get favorites ', response);
+    //         })
+    //         .catch((err)=>{
+    //             console.log('err on get favorites ', err);
+    //         })
+    // }
+    // self.getFavorites();
     self.favoriteTrail = function (fave) {
         console.log('IN map service favorite');
         $http.post('/favorites', fave)

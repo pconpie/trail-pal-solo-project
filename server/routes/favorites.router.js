@@ -4,35 +4,55 @@ const mongoose = require('mongoose');
 const axios = require('axios');
 const Favorite = require('../models/Favorite');
 
+
+let isAuthenticated = function (req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.send('Must be logged in to add items!');
+}
+
 /* GET REQUESTS */
 
-
-router.get('/', (req, res) => {
-    Favorite.find({}, (error, data)=>{
+router.get('/', isAuthenticated, (req, res) => {
+    console.log('user ', req.user._id);
+    let userId = req.user._id;
+    Favorite.find({
+        'user': userId
+    }, (err, data) => {
         if (err) {
             console.log('MongoDB error on get faves', err);
             res.sendStatus(500);
         } else {
             console.log('Found Faves, ', data);
-            //res.send(data);
+            res.send(data);
         }
     })
-        // .then(function (result) {
-        //     res.send('something');
-        // })
-        // .catch((err) => {
-        //     console.log('err on get, ', err);
-        // })
 }); //end GET
 
 
 /* POST REQUESTS */
-router.post('/', (req, res) => {
+router.post('/', isAuthenticated, (req, res) => {
     console.log(req.body, 'req');
-    let faveData = req.body
-    let user = req.user._id;
-    console.log('user ', user);
-    let newFavorite = new Favorite(faveData);
+    console.log('user ', req.user._id);
+    let newFavorite = {
+        favoriteName: req.body.properties.name,
+        favoriteID: req.body.properties.id,
+        favoriteLat: req.body.geometry.coordinates[0],
+        favoriteLon: req.body.geometry.coordinates[1],
+        user: req.user._id
+    }
+    let faveToSave = new Favorite(newFavorite);
+    faveToSave.save()
+        .then(() => {
+            res.sendStatus(201);
+        })
+        .catch((err) => {
+            console.log('err on post favorite ', err);
+            res.sendStatus(500);
+            next(err);
+        });
+
 
 }); // end post route
 

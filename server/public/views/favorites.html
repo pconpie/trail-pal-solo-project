@@ -1,8 +1,23 @@
 <div>
-Favorties go here
-    <!-- <div class="favorite-display" ng-repeat="favorite in favorite-list">
-        
-
-    </div> -->
+    Favorites go here
+    <ul class="favorite-display">
+        <li flex-xs flex-gt-xs="50" layout="column" ng-repeat="favorite in vm.favorites.list">
+            <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">{{favorite.favoriteName}}</span>
+                        <span class="md-subhead">{{favorite.favoriteLat}}, {{favorite.favoriteLon}}</span>
+                    </md-card-title-text>
+                    <md-card-title-media>
+                        <div class="md-media-sm card-media"></div>
+                    </md-card-title-media>
+                </md-card-title>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button>Action 1</md-button>
+                    <md-button>Action 2</md-button>
+                </md-card-actions>
+            </md-card>
+        </li>
+    </ul>
 
 </div>
