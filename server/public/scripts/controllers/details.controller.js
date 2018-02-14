@@ -1,6 +1,7 @@
 app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$routeParams', function ($mdDialog, $http, MapService, $routeParams) {
     const self = this;
     console.log('in details controller');
+    self.trailComments = MapService.trailComments;
     self.trailName = '';
     self.trailDescription = '';
     let lat = $routeParams.trail_lat;
@@ -23,5 +24,15 @@ app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$route
             });
     }
     self.getTrail();
-
+    self.comment = '';
+    self.submitComment = function(){
+        let comment = {};
+        comment.comment = self.comment;
+        comment.trailInfo = self.trailInfo;
+        MapService.submitComment(comment);
+        self.getComments(id);
+        self.comment = '';
+    }
+    self.getComments = MapService.getComments;
+    self.getComments(id);
 }]);

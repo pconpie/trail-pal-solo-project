@@ -62,8 +62,23 @@ router.put('/', (req, res) => {
 });
 
 /* DELETE REQUESTS */
-router.delete('/', (req, res) => {
-
+router.delete('/:id', isAuthenticated, (req, res) => {
+    // console.log('req  ', req);
+    Favorite.remove(
+        {'user': req.user._id,
+        '_id': req.params.id},
+        (err, data)=>{
+            if (err) {
+                console.log('error finding user for favorite delete ', err, 'err');
+                res.sendStatus(500);
+            } else {
+                console.log('user found matching favorites ', data, 'data');
+                res.send(data);
+            }
+        }
+    
+    
+    )
 });
 
 /* MISC FUNCTIONS (If any) */

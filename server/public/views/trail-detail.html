@@ -10,7 +10,8 @@
                     <br/>{{trail.description}}
                 </span>
                 <span ng-repeat="trail in vm.trailInfo.activities" ng-if="(trail.description == null && vm.trailDescription == null)" style="text-align:center;">
-                    We are sorry, but there are no descriptions available at this time. Please try our 'Research Trail' button on the side to find more information!
+                    We are sorry, but there are no descriptions available at this time. Please try our 'Research Trail' button on the side to
+                    find more information!
                 </span>
             </md-card-title-text>
         </md-card-title>
@@ -23,16 +24,20 @@
         </md-card-content>
     </md-card>
     <div>
-        <h4>Location:<br/>
+        <h4>Location:
+            <br/>
             <span>{{vm.trailInfo.city}}, {{vm.trailInfo.state}} {{vm.trailInfo.country}}</span>
         </h4>
-        <h4>Links to website with directions/fees/other info:<br/>
+        <h4>Links to website with directions/fees/other info:
+            <br/>
             <span ng-repeat="trail in vm.trailInfo.activities">
-                <a ng-href="{{trail.url}}" target="_blank">{{trail.url}}</a><br/>
+                <a ng-href="{{trail.url}}" target="_blank">{{trail.url}}</a>
+                <br/>
             </span>
         </h4>
         <h4>
-            Link to helpful page:<br/>
+            Link to helpful page:
+            <br/>
             <span>
                 <a ng-href="http://www.google.com/search#q={{vm.trailName}}&btnI" target="_blank">Research Trail!</a>
             </span>
@@ -51,8 +56,11 @@
                 <div layout-gt-sm="column">
                     <md-input-container class="md-block">
                         <label>Leave a Comment</label>
-                        <textarea ng-model="user.biography" md-maxlength="150" rows="2" md-select-on-focus></textarea>
+                        <textarea ng-model="vm.comment" md-maxlength="150" rows="2" md-select-on-focus></textarea>
                     </md-input-container>
+                    <div class="submit-button">
+                        <input type="submit" value="Submit" ng-click="vm.submitComment()" flex="10" />
+                    </div>
                 </div>
             </form>
         </md-content>
@@ -60,3 +68,18 @@
 </div>
 
 <!-- Comment output -->
+<div>
+    <md-content style="font-size:22px !important;">
+        <md-list flex>
+            <md-subheader class="md-no-sticky">Comments for this trail!</md-subheader>
+            <md-list-item class="md-3-line" ng-repeat="comment in vm.trailComments.list | orderBy : '-comment.dateAdded'">
+                <!-- <img  class="md-avatar" alt="{{todos[0].who}}" /> -->
+                <div class="md-list-item-text">
+                    <h3>{{comment.user.username}}</h3>
+                    <h4>{{comment.comment.comment}}</h4>
+                    <p>{{comment.comment.dateAdded | date}}</p>
+                </div>
+            </md-list-item>
+        </md-list>
+    </md-content>
+</div>
