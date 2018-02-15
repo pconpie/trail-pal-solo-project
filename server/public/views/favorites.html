@@ -1,0 +1,37 @@
+<div class="favorite-container">
+    <ul class="favorite-display">
+        <li flex-xs flex-gt-xs="100" layout="column" ng-repeat="favorite in vm.favoriteList">
+            <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch class="favorite-card">
+                <md-card-title layout-align="space-between center" class="favorite-card-title">
+                    <md-card-title-text flex="80">
+                        <span class="md-headline">
+                            <a class="trail-title-favorites" ng-href="/#!/details/{{favorite.favoriteLat}}/{{favorite.favoriteLon}}/{{favorite.favoriteID}}">{{favorite.favoriteName}}</a>
+                        </span>
+                        <span class="md-subhead">{{favorite.favoriteLat}}, {{favorite.favoriteLon}}</span>
+                        <span>{{favorite.description}}</span>
+                        <span ng-if="(favorite.Description == null)" ng-hide="favorite.description" style="text-align:center;">
+                            We are sorry, but there are no descriptions available at this time. Please click on the trail title to find more information!
+                        </span>
+                    </md-card-title-text>
+                    <md-card-title-media>
+                        <div class="md-media-sm card-media trail-image-container">
+                            <img class="trail-image" md-whiteframe="15" src="/images/trail-picture.jpg" />
+                        </div>
+                    </md-card-title-media>
+                </md-card-title>
+                <md-card-actions layout="row" layout-align="space-between end">
+                    <md-button flex="50" ng-click="vm.removeFavorite(favorite)">Remove Favorite</md-button>
+                    <span class="explored-span">
+                        <span ng-if="!vm.trailExplored">Mark Explored</span>
+                        <span ng-if="vm.trailExplored">Mark Not Explored</span>
+                        <br/>
+                        <input style="align-items:center;" type="checkbox" ng-checked="vm" />
+                        <md-checkbox ng-click="vm.toggleExplored(favorite)" ng-checked="favorite.explored">
+                        </md-checkbox>
+                    </span>
+                </md-card-actions>
+            </md-card>
+        </li>
+    </ul>
+
+</div>

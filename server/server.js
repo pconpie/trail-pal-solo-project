@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -5,15 +6,20 @@ const bodyParser = require('body-parser');
 const passport = require('./strategies/user.strategy');
 const sessionConfig = require('./modules/session-middleware');
 
-//DB Module
 const db = require('./modules/db.config.js');
 
-// Route includes
 const userRouter = require('./routes/user.router');
+const geoRouter = require('./routes/geo.router');
+const favoritesRouter = require('./routes/favorites.router');
+const commentsRouter = require('./routes/comments.router');
 
-// Body parser middleware
+const stateGrabber = require('./modules/stateData.module');
+
+
+
+app.use(express.static('server/public/'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Passport Session Configuration
 app.use(sessionConfig);
@@ -22,15 +28,17 @@ app.use(sessionConfig);
 app.use(passport.initialize());
 app.use(passport.session());
 
-/* Routes */
 app.use('/api/user', userRouter);
+app.use('/geoInfo', geoRouter);
+app.use('/favorites', favoritesRouter);
+app.use('/comments', commentsRouter);
 
-// Serve static files
-app.use(express.static('server/public'));
 
-const PORT = process.env.PORT || 5000;
 
-/** Listen * */
-app.listen(PORT, () => {
-    console.log(`Listening on port: ${PORT}`);
+
+
+/** ---------- START SERVER ---------- **/
+app.set('port', process.env.PORT || 5000);
+app.listen(app.get('port'), function () {
+    console.log('Listening on port: ', app.get('port'));
 });
