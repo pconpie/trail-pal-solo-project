@@ -55,4 +55,14 @@ app.service('MapService', ['$http', function ($http) {
             })
     }
 
+    self.saveTrailImage = function (image) {
+        return $http.post('/images', image)
+            .then((response) => {
+                console.log('save image response ', response);
+            })
+            .catch((err) => {
+                console.log('err saving image ', err);
+            });
+
+    }
 }]);

@@ -9,7 +9,7 @@ app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$route
     let id = $routeParams.id;
     self.getTrail = function () {
         MapService.getTrailInfo(lat, lon, id)
-            .then(response =>{
+            .then(response => {
                 console.log('response ', response);
                 self.trailInfo = response;
                 self.trailName = self.trailInfo.name;
@@ -19,17 +19,17 @@ app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$route
                 //     for (let i = 0; i < activities.length; i++) {
                 //         const element = activities[i];
                 //         console.log('activities, ', element);
-                    // }
-                
+                // }
+
             });
     }
-    self.favoriteTrail = function(){
+    self.favoriteTrail = function () {
         MapService.favoriteTrail(self.trailInfo);
     }
 
     self.getTrail();
     self.comment = '';
-    self.submitComment = function(){
+    self.submitComment = function () {
         let comment = {};
         comment.comment = self.comment;
         comment.trailInfo = self.trailInfo;
@@ -39,4 +39,16 @@ app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$route
     }
     self.getComments = MapService.getComments;
     self.getComments(id);
+
+    let fsClient = filestack.init('ATXZUruRS5SwZq4htsjJwz');
+    self.openPicker = function () {
+        fsClient.pick({
+            fromSources: ["local_file_system", "url", "imagesearch", "facebook", "instagram", "googledrive", "dropbox", "clouddrive"]
+        }).then((response) => {
+            console.log('response stack ', response.filesUploaded[0].url);
+            let imageUrl = response.filesUploaded[0].url;
+            //   handleFilestack(response);
+            MapService.saveTrailImage(response);
+        });
+    }
 }]);
