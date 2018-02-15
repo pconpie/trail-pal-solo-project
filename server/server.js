@@ -13,6 +13,10 @@ const geoRouter = require('./routes/geo.router');
 const favoritesRouter = require('./routes/favorites.router');
 const commentsRouter = require('./routes/comments.router');
 
+const stateGrabber = require('./modules/stateData.module');
+
+
+
 app.use(express.static('server/public/'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

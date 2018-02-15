@@ -9,7 +9,7 @@
                         </span>
                         <span class="md-subhead">{{favorite.favoriteLat}}, {{favorite.favoriteLon}}</span>
                         <span>{{favorite.description}}</span>
-                        <span ng-if="(favorite.Description == null)" ng-hide="favorite.description"style="text-align:center;">
+                        <span ng-if="(favorite.Description == null)" ng-hide="favorite.description" style="text-align:center;">
                             We are sorry, but there are no descriptions available at this time. Please click on the trail title to find more information!
                         </span>
                     </md-card-title-text>
@@ -25,7 +25,9 @@
                         <span ng-if="!vm.trailExplored">Mark Explored</span>
                         <span ng-if="vm.trailExplored">Mark Not Explored</span>
                         <br/>
-                        <input style="align-items:center;" type="checkbox" />
+                        <input style="align-items:center;" type="checkbox" ng-checked="vm" />
+                        <md-checkbox ng-click="vm.toggleExplored(favorite)" ng-checked="favorite.explored">
+                        </md-checkbox>
                     </span>
                 </md-card-actions>
             </md-card>

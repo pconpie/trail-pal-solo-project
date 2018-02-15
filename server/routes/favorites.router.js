@@ -15,7 +15,7 @@ let isAuthenticated = function (req, res, next) {
 /* GET REQUESTS */
 
 router.get('/', isAuthenticated, (req, res) => {
-    console.log('user ', req.user._id);
+    // console.log('user ', req.user._id);
     let userId = req.user._id;
     Favorite.find({
         'user': userId
@@ -24,7 +24,7 @@ router.get('/', isAuthenticated, (req, res) => {
             console.log('MongoDB error on get faves', err);
             res.sendStatus(500);
         } else {
-            console.log('Found Faves, ', data);
+            // console.log('Found Faves, ', data);
             res.send(data);
         }
     })
@@ -33,8 +33,8 @@ router.get('/', isAuthenticated, (req, res) => {
 
 /* POST REQUESTS */
 router.post('/', isAuthenticated, (req, res) => {
-    console.log(req.body, 'req');
-    console.log('user ', req.user._id);
+    // console.log(req.body, 'req');
+    // console.log('user ', req.user._id);
     let newFavorite = {
         favoriteName: req.body.properties.name,
         favoriteID: req.body.properties.id,
@@ -58,16 +58,33 @@ router.post('/', isAuthenticated, (req, res) => {
 
 /* PUT REQUESTS */
 router.put('/', (req, res) => {
-
+    console.log('req.body ', req.body);
+    let newFavorite = new Favorite(req.body);
+    let explored = newFavorite.explored;
+    Favorite.findByIdAndUpdate({
+        '_id': req.body._id
+    }, {
+        $set: {
+            explored : explored
+        }
+    }, (err, data) => {
+        if (err) {
+            console.log('error updating explored  ', err);
+            res.sendStatus(500);
+        } else {
+            res.sendStatus(201);
+        }
+    })
 });
 
 /* DELETE REQUESTS */
 router.delete('/:id', isAuthenticated, (req, res) => {
     // console.log('req  ', req);
-    Favorite.remove(
-        {'user': req.user._id,
-        '_id': req.params.id},
-        (err, data)=>{
+    Favorite.remove({
+            'user': req.user._id,
+            '_id': req.params.id
+        },
+        (err, data) => {
             if (err) {
                 console.log('error finding user for favorite delete ', err, 'err');
                 res.sendStatus(500);
@@ -76,8 +93,8 @@ router.delete('/:id', isAuthenticated, (req, res) => {
                 res.send(data);
             }
         }
-    
-    
+
+
     )
 });
 

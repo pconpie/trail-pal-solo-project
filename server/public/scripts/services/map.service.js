@@ -33,6 +33,7 @@ app.service('MapService', ['$http', function ($http) {
                 console.log('get geoInfo err ', err);
             })
     }
+
     self.submitComment = function (comment){
         console.log('in submit comment ,', comment);
         $http.post('/comments', comment)
@@ -43,6 +44,7 @@ app.service('MapService', ['$http', function ($http) {
             console.log(err);
         })
     }
+    
     self.trailComments = {};
     self.getComments = function (trailID) {
         $http.get(`/comments/${trailID}`)

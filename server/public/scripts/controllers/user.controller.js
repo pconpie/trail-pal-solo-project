@@ -1,7 +1,6 @@
 app.controller('UserController', ['UserService', 'MapService', function (UserService, MapService) {
   console.log('UserController created');
   var self = this;
-  self.trailExplored = UserService.trailExplored;
   self.favorites = UserService.favorites;
   console.log('self', self.favorites);
   UserService.getFavorites();
@@ -27,4 +26,9 @@ app.controller('UserController', ['UserService', 'MapService', function (UserSer
 
   }
   self.getTrailInfo();
+
+  self.toggleExplored = function (fave) {
+      UserService.markExplored(fave);
+  };
+
 }]);

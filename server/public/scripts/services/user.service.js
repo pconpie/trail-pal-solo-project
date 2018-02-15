@@ -1,7 +1,18 @@
 app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, $location, $mdDialog) {
   console.log('UserService Loaded');
   var self = this;
-  self.trailExplored = false;
+  self.markExplored = function(fave){
+    fave.explored = !fave.explored;
+    console.log('fave.explored ', fave.explored);
+    $http.put(`/favorites`, fave)
+      .then((response)=>{
+        self.getFavorites();
+      })
+      .catch((err)=>{
+        console.log('err from explore put ', err);
+      });
+  };
+
   localStorage.getItem('loggedIn');
   // console.log(localStorage.getItem('loggedIn'));
   

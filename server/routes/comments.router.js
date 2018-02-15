@@ -18,7 +18,7 @@ let isAuthenticated = function (req, res, next) {
 router.get('/:trailId', (req, res) => {
     console.log('get comments trail id ', req.params.trailId);
     // let trailID = req.body;
-    let userId = req.user._id;
+    // let userId = req.user._id;
     Comment.find({
         'trailID': req.params.trailId
     }, (err, data) => {
