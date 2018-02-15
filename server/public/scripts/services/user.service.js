@@ -87,7 +87,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         console.log('UserService -- logout -- logged out');
         self.userObject.loggedIn = false;
         localStorage.setItem('loggedIn', false);
-        $location.path("/");
+        $location.path("/map");
       });
   }
 
@@ -101,7 +101,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         clickOutsideToClose: true
       })
       .then(function (answer) {
-        alert('clicked');
+        // alert(answer);
       }, function () {
         self.status = 'You cancelled the dialog.';
       });

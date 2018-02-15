@@ -3,7 +3,7 @@ app.controller('UserController', ['UserService', 'MapService', function (UserSer
   var self = this;
   self.favorites = UserService.favorites;
   console.log('self', self.favorites);
-  UserService.getFavorites();
+  // UserService.getFavorites();
   self.userService = UserService;
   self.removeFavorite = function (fave) {
     // console.log('fave, ', fave);
@@ -16,11 +16,11 @@ app.controller('UserController', ['UserService', 'MapService', function (UserSer
     for (const trail of self.favorites.list) {
       MapService.getTrailInfo(trail.favoriteLat, trail.favoriteLon, trail.favoriteID)
         .then(response => {
-          console.log('response ', response);
-          console.log('trail ', trail);
+          // console.log('response ', response);
+          // console.log('trail ', trail);
           trail.description = response.description;
           self.favoriteList.push(trail);
-          console.log('new trails list', self.favoriteList);
+          // console.log('new trails list', self.favoriteList);
         })
     }
 

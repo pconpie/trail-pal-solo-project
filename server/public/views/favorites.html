@@ -25,7 +25,7 @@
                         <span ng-if="!vm.trailExplored">Mark Explored</span>
                         <span ng-if="vm.trailExplored">Mark Not Explored</span>
                         <br/>
-                        <md-checkbox ng-click="vm.toggleExplored(favorite)" ng-checked="favorite.explored">
+                        <md-checkbox ng-click="vm.toggleExplored(favorite)" ng-checked="favorite.explored" aria-label="explored-check">
                         </md-checkbox>
                     </span>
                 </md-card-actions>

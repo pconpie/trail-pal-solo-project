@@ -3,23 +3,25 @@ md-toast {
   width: 100%;
   background-color: beige !important;
 }
-body{
-  font-family: 'Comfortaa', cursive;
 
+body {
+  font-family: 'Comfortaa', cursive;
 }
+
 h2 {
   text-align: center;
 }
 
-.gif{
+.gif {
   min-height: 600px;
 }
 
-#mapid { 
-  min-height: 800px; 
+#mapid {
+  min-height: 800px;
   width: 80%;
 }
-.md-button{
+
+.md-button {
   width: 100% !important;
 }
 
@@ -29,52 +31,61 @@ h2 {
   width: 100%;
   z-index: 2352;
 }
-.reset-map-button{
+
+.reset-map-button {
   height: 50px;
   width: 100px;
 }
-.explored-span{
+
+.explored-span {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-right: 46px;
 }
-.trail-image{
+
+.trail-image {
   height: 100px;
   width: 200px;
   /* border: 1px solid black;
   padding: 3px; */
 }
-.trail-image-container{
+
+.trail-image-container {
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
-.favorite-card{
+
+.favorite-card {
   height: 225px;
 }
-.favorite-card-title{
+
+.favorite-card-title {
   padding-top: 33px;
 }
-.favorite-display{
+
+.favorite-display {
   padding-left: 0;
 }
-.favorite-container{
+
+.favorite-container {
   padding: 15px;
 }
-.nav-text{
+
+.nav-text {
   font-weight: bolder !important;
   font-size: 16px;
   width: 50%;
 }
-.submit-button{
-  display:flex;
+
+.submit-button {
+  display: flex;
   flex-direction: row;
   justify-content: flex-end;
 }
-.trail-title-favorites{
-  
-}
+
+.trail-title-favorites {}
 
 .trail-title-favorites:link {
   color: black;
@@ -95,19 +106,20 @@ h2 {
   color: black;
   text-decoration: none;
 }
-.favorite-card-title-text{
-  
-}
-header{
+
+.favorite-card-title-text {}
+
+header {
   padding-bottom: 65px;
 }
 
 /* .map-show{
   padding-bottom: 35px;
 } */
-.spinner{
-  height:100%;
-  width:100%;
+
+.spinner {
+  height: 100%;
+  width: 100%;
   background-color: black;
 }
 
@@ -116,6 +128,7 @@ header{
 .loader:after {
   border-radius: 50%;
 }
+
 .loader {
   color: rgb(63, 90, 65);
   font-size: 11px;
@@ -129,11 +142,13 @@ header{
   -ms-transform: translateZ(0);
   transform: translateZ(0);
 }
+
 .loader:before,
 .loader:after {
   position: absolute;
   content: '';
 }
+
 .loader:before {
   width: 5.2em;
   height: 10.2em;
@@ -146,6 +161,7 @@ header{
   -webkit-animation: load2 2s infinite ease 1.5s;
   animation: load2 2s infinite ease 1.5s;
 }
+
 .loader:after {
   width: 5.2em;
   height: 10.2em;
@@ -158,6 +174,7 @@ header{
   -webkit-animation: load2 2s infinite ease;
   animation: load2 2s infinite ease;
 }
+
 @-webkit-keyframes load2 {
   0% {
     -webkit-transform: rotate(0deg);
@@ -168,6 +185,7 @@ header{
     transform: rotate(360deg);
   }
 }
+
 @keyframes load2 {
   0% {
     -webkit-transform: rotate(0deg);
@@ -177,4 +195,39 @@ header{
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
+}
+
+.welcome-page {
+  height: 100vh;
+  width: 100%;
+  background-color: white;
+}
+
+.welcome-page-image {
+  height: 100vh;
+  width: 100%;
+  opacity: .59;
+  background: url('/images/landing-trail-pic.jpg');
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  position: absolute;
+}
+
+.welcome-container{
+  z-index: 10;
+  background-color: #ffffff00;
+  color: black;
+  position: absolute;
+} 
+
+.welcome-text{
+  color: black;
+  font-weight: bold;
+}
+
+.login-button{
+  float:right; 
+  padding-right:10px;
 }
