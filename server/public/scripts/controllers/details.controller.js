@@ -23,6 +23,10 @@ app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$route
                 
             });
     }
+    self.favoriteTrail = function(){
+        MapService.favoriteTrail(self.trailInfo);
+    }
+
     self.getTrail();
     self.comment = '';
     self.submitComment = function(){

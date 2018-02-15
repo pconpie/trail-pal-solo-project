@@ -2,24 +2,16 @@ app.service('MapService', ['$http', function ($http) {
     const self = this;
     self.trailInfo = {};
 
-    // self.getFavorites = function (){
-    //     $http.get('/favorites')
-    //         .then((response)=>{
-    //             console.log('get favorites ', response);
-    //         })
-    //         .catch((err)=>{
-    //             console.log('err on get favorites ', err);
-    //         })
-    // }
-    // self.getFavorites();
     self.favoriteTrail = function (fave) {
         console.log('IN map service favorite');
-        $http.post('/favorites', fave)
+        return $http.post('/favorites', fave)
             .then((response) => {
                 console.log(response);
+                return response.data;
             })
             .catch((err) => {
                 console.log(err);
+                alert(`Error favoriting this trail! Please try again later.`);
             })
     }
 
@@ -31,31 +23,36 @@ app.service('MapService', ['$http', function ($http) {
             })
             .catch((err) => {
                 console.log('get geoInfo err ', err);
+                alert(`Error getting trail info from server! Please try again later.`);
             })
     }
 
-    self.submitComment = function (comment){
+    self.submitComment = function (comment) {
         console.log('in submit comment ,', comment);
-        $http.post('/comments', comment)
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+        return $http.post('/comments', comment)
+            .then((response) => {
+                console.log(response);
+                return response.data;
+            })
+            .catch((err) => {
+                console.log(err);
+                alert(`Error submitting your comment! Please try again later.`);
+            })
     }
-    
+
     self.trailComments = {};
     self.getComments = function (trailID) {
-        $http.get(`/comments/${trailID}`)
-          .then((response) => {
-            self.trailComments.list = response.data;
-            console.log('get comments ', response.data);
-          })
-          .catch((err) => {
-            alert(err + '!');
-            console.log('err on get comments ', err);
-          })
-      }
+        return $http.get(`/comments/${trailID}`)
+            .then((response) => {
+                self.trailComments.list = response.data;
+                console.log('get comments ', response.data);
+                return response.data;
+
+            })
+            .catch((err) => {
+                alert(err + '!');
+                console.log('err on get comments ', err);
+            })
+    }
 
 }]);

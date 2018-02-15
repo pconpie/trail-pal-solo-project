@@ -9,7 +9,8 @@ app.config(function ($routeProvider, $mdThemingProvider) {
 
     $routeProvider
         .when('/', {
-            redirectTo: 'map'
+            templateUrl: '/views/landing-page.html',
+            controller: 'LandingController as vm'
         })
         .when('/map', {
             templateUrl: '/views/map.html',

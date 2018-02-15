@@ -3,6 +3,8 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     console.log('in map service');
     self.userService = UserService;
 
+    self.loading = false;
+
     let defaultCoords = [37.8, -96];
     let map = L.map('mapid').setView(defaultCoords, 5);
     self.mapReset = function () {
@@ -4621,6 +4623,7 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     var myLayer = L.geoJSON().addTo(map);
 
     function findStateTrails(state) {
+        self.loading = true;
         $http.get(`/geoInfo/${state}`)
             .then((response) => {
                 console.log('get geoInfo response ', response);
@@ -4635,6 +4638,10 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
             .catch((err) => {
                 console.log('get geoInfo err ', err);
             })
+            .finally(function () {
+                // called no matter success or failure
+                self.loading = false;
+            });
     }
 
     let favoriteButton = `<button ng-click="vm.favoriteTrail()">Favorite Me!</button>`;
@@ -4688,8 +4695,6 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
                 controller: ['MapService', function (MapService) {
                     const self = this;
                     self.favoriteTrail = function () {
-                        console.log('FAVORITE!');
-                        console.log('this trail', element);
                         MapService.favoriteTrail(element);
                     }
                 }]
