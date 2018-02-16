@@ -1,14 +1,18 @@
-<div ng-controller="LoginController as vm" class="map-show">
-    <div class="login-button">
-        {{vm.loggedIn.is}}
-        <button ng-click="vm.loginDialog()" ng-if="!vm.userObject.loggedIn" style="float:right; padding-right:10px;">
+<div ng-controller="LoginController as vm" id="map-show">
+    <div class="login-button" layout layout-align="end">
+        <!-- {{vm.loggedIn.is}} -->
+        <md-button flex="5" ng-click="vm.loginDialog()" ng-if="!vm.userObject.loggedIn" class="login-button">
             Login
-        </button>
-        <button ng-click="vm.logout()" ng-if="vm.userObject.loggedIn" style="float:right; padding-right:10px;">
+        </md-button>
+        <md-button flex="5" ng-click="vm.logout()" ng-if="vm.userObject.loggedIn" class="login-button">
             Logout
-        </button>
+        </md-button>
     </div>
     <div>
+        <a ng-href="#!/" style="float:left; height:50px; width:20px; min-width: 1px !important;">
+            <md-icon md-svg-icon="images/ic_home_black_24px.svg"></md-icon>
+        </a>
+
         <md-content class="md-padding" style="margin:0;">
             <md-nav-bar md-no-ink-bar="disableInkBar" md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
                 <md-nav-item md-nav-href="#!map" name="map" class="nav-text">

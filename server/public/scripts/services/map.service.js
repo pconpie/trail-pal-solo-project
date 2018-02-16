@@ -4,9 +4,14 @@ app.service('MapService', ['$http', function ($http) {
 
     self.favoriteTrail = function (fave) {
         console.log('IN map service favorite');
+        console.log('fave to post ', fave);
+        
         return $http.post('/favorites', fave)
             .then((response) => {
                 console.log(response);
+                if (response.status == 201) {
+                    alert('This is a toast...Trail Favorited!');
+                }
                 return response.data;
             })
             .catch((err) => {
@@ -18,7 +23,7 @@ app.service('MapService', ['$http', function ($http) {
     self.getTrailInfo = function (lat, lon, id) {
         return $http.get(`/geoInfo/single/${lat}/${lon}/${id}`)
             .then((response) => {
-                console.log('get geoInfo response ', response);
+                // console.log('get geoInfo response ', response);
                 return response.data;
             })
             .catch((err) => {
@@ -55,4 +60,26 @@ app.service('MapService', ['$http', function ($http) {
             })
     }
 
+    self.images = {};
+    self.showImages = function (id) {
+        return $http.get(`/images/${id}`)
+            .then((response) => {
+                self.images.list = response.data;
+                console.log('get image response ', response);
+            })
+            .catch((err) => {
+                console.log('get images err ', err);
+            })
+    }
+
+    self.saveTrailImage = function (trail, image) {
+        return $http.post(`/images/${trail}`, image)
+            .then((response) => {
+                console.log('save image response ', response);
+            })
+            .catch((err) => {
+                console.log('err saving image ', err);
+            });
+
+    }
 }]);

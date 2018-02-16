@@ -13,10 +13,11 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         console.log('err from explore put ', err);
       });
   };
-
+  
   self.loggedIn = {
     is: localStorage.getItem('loggedIn')
   };
+  
   localStorage.getItem('loggedIn');
 
   self.favorites = {
@@ -26,7 +27,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
     let faveId = fave._id;
     return $http.delete(`/favorites/${faveId}`)
       .then((response) => {
-        self.getFavorites();
+          return response;
 //        //Are your sure you want to delete here?
       })
       .catch((err) => {
@@ -38,6 +39,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
   self.getFavorites = function () {
     $http.get('/favorites')
       .then((response) => {
+        console.log('got em!');
         self.favorites.list = response.data;
         return response.data;
       })
@@ -87,7 +89,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         console.log('UserService -- logout -- logged out');
         self.userObject.loggedIn = false;
         localStorage.setItem('loggedIn', false);
-        $location.path("/");
+        $location.path("/map");
       });
   }
 
@@ -101,7 +103,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         clickOutsideToClose: true
       })
       .then(function (answer) {
-        alert('clicked');
+        // alert(answer);
       }, function () {
         self.status = 'You cancelled the dialog.';
       });
@@ -119,18 +121,18 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
 
     self.registerUser = function (user) {
       if (user.username === '' || user.password === '') {
-        self.message = "Choose a username and password!";
+        self.answer("Choose a username and password!");
       } else {
         console.log('sending to server...', user);
         return $http.post('/api/user/register', user)
           .then(function (response) {
               console.log('success');
-              self.message = `Successfully registered, you may now login!`;
+              self.answer(`Successfully registered, you may now login!`);
               // $location.path('/home');
             },
             function (response) {
               console.log('error');
-              self.message = "Something went wrong. Please try again."
+              self.answer("Something went wrong. Please try again.");
             });
       }
     }
@@ -141,7 +143,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
     self.login = function (user) {
       console.log('user ', user);
       if (user.username === '' || user.password === '') {
-        self.message = "Enter your username and password!";
+        self.answer("Enter your username and password!");
       } else {
         console.log('sending login to server...', user);
         return $http.post('/api/user/login', user)
@@ -155,12 +157,12 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
                 self.getFavorites();
               } else {
                 console.log('failure error post: ', response);
-                self.message = "Incorrect credentials. Please try again.";
+                self.answer("Incorrect credentials. Please try again.");
               }
             })
           .catch(function (response) {
             console.log('failure error: ', response);
-            self.message = "Incorrect credentials. Please try again.";
+            self.answer("Incorrect credentials. Please try again.");
           });
       }
 
@@ -175,7 +177,8 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
 
     self.answer = function (answer) {
       console.log('answer', answer);
-      $mdDialog.hide(answer);
+      alert(answer);
+      // $mdDialog.hide(answer);
     };
   }
 }]);

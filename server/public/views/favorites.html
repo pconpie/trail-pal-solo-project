@@ -1,6 +1,6 @@
 <div class="favorite-container">
     <ul class="favorite-display">
-        <li flex-xs flex-gt-xs="100" layout="column" ng-repeat="favorite in vm.favoriteList">
+        <li flex-xs flex-gt-xs="100" layout="column" ng-repeat="favorite in vm.favorites.list">
             <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch class="favorite-card">
                 <md-card-title layout-align="space-between center" class="favorite-card-title">
                     <md-card-title-text flex="80">
@@ -10,8 +10,7 @@
                         <span class="md-subhead">{{favorite.favoriteLat}}, {{favorite.favoriteLon}}</span>
                         <span>{{favorite.description}}</span>
                         <span ng-if="(favorite.Description == null)" ng-hide="favorite.description" style="text-align:center;">
-                            We are sorry, but there are no descriptions available at this time. Please click on the trail title to find more information!
-                        </span>
+This is a beautiful trail with high waterfalls, low valleys, and everything inbetween that you could ever dream of. There is plenty of wildlife including bald eagles, caribou, mouintain lions, and the occasional woodpecker out and about.                       </span>
                     </md-card-title-text>
                     <md-card-title-media>
                         <div class="md-media-sm card-media trail-image-container">
@@ -25,7 +24,7 @@
                         <span ng-if="!vm.trailExplored">Mark Explored</span>
                         <span ng-if="vm.trailExplored">Mark Not Explored</span>
                         <br/>
-                        <md-checkbox ng-click="vm.toggleExplored(favorite)" ng-checked="favorite.explored">
+                        <md-checkbox ng-click="vm.toggleExplored(favorite)" ng-checked="favorite.explored" aria-label="explored-check">
                         </md-checkbox>
                     </span>
                 </md-card-actions>

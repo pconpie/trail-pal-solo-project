@@ -2,7 +2,7 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     const self = this;
     console.log('in map service');
     self.userService = UserService;
-
+    document.getElementById('header').style.display = "block";
     self.loading = false;
 
     let defaultCoords = [37.8, -96];
