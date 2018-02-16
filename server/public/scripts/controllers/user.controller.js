@@ -12,23 +12,26 @@ app.controller('UserController', ['UserService', 'MapService', function (UserSer
         self.getTrailInfo();
       });
   }
-  self.favoriteList = [];
 
   self.userObject = UserService.userObject;
-  self.getTrailInfo = function () {
-    for (const trail of self.favorites.list) {
-      MapService.getTrailInfo(trail.favoriteLat, trail.favoriteLon, trail.favoriteID)
-        .then(response => {
-          // console.log('response ', response);
-          // console.log('trail ', trail);
-          trail.description = response.description;
-          self.favoriteList.push(trail);
-          // console.log('new trails list', self.favoriteList);
-        })
-    }
 
-  }
-  self.getTrailInfo();
+  // self.favoriteList = [];
+
+  
+  // self.getTrailInfo = function () {
+  //   for (const trail of self.favorites.list) {
+  //     MapService.getTrailInfo(trail.favoriteLat, trail.favoriteLon, trail.favoriteID)
+  //       .then(response => {
+  //         console.log('response ', response);
+  //         // console.log('trail ', trail);
+  //         trail.description = response.description;
+  //         self.favoriteList.push(trail);
+  //         // console.log('new trails list', self.favoriteList);
+  //       })
+  //   }
+
+  // }
+  // self.getTrailInfo();
 
   self.toggleExplored = function (fave) {
       UserService.markExplored(fave);

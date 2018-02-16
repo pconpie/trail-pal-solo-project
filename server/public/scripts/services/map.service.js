@@ -5,7 +5,6 @@ app.service('MapService', ['$http', function ($http) {
     self.favoriteTrail = function (fave) {
         console.log('IN map service favorite');
         console.log('fave to post ', fave);
-        
         return $http.post('/favorites', fave)
             .then((response) => {
                 console.log(response);

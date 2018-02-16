@@ -39,7 +39,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
   self.getFavorites = function () {
     $http.get('/favorites')
       .then((response) => {
-        console.log('got em!');
+        console.log('got em!', response.data);
         self.favorites.list = response.data;
         return response.data;
       })

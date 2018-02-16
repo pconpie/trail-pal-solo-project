@@ -5,12 +5,13 @@
                 <md-card-title layout-align="space-between center" class="favorite-card-title">
                     <md-card-title-text flex="80">
                         <span class="md-headline">
-                            <a class="trail-title-favorites" ng-href="/#!/details/{{favorite.favoriteLat}}/{{favorite.favoriteLon}}/{{favorite.favoriteID}}">{{favorite.favoriteName}}</a>
+                            <a class="trail-title-favorites" ng-href="/#!/details/{{favorite.faveTrailInfo.lat}}/{{favorite.faveTrailInfo.lon}}/{{favorite.faveTrailInfo.unique_id}}">{{favorite.faveTrailInfo.name}}</a>
                         </span>
-                        <span class="md-subhead">{{favorite.favoriteLat}}, {{favorite.favoriteLon}}</span>
-                        <span>{{favorite.description}}</span>
-                        <span ng-if="(favorite.Description == null)" ng-hide="favorite.description" style="text-align:center;">
-This is a beautiful trail with high waterfalls, low valleys, and everything inbetween that you could ever dream of. There is plenty of wildlife including bald eagles, caribou, mouintain lions, and the occasional woodpecker out and about.                       </span>
+                        <span class="md-subhead">{{favorite.faveTrailInfo.lat}}, {{favorite.faveTrailInfo.lon}}</span>
+                        <span>{{favorite.faveTrailInfo.description}}</span>
+                        <span ng-if="(favorite.faveTrailInfo.description == null)" ng-hide="favorite.description" style="text-align:center;">
+                            We are sorry, but there are no descriptions available at this time. Please click on the trail title to find more information!
+                        </span>
                     </md-card-title-text>
                     <md-card-title-media>
                         <div class="md-media-sm card-media trail-image-container">

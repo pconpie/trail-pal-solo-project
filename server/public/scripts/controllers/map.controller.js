@@ -4688,16 +4688,11 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
                         <br/>
                         <p>Description: ${markerDescription(element.properties.description)}</p>
                         <p>Click on name to get more details!</p>
-                        <button ng-click="vm.favoriteTrail()">Favorite Me!</button>
+                        
                         </div>
                         `,
                 controllerAs: 'vm',
-                controller: ['MapService', function (MapService) {
-                    const self = this;
-                    self.favoriteTrail = function () {
-                        MapService.favoriteTrail(element);
-                    }
-                }]
+                controller: PopupInfoController
             });
 
             let marker = L.marker(element.geometry.coordinates).bindPopup(popup).openPopup();
@@ -4705,7 +4700,14 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
         }
         map.addLayer(markers);
     }
+    // <button ng-click="vm.favoriteTrail()">Favorite Me!</button>
 
+    function PopupInfoController(MapService) {
+        const self = this;
+        self.favoriteTrail = function (element) {
+            MapService.favoriteTrail(element);
+        }
+    }
     // map.on('click', function(ev) {
     //     alert(ev.containerPoint); // ev is an event object (MouseEvent in this case)
     // });
