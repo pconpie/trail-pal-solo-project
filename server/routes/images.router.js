@@ -12,11 +12,29 @@ let isAuthenticated = function (req, res, next) {
     res.send('Must be logged in to add items!');
 }
 
-router.post('/', isAuthenticated, (req, res) => {
+router.get('/:id', (req, res) => {
+    // console.log('user ', req.user._id);
+    let trailId = req.params.id;
+    Image.find({
+        'trailId': trailId
+    }, (err, data) => {
+        if (err) {
+            console.log('MongoDB error on get images', err);
+            res.sendStatus(500);
+        } else {
+            console.log('Found images, ', data);
+            res.send(data);
+        }
+    })
+}); //end GET
+
+router.post('/:trailId', isAuthenticated, (req, res) => {
     let imageFile = req.body.filesUploaded[0];
+    let trailId = req.params.trailId;
     console.log('image ', imageFile);
     console.log('user ', req.user._id);
     let newImage = {
+        trailId,
         imageUrl: imageFile.url,
         imageName: imageFile.filename,
         user: req.user._id

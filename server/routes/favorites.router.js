@@ -34,25 +34,28 @@ router.get('/', isAuthenticated, (req, res) => {
 /* POST REQUESTS */
 router.post('/', isAuthenticated, (req, res) => {
 
-    let newFavorite = {};
-    if (req.body.properties) {
-        newFavorite = {
-            favoriteName: req.body.properties.name,
-            favoriteID: req.body.properties.id,
-            favoriteLat: req.body.geometry.coordinates[0],
-            favoriteLon: req.body.geometry.coordinates[1],
-            user: req.user._id
-        }
-    } else {
-        newFavorite = {
-            favoriteName: req.body.name,
-            favoriteID: req.body.unique_id,
-            favoriteLat: req.body.lat,
-            favoriteLon: req.body.lon,
-            user: req.user._id
-        }
+    // let newFavorite = {};
+    // if (req.body.properties) {
+    //     newFavorite = {
+    //         favoriteName: req.body.properties.name,
+    //         favoriteID: req.body.properties.id,
+    //         favoriteLat: req.body.geometry.coordinates[0],
+    //         favoriteLon: req.body.geometry.coordinates[1],
+    //         user: req.user._id
+    //     }
+    // } else {
+    //     newFavorite = {
+    //         favoriteName: req.body.name,
+    //         favoriteID: req.body.unique_id,
+    //         favoriteLat: req.body.lat,
+    //         favoriteLon: req.body.lon,
+    //         user: req.user._id
+    //     }
+    // }
+    let newFavorite = {
+        faveTrailInfo: req.body,
+        user: req.user._id
     }
-
     let faveToSave = new Favorite(newFavorite);
     faveToSave.save()
         .then((result) => {

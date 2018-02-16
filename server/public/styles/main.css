@@ -110,7 +110,7 @@ h2 {
 .favorite-card-title-text {}
 
 header {
-  padding-bottom: 65px;
+  padding-bottom: 35px;
 }
 
 /* .map-show{
@@ -217,6 +217,7 @@ header {
 
 .welcome-container{
   z-index: 10;
+  padding: 100px;
   background-color: #ffffff00;
   color: black;
   position: absolute;

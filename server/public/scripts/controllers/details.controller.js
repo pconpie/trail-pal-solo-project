@@ -1,4 +1,4 @@
-app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$routeParams', function ($mdDialog, $http, MapService, $routeParams) {
+app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$routeParams', '$sce', function ($mdDialog, $http, MapService, $routeParams, $sce) {
     const self = this;
     console.log('in details controller');
     self.trailComments = MapService.trailComments;
@@ -10,7 +10,7 @@ app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$route
     self.getTrail = function () {
         MapService.getTrailInfo(lat, lon, id)
             .then(response => {
-                console.log('response ', response);
+                console.log('response favorite ', response);
                 self.trailInfo = response;
                 self.trailName = self.trailInfo.name;
                 self.trailDescription = self.trailInfo.description;
@@ -23,8 +23,18 @@ app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$route
 
             });
     }
+
+    self.renderHTML = function (html){
+        return $sce.trustAsHtml(html);
+    };
+
     self.favoriteTrail = function () {
-        MapService.favoriteTrail(self.trailInfo);
+        MapService.favoriteTrail(self.trailInfo)
+            .then((response)=>{
+                if (response == 'Must be logged in to add items!') {
+                    alert('Must be logged in to favorite items! Please login or register to add favorites.');
+                }
+            });
     }
 
     self.getTrail();
@@ -33,13 +43,22 @@ app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$route
         let comment = {};
         comment.comment = self.comment;
         comment.trailInfo = self.trailInfo;
-        MapService.submitComment(comment);
+        MapService.submitComment(comment)
+            .then((response)=>{
+                if (response == 'Must be logged in to add items!') {
+                    alert('Must be logged in to comment! Please login or register to add comments.');
+                }
+            });
         self.getComments(id);
         self.comment = '';
     }
     self.getComments = MapService.getComments;
     self.getComments(id);
 
+    self.showImages = MapService.showImages;
+    MapService.showImages(id);
+
+    self.images = MapService.images;
     let fsClient = filestack.init('ATXZUruRS5SwZq4htsjJwz');
     self.openPicker = function () {
         fsClient.pick({
@@ -48,7 +67,7 @@ app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$route
             console.log('response stack ', response.filesUploaded[0].url);
             let imageUrl = response.filesUploaded[0].url;
             //   handleFilestack(response);
-            MapService.saveTrailImage(response);
+            MapService.saveTrailImage(id, response).then(MapService.showImages(id));
         });
     }
 }]);

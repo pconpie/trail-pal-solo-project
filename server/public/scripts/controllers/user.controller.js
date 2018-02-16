@@ -3,11 +3,14 @@ app.controller('UserController', ['UserService', 'MapService', function (UserSer
   var self = this;
   self.favorites = UserService.favorites;
   console.log('self', self.favorites);
-  // UserService.getFavorites();
+  UserService.getFavorites();
   self.userService = UserService;
   self.removeFavorite = function (fave) {
     // console.log('fave, ', fave);
-    UserService.removeFavorite(fave);
+    UserService.removeFavorite(fave)
+      .then(()=>{UserService.getFavorites();
+        self.getTrailInfo();
+      });
   }
   self.favoriteList = [];
 
