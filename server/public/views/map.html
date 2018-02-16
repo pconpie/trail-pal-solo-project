@@ -1,9 +1,15 @@
-<div>
-    <div layout="row" layout-align="center center" style="top:50px; height:600px; position:relative;">
-        <div id="mapid" style="z-index:1; width:100%;" flex="auto">
-            <div id="button-wrapper">
-                <button ng-click="vm.mapReset()" class="reset-map-button">Reset Map</button>
+<div style="height:100vh; width:100%;">
+    <div>
+        <div layout="row" layout-align="center center" style="top:50px; height:600px; position:relative;">
+            <div id="mapid" style="z-index:1; width:100%;" flex="auto">
+                <div id="button-wrapper">
+                    <button ng-click="vm.mapReset()" class="reset-map-button">Reset Map</button>
+                </div>
             </div>
         </div>
+    </div>
+    <div layout="column" layout-align="center center" ng-show="vm.loading">
+        <h1 style="z-index:100;">Loading Trail Details! Please Standby.</h1>
+        <md-progress-circular md-mode="indeterminate" md-diameter="100px" style="z-index:100;"></md-progress-circular>
     </div>
 </div>

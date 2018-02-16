@@ -15,7 +15,7 @@ let isAuthenticated = function (req, res, next) {
 /* GET REQUESTS */
 
 router.get('/', isAuthenticated, (req, res) => {
-    console.log('user ', req.user._id);
+    // console.log('user ', req.user._id);
     let userId = req.user._id;
     Favorite.find({
         'user': userId
@@ -24,7 +24,7 @@ router.get('/', isAuthenticated, (req, res) => {
             console.log('MongoDB error on get faves', err);
             res.sendStatus(500);
         } else {
-            console.log('Found Faves, ', data);
+            // console.log('Found Faves, ', data);
             res.send(data);
         }
     })
@@ -33,18 +33,32 @@ router.get('/', isAuthenticated, (req, res) => {
 
 /* POST REQUESTS */
 router.post('/', isAuthenticated, (req, res) => {
-    console.log(req.body, 'req');
-    console.log('user ', req.user._id);
+
+    // let newFavorite = {};
+    // if (req.body.properties) {
+    //     newFavorite = {
+    //         favoriteName: req.body.properties.name,
+    //         favoriteID: req.body.properties.id,
+    //         favoriteLat: req.body.geometry.coordinates[0],
+    //         favoriteLon: req.body.geometry.coordinates[1],
+    //         user: req.user._id
+    //     }
+    // } else {
+    //     newFavorite = {
+    //         favoriteName: req.body.name,
+    //         favoriteID: req.body.unique_id,
+    //         favoriteLat: req.body.lat,
+    //         favoriteLon: req.body.lon,
+    //         user: req.user._id
+    //     }
+    // }
     let newFavorite = {
-        favoriteName: req.body.properties.name,
-        favoriteID: req.body.properties.id,
-        favoriteLat: req.body.geometry.coordinates[0],
-        favoriteLon: req.body.geometry.coordinates[1],
+        faveTrailInfo: req.body,
         user: req.user._id
     }
     let faveToSave = new Favorite(newFavorite);
     faveToSave.save()
-        .then(() => {
+        .then((result) => {
             res.sendStatus(201);
         })
         .catch((err) => {
@@ -57,28 +71,41 @@ router.post('/', isAuthenticated, (req, res) => {
 }); // end post route
 
 /* PUT REQUESTS */
-router.put('/', (req, res) => {
-
+router.put('/', isAuthenticated, (req, res) => {
+    console.log('req.body ', req.body);
+    let newFavorite = new Favorite(req.body);
+    let explored = newFavorite.explored;
+    Favorite.findByIdAndUpdate({
+        '_id': req.body._id
+    }, {
+        $set: {
+            explored: explored
+        }
+    }, (err, data) => {
+        if (err) {
+            console.log('error updating explored  ', err);
+            res.sendStatus(500);
+        } else {
+            res.sendStatus(201);
+        }
+    })
 });
 
 /* DELETE REQUESTS */
 router.delete('/:id', isAuthenticated, (req, res) => {
     // console.log('req  ', req);
-    Favorite.remove(
-        {'user': req.user._id,
-        '_id': req.params.id},
-        (err, data)=>{
+    Favorite.remove({
+            'user': req.user._id,
+            '_id': req.params.id
+        },
+        (err, data) => {
             if (err) {
-                console.log('error finding user for favorite delete ', err, 'err');
+                console.log('error finding user for favorite delete ', err)
                 res.sendStatus(500);
             } else {
-                console.log('user found matching favorites ', data, 'data');
                 res.send(data);
-            }
-        }
-    
-    
-    )
+            };
+        });
 });
 
 /* MISC FUNCTIONS (If any) */
