@@ -251,3 +251,10 @@ header {
 .no-fave-style{
   text-align: center;
 }
+.edit-profile-picture{
+  height: 185px !important;
+  min-width: 150px !important;
+}
+.profile-username{
+  min-height: 50px;
+}

@@ -1,16 +1,31 @@
-<div class="favorite-container">
-    <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch class="favorite-card">
-        <md-card-title layout-align="space-between center" class="favorite-card-title">
+<div>
+    <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch >
+        <md-card-title>
             <md-card-title-text flex="80">
-                <span style="text-align:center;">
-                    Paul Tiller
-                </span>
+                    <div class="profile-full-name">
+                        <h1>Name: </h1>
+                        <md-input-container>
+                            <!-- <label> Name:
+                            </label> -->
+                            <input ng-model="vm.userObject.userFullName" />
+                        </md-input-container>
+                    </div>
+                    <div class="profile-username">
+                    <h2 style="float:left;">
+                        Username: {{vm.userObject.userName}}
+                    </h2>
+                    </div>
             </md-card-title-text>
             <md-card-title-media>
-                <div class="md-media-sm card-media trail-image-container">
-                    <span ng-if="vm.pictureChosen">+</span>
-                    <span ng-if="!vm.pictureChosen">Edit Profile Picture</span>
-                    <img ng-src="{{activity.thumbnail}}" style="min-height:100px; min-width:200px;">Profile Pic</img>
+                <div class="md-media-lg card-media trail-image-container">
+                    <button ng-cloak ng-if="!vm.pictureChosen">
+                        <span ng-click="vm.openPicker()">+</span>
+                    </button>
+                    <md-button ng-cloak class="edit-profile-picture" ng-click="vm.openPicker()">
+                        <span ng-if="vm.pictureChosen">Edit Picture</span>
+                        <img ng-cloak ng-src="{{vm.profilePicture.list[vm.profilePicture.list.length-1].imageUrl}}" alt="profile picture">
+                    </md-button>
+                    <!-- <img style="max-height:300px; max-width:300px;" ng-src="{{vm.profilePicture.list[vm.profilePicture.list.length-1].imageUrl}}" alt="profile picture"> -->
                 </div>
             </md-card-title-media>
         </md-card-title>

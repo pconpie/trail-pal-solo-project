@@ -196,4 +196,27 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
       // $mdDialog.hide(answer);
     };
   }
+
+  self.profilePicture = {};
+  self.getProfilePicture = function () {
+      return $http.get(`/images/user`)
+          .then((response) => {
+              self.profilePicture.list = response.data;
+              console.log('get profile image response ', response);
+          })
+          .catch((err) => {
+              console.log('get profile images err ', err);
+          })
+  }
+
+  self.saveProfilePicture = function (image) {
+      return $http.post(`/images/user`, image)
+          .then((response) => {
+              console.log('save profile image response ', response);
+          })
+          .catch((err) => {
+              console.log('err saving profile image ', err);
+          });
+
+  }
 }]);

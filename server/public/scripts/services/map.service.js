@@ -61,7 +61,7 @@ app.service('MapService', ['$http', function ($http) {
 
     self.images = {};
     self.showImages = function (id) {
-        return $http.get(`/images/${id}`)
+        return $http.get(`/images/trailImage/${id}`)
             .then((response) => {
                 self.images.list = response.data;
                 console.log('get image response ', response);
@@ -72,8 +72,9 @@ app.service('MapService', ['$http', function ($http) {
     }
 
     self.saveTrailImage = function (trail, image) {
-        return $http.post(`/images/${trail}`, image)
+        return $http.post(`/images/trailImage/${trail}`, image)
             .then((response) => {
+                // self.showImages();
                 console.log('save image response ', response);
             })
             .catch((err) => {

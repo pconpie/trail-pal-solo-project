@@ -67,6 +67,8 @@ app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$route
             console.log('response stack ', response.filesUploaded[0].url);
             let imageUrl = response.filesUploaded[0].url;
             //   handleFilestack(response);
+            console.log(imageUrl, response);
+            
             MapService.saveTrailImage(id, response).then(MapService.showImages(id));
         });
     }
