@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const axios = require('axios');
 const Comment = require('../models/Comment');
 const Person = require('../models/Person');
+const UserImageGet = require('../modules/UserImageGet');
 
 
 let isAuthenticated = function (req, res, next) {
@@ -27,8 +28,7 @@ router.get('/:trailId', (req, res) => {
             res.sendStatus(500);
         } else {
             console.log('Found comments, ', data);
-            Person.find({
-            }, (err, users) => {
+            Person.find({}, (err, users) => {
                 if (err) {
                     console.log('MongoDB error on get users of comment', err);
                     res.sendStatus(500);
@@ -38,7 +38,10 @@ router.get('/:trailId', (req, res) => {
                     data.forEach(comment => {
                         users.forEach(user => {
                             if (String(comment.user) == String(user._id)) {
-                                result.push({comment, user})
+                                result.push({
+                                    comment,
+                                    user
+                                })
                             }
                         });
                     });
@@ -52,26 +55,33 @@ router.get('/:trailId', (req, res) => {
 
 /* POST REQUESTS */
 router.post('/', isAuthenticated, (req, res) => {
-    console.log(req.body, 'req');
-    console.log('user ', req.user._id);
-    let newComment = {
-        trailName: req.body.trailInfo.name,
-        trailID: req.body.trailInfo.unique_id,
-        trailLat: req.body.trailInfo.lat,
-        trailLon: req.body.trailInfo.lon,
-        comment: req.body.comment,
-        user: req.user._id
-    }
+    UserImageGet(req)
+        .then((response) => {
+            let userPicture = response;
+            let newComment = {
+                trailName: req.body.trailInfo.name,
+                trailID: req.body.trailInfo.unique_id,
+                trailLat: req.body.trailInfo.lat,
+                trailLon: req.body.trailInfo.lon,
+                comment: req.body.comment,
+                userPicture,
+                user: req.user._id
+            }
 
-    let commentToSave = new Comment(newComment);
-    commentToSave.save()
-        .then(() => {
-            res.sendStatus(201);
+            let commentToSave = new Comment(newComment);
+            commentToSave.save()
+                .then(() => {
+                    res.sendStatus(201);
+                })
+                .catch((err) => {
+                    console.log('err on post favorite ', err);
+                    res.sendStatus(500);
+                    next(err);
+                });
         })
         .catch((err) => {
-            console.log('err on post favorite ', err);
+            console.log('promise err ', err);
             res.sendStatus(500);
-            next(err);
         });
 }); // end post route
 

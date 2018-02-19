@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const axios = require('axios');
 const Image = require('../models/Image');
 const ProfilePicture = require('../models/ProfilePicture');
+const UserImageGet = require('../modules/UserImageGet');
 
 
 let isAuthenticated = function (req, res, next) {
@@ -28,21 +29,7 @@ router.get('/trailImage/:id', (req, res) => {
         }
     })
 }); //end GET
-router.get('/user', (req, res) => {
-    // console.log('user ', req.user._id);
-    let userId = req.user._id;
-    ProfilePicture.find({
-        'userId': userId
-    }, (err, data) => {
-        if (err) {
-            console.log('MongoDB error on get profile images', err);
-            res.sendStatus(500);
-        } else {
-            console.log('Found profile images, ', data);
-            res.send(data);
-        }
-    })
-}); //end GET
+router.get('/user', UserImageGet, ((response)=>{res.send(response)})); //end GET
 
 router.post('/trailImage/:trailId', isAuthenticated, (req, res) => {
     let imageFile = req.body.filesUploaded[0];
