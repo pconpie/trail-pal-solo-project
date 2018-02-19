@@ -29,6 +29,15 @@ app.config(function ($routeProvider, $mdThemingProvider) {
                 }
             }
         })
+        .when('/profile', {
+            templateUrl: '/views/profile.html',
+            controller: 'ProfileController as vm',
+            resolve: {
+                getuser: function (UserService) {
+                    return UserService.getuser();
+                }
+            }
+        })
         .otherwise({
             template: '<h1>404</h1>'
         })

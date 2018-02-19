@@ -73,6 +73,14 @@ h2 {
   padding: 15px;
 }
 
+.fave-button:hover {
+  color: black;
+}
+
+.fave-button {
+  color: gold;
+}
+
 .nav-text {
   font-weight: bolder !important;
   font-size: 16px;
@@ -215,20 +223,31 @@ header {
   position: absolute;
 }
 
-.welcome-container{
+.welcome-container {
   z-index: 10;
   padding: 100px;
   background-color: #ffffff00;
   color: black;
   position: absolute;
-} 
+}
 
-.welcome-text{
+.welcome-text {
   color: black;
   font-weight: bold;
 }
 
-.login-button{
-  float:right; 
-  padding-right:10px;
+.login-button {
+  float: right;
+  padding-right: 10px;
+}
+.error-alert{
+  background-color: rgba(157, 0, 0, 0.853);
+  border: 3px solid white;
+}
+.success-alert{
+  background-color: rgba(18, 86, 10, 0.976);
+  border: 3px solid white;
+}
+.no-fave-style{
+  text-align: center;
 }

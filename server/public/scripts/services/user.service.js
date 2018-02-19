@@ -9,15 +9,17 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         self.getFavorites();
       })
       .catch((err) => {
-        alert(`Error marking trail as explored! Please try again later.`)
+        swal(`Error marking trail as explored! Please try again later.`, '', 'error', {
+          className: "error-alert",
+        });
         console.log('err from explore put ', err);
       });
   };
-  
+
   self.loggedIn = {
     is: localStorage.getItem('loggedIn')
   };
-  
+
   localStorage.getItem('loggedIn');
 
   self.favorites = {
@@ -27,11 +29,13 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
     let faveId = fave._id;
     return $http.delete(`/favorites/${faveId}`)
       .then((response) => {
-          return response;
-//        //Are your sure you want to delete here?
+        return response;
+        //        //Are your sure you want to delete here?
       })
       .catch((err) => {
-        alert('Error deleting favorite! Please try again later.')
+        swal('Error deleting favorite! Please try again later.', '', 'error', {
+          className: "error-alert",
+        });
         console.log('delete favorite error ', err);
       });
   }
@@ -44,7 +48,9 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         return response.data;
       })
       .catch((err) => {
-        alert(err + '!');
+        swal(err + '!', '', 'error', {
+          className: "error-alert",
+        });
         console.log('err on get favorites ', err);
       });
   }
@@ -103,7 +109,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         clickOutsideToClose: true
       })
       .then(function (answer) {
-        // alert(answer);
+        // swal(answer);
       }, function () {
         self.status = 'You cancelled the dialog.';
       });
@@ -120,19 +126,19 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
     }
 
     self.registerUser = function (user) {
-      if (user.username === '' || user.password === '') {
-        self.answer("Choose a username and password!");
+      if (user === undefined || user.username === '' || user.password === '') {
+        self.error("Choose a username and password!");
       } else {
         console.log('sending to server...', user);
         return $http.post('/api/user/register', user)
           .then(function (response) {
               console.log('success');
-              self.answer(`Successfully registered, you may now login!`);
+              self.success(`Successfully registered, you may now login!`);
               // $location.path('/home');
             },
             function (response) {
               console.log('error');
-              self.answer("Something went wrong. Please try again.");
+              self.error("Something went wrong. Please try again.");
             });
       }
     }
@@ -142,8 +148,8 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
 
     self.login = function (user) {
       console.log('user ', user);
-      if (user.username === '' || user.password === '') {
-        self.answer("Enter your username and password!");
+      if (user===undefined || user.username === '' || user.password === '') {
+        self.error("Enter your username and password!");
       } else {
         console.log('sending login to server...', user);
         return $http.post('/api/user/login', user)
@@ -157,12 +163,12 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
                 self.getFavorites();
               } else {
                 console.log('failure error post: ', response);
-                self.answer("Incorrect credentials. Please try again.");
+                self.error("Incorrect credentials. Please try again.");
               }
             })
           .catch(function (response) {
             console.log('failure error: ', response);
-            self.answer("Incorrect credentials. Please try again.");
+            self.error("Incorrect credentials. Please try again.");
           });
       }
 
@@ -175,9 +181,18 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
       $mdDialog.cancel();
     };
 
-    self.answer = function (answer) {
+    self.success = function (answer) {
       console.log('answer', answer);
-      alert(answer);
+      swal(answer, '', {
+        className: "success-alert",
+      });
+      // $mdDialog.hide(answer);
+    };
+    self.error = function (answer) {
+      console.log('answer', answer);
+      swal(answer, '', 'error', {
+        className: "error-alert",
+      });
       // $mdDialog.hide(answer);
     };
   }

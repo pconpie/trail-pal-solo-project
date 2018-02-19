@@ -10,7 +10,7 @@
     </div>
     <div>
         <a ng-href="#!/" style="float:left; height:50px; width:20px; min-width: 1px !important;">
-            <md-icon md-svg-icon="images/ic_home_black_24px.svg"></md-icon>
+            <md-icon md-svg-icon="images/home_icon.svg"></md-icon>
         </a>
 
         <md-content class="md-padding" style="margin:0;">
@@ -20,6 +20,9 @@
                 </md-nav-item>
                 <md-nav-item md-nav-href="#!favorites" ng-if="vm.userObject.loggedIn" name="favorites" class="nav-text">
                     Favorites
+                </md-nav-item>
+                <md-nav-item md-nav-href="#!profile" ng-if="vm.userObject.loggedIn" name="profile" class="nav-text">
+                    Profile
                 </md-nav-item>
             </md-nav-bar>
         </md-content>

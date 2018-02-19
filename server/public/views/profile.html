@@ -1,0 +1,21 @@
+<div class="favorite-container">
+    <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch class="favorite-card">
+        <md-card-title layout-align="space-between center" class="favorite-card-title">
+            <md-card-title-text flex="80">
+                <span style="text-align:center;">
+                    Paul Tiller
+                </span>
+            </md-card-title-text>
+            <md-card-title-media>
+                <div class="md-media-sm card-media trail-image-container">
+                    <span ng-if="vm.pictureChosen">+</span>
+                    <span ng-if="!vm.pictureChosen">Edit Profile Picture</span>
+                    <img ng-src="{{activity.thumbnail}}" style="min-height:100px; min-width:200px;">Profile Pic</img>
+                </div>
+            </md-card-title-media>
+        </md-card-title>
+        <md-card-content layout="row" layout-align="space-between end">
+            <p>Profile gobbledy gook</p>
+        </md-card-content>
+    </md-card>
+</div>

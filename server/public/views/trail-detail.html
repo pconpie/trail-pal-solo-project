@@ -1,25 +1,30 @@
 <div layout>
     <md-card md-theme-watch layout="row" flex="60">
         <md-card-title flex="80">
-            <md-card-title-text>
-                <span class="md-headline" style="font-weight: bold; text-align:center;">{{vm.trailName}}</span>
-                <span class="md-subhead" ng-hide="vm.trailDescription == null">Description:
-                    <br/>{{vm.trailDescription}}<p ng-bind-html="vm.renderHTML(vm.trailDescription)"></p>
+            <md-card-title-text ng-cloak>
+                <span class="md-headline" style="font-weight: bold; text-align:center;">{{vm.trailInfo.name}}</span>
+                <span class="md-subhead" ng-show="vm.trailInfo.description">Description:
+                    <!-- <br/>{{vm.trailInfo.description}} -->
+                    <p ng-bind-html="vm.renderHTML(vm.trailInfo.description)"></p>
                 </span>
-                <span class="md-subhead" ng-repeat="trail in vm.trailInfo.activities" ng-show="trail.description" style="text-transform:capitalize;">{{trail.activity_type_name}} Description:
-                    <br/>{{trail.description}}<p ng-bind-html="vm.renderHTML(trail.description)"></p>
-                </span>
-                <span ng-repeat="trail in vm.trailInfo.activities" ng-if="(trail.description == null && vm.trailDescription == null)" style="text-align:center;">
-                    We are sorry, but there are no descriptions available at this time. Please try our 'Research Trail' button on the side to
-                    find more information!
-                </span>
+                <div ng-repeat="trail in vm.trailInfo.activities">
+                    <span class="md-subhead" ng-show="trail.description" style="text-transform:capitalize;">{{trail.activity_type_name}} Description:
+                        <!-- <br/>{{trail.description}} -->
+                        <p ng-bind-html="vm.renderHTML(trail.description)"></p>
+                    </span>
+                    <span ng-if="(trail.description == null && vm.trailDescription == null)" style="text-align:center;">
+                        We are sorry, but there are no descriptions available at this time. Please try our 'Research Trail' button on the side to
+                        find more information!
+                    </span>
+                </div>
             </md-card-title-text>
         </md-card-title>
         <md-card-content flex="20" layout="column" layout-align="space-around">
-            <div class="md-media-xl card-media"></div>
+            <!-- <div class="md-media-xl card-media"></div> -->
             <md-card-actions layout="column">
-                <md-button class="md-icon-button" aria-label="Favorite" ng-click="vm.favoriteTrail(trail)">
-                    <md-icon md-svg-icon="images/ic_favorite_black_24px.svg"></md-icon>
+                <md-button class="md-icon-button" aria-label="Favorite" md-no-ink ng-click="vm.favoriteTrail(trail)">
+                    <md-icon class="fave-button" md-svg-icon="images/star_empty_icon.svg"></md-icon>
+                </md-button>
             </md-card-actions>
         </md-card-content>
     </md-card>
