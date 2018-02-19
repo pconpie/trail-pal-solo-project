@@ -5,7 +5,7 @@ const axios = require('axios');
 const Image = require('../models/Image');
 const ProfilePicture = require('../models/ProfilePicture');
 const UserImageGet = require('../modules/UserImageGet');
-
+const Comment = require('../models/Comment');
 
 let isAuthenticated = function (req, res, next) {
     if (req.isAuthenticated()) {
@@ -29,7 +29,12 @@ router.get('/trailImage/:id', (req, res) => {
         }
     })
 }); //end GET
-router.get('/user', UserImageGet, ((response)=>{res.send(response)})); //end GET
+router.get('/user', (req, res) => {
+    UserImageGet(req).then((response) => {
+        // console.log('last picture response, ', response);
+        res.send(response)
+    })
+}); //end GET
 
 router.post('/trailImage/:trailId', isAuthenticated, (req, res) => {
     let imageFile = req.body.filesUploaded[0];
@@ -62,7 +67,7 @@ router.post('/user', isAuthenticated, (req, res) => {
         userId,
         imageUrl: imageFile.url,
         imageName: imageFile.filename,
-        user: req.user._id
+        user: userId
     };
     let profilePictureToSave = new ProfilePicture(newProfilePicture);
     profilePictureToSave.save()
@@ -74,5 +79,53 @@ router.post('/user', isAuthenticated, (req, res) => {
             res.sendStatus(500);
         });
 });
+
+/* PUT REQUESTS */
+router.put('/user/:id', (req, res) => {
+    let imageFile = req.body.filesUploaded[0];
+    console.log('req.body ', req.body);
+    console.log('req id ', req.user.id);
+    
+    let newProfilePicture = {
+        userId: req.user._id,
+        imageUrl: imageFile.url,
+        imageName: imageFile.filename,
+        user: req.user._id
+    };
+    let profilePictureToSave = new ProfilePicture(newProfilePicture);
+    ProfilePicture.findByIdAndUpdate({
+        '_id': req.params.id
+    }, {
+        $set: {
+            imageUrl: profilePictureToSave.imageUrl,
+            imageName: profilePictureToSave.imageName
+        }
+    }, (err, data) => {
+        if (err) {
+            console.log('error updating profile picture  ', err);
+            res.sendStatus(500);
+        } else {
+            updateCommentReference(req.user._id, imageFile.filename, imageFile.url);
+            res.sendStatus(201);
+        }
+    })
+
+});
+
+function updateCommentReference(id, userId, imageName, imageUrl) {
+    console.log('id ', id, 'image info ', imageName, imageUrl );
+    let query = { "_id": id, "userPicture.userId": userId };
+    Comment.update(query, { $set : {imageUrl: imageUrl, imageName: imageName}},
+        (err, data) => {
+        if (err) {
+            console.log('error updating comments profile picture  ', err);
+            // res.sendStatus(500);
+        } else {
+            console.log('success update comment picture', data);
+            
+            // res.sendStatus(201);
+        }
+    })
+}
 
 module.exports = router;

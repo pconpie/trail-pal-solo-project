@@ -16,13 +16,23 @@ app.controller('ProfileController', ['$location', 'UserService', function ($loca
             console.log('response stack ', response.filesUploaded[0].url);
             let imageUrl = response.filesUploaded[0].url;
             //   handleFilestack(response);
-            UserService.saveProfilePicture(response).then(UserService.getProfilePicture()).then(self.getProfilePicture());
+            if (self.pictureChosen === true) {
+                UserService.updateProfilePicture(response).then(UserService.getProfilePicture()).then(pictureCheck())
+            } else if (self.pictureChosen === false) {
+                UserService.saveProfilePicture(response).then(UserService.getProfilePicture()).then(pictureCheck());
+            } else {
+                console.log('Something is messed up with profile pictures!');
+            }
         });
     }
+    pictureCheck();
 
-    self.pictureChosen = false;
+    self.setUserFullName = function(userObject){
+        UserService.updateUserInfo(userObject);
+    }
+
     function pictureCheck() {
-        if (self.profilePicture.list.length > 0) {
+        if (self.profilePicture.list) {
             self.pictureChosen = true;
             console.log('HAZ PICTURE', self.pictureChosen);
         } else {
@@ -30,12 +40,16 @@ app.controller('ProfileController', ['$location', 'UserService', function ($loca
             console.log('NO PICTURE', self.pictureChosen);
         }
     }
+
     self.getProfilePicture = function () {
         UserService.getProfilePicture()
             .then((response) => {
+                console.log('some response ', response);
                 console.log('picture ', self.profilePicture);
                 pictureCheck();
+
             });
     }
     self.getProfilePicture();
+
 }]);

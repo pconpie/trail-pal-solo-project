@@ -16,7 +16,7 @@ function userImageGet(req, res) {
                 reject(err);
             } else {
                 let newestPicture = data[data.length-1];
-                console.log('last picture ', newestPicture);
+                // console.log('last picture ', newestPicture);
                  resolve(newestPicture);
             }
         })
