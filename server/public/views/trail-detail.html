@@ -44,14 +44,24 @@
             Link to helpful page:
             <br/>
             <span>
-                <a ng-href="http://www.google.com/search#q={{vm.trailName}}&btnI" target="_blank">Research Trail!</a>
+                <a ng-href="http://www.google.com/search#q={{vm.trailInfo.name}}&btnI" target="_blank">Research Trail!</a>
             </span>
         </h4>
         <span ng-repeat="trail in vm.trailInfo.activities">
             <img ng-src="{{trail.thumbnail}}" style="max-height:300px; max-width:300px;"></img>
         </span>
-        <span ng-repeat="image in vm.images.list">
-            <img style="max-height:300px; max-width:300px;" ng-src="{{image.imageUrl}}">
+        <span>
+            <span>
+                <button ng-click="vm.imageBackward()">
+                    <
+                </button>
+            </span>
+            <span>
+                <button ng-click="vm.imageForward()">
+                    >
+                </button>
+            </span>
+            <img ng-cloak style="max-height:300px; max-width:300px;" ng-src="{{vm.images.list[vm.imagePosition].imageUrl}}" alt="Photo not available">
         </span>
         <button style="height:30px; width:30px;" ng-click="vm.openPicker()">+</button>
 

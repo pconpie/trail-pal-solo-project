@@ -4688,7 +4688,6 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
                         <br/>
                         <p>Description: ${markerDescription(element.properties.description)}</p>
                         <p>Click on name to get more details!</p>
-                        
                         </div>
                         `,
                 controllerAs: 'vm',

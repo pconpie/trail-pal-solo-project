@@ -39,8 +39,8 @@ router.get('/user', (req, res) => {
 router.post('/trailImage/:trailId', isAuthenticated, (req, res) => {
     let imageFile = req.body.filesUploaded[0];
     let trailId = req.params.trailId;
-    console.log('image ', imageFile);
-    console.log('user ', req.user._id);
+    // console.log('image ', imageFile);
+    // console.log('user ', req.user._id);
     let newImage = {
         trailId,
         imageUrl: imageFile.url,
@@ -61,8 +61,8 @@ router.post('/trailImage/:trailId', isAuthenticated, (req, res) => {
 router.post('/user', isAuthenticated, (req, res) => {
     let imageFile = req.body.filesUploaded[0];
     let userId = req.user._id;
-    console.log('image ', imageFile);
-    console.log('user ', req.user._id);
+    // console.log('image ', imageFile);
+    // console.log('user ', req.user._id);
     let newProfilePicture = {
         userId,
         imageUrl: imageFile.url,
@@ -83,8 +83,8 @@ router.post('/user', isAuthenticated, (req, res) => {
 /* PUT REQUESTS */
 router.put('/user/:id', (req, res) => {
     let imageFile = req.body.filesUploaded[0];
-    console.log('req.body ', req.body);
-    console.log('req id ', req.user.id);
+    // console.log('req.body ', req.body);
+    // console.log('req id ', req.user.id);
     
     let newProfilePicture = {
         userId: req.user._id,
@@ -113,17 +113,16 @@ router.put('/user/:id', (req, res) => {
 });
 
 function updateCommentReference(id, userId, imageName, imageUrl) {
-    console.log('id ', id, 'image info ', imageName, imageUrl );
+    // console.log('id ', id, 'image info ', imageName, imageUrl );
     let query = { "_id": id, "userPicture.userId": userId };
     Comment.update(query, { $set : {imageUrl: imageUrl, imageName: imageName}},
         (err, data) => {
         if (err) {
             console.log('error updating comments profile picture  ', err);
-            // res.sendStatus(500);
+            res.sendStatus(500);
         } else {
-            console.log('success update comment picture', data);
-            
-            // res.sendStatus(201);
+            // console.log('success update comment picture', data);
+            res.sendStatus(201);
         }
     })
 }

@@ -72,7 +72,7 @@ router.post('/', isAuthenticated, (req, res) => {
 
 /* PUT REQUESTS */
 router.put('/', isAuthenticated, (req, res) => {
-    console.log('req.body ', req.body);
+    // console.log('req.body ', req.body);
     let newFavorite = new Favorite(req.body);
     let explored = newFavorite.explored;
     Favorite.findByIdAndUpdate({
@@ -86,6 +86,28 @@ router.put('/', isAuthenticated, (req, res) => {
             console.log('error updating explored  ', err);
             res.sendStatus(500);
         } else {
+            res.sendStatus(201);
+        }
+    })
+});
+router.put('/rating', isAuthenticated, (req, res) => {
+    // console.log('req.body rating ', req.body);
+    let ratedFavorite = req.body.trail;
+    ratedFavorite.rating = req.body.rating;
+    let newFavorite = new Favorite(ratedFavorite);
+    let rating = ratedFavorite.rating;
+    Favorite.findByIdAndUpdate({
+        '_id': ratedFavorite._id
+    }, {
+        $set: {
+            rating: rating
+        }
+    }, (err, data) => {
+        if (err) {
+            console.log('error updating explored  ', err);
+            res.sendStatus(500);
+        } else {
+            // console.log('updated rating ', data);
             res.sendStatus(201);
         }
     })

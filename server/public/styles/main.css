@@ -1,7 +1,8 @@
 md-toast {
   position: fixed !important;
   width: 100%;
-  background-color: beige !important;
+  text-align: center;
+  /* background-color: beige !important; */
 }
 
 body {
@@ -259,8 +260,37 @@ header {
   min-height: 50px;
 }
 .profile-picture-comment{
-  max-height: 110px;
+  max-height: 75px;
   max-width: 110px;
   border-radius: 100%;
   margin-right: 10px;
+}
+img {
+  font-family: inherit;
+  font-weight: 300;
+  line-height: 2;  
+  text-align: center;
+  
+  width: 100%;
+  height: auto;
+  display: block;
+  position: relative;
+}
+
+img::before { 
+  font-family: 'Font Awesome 5 Free';
+  content: "\f1c5" " " attr(alt);
+  font-size: 16px;
+  color: rgb(100, 100, 100);
+  display: block;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+}
+.profile-view-card{
+  height: 80vh;
 }
