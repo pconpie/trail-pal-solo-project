@@ -1,9 +1,7 @@
-app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$routeParams', '$sce', function ($mdDialog, $http, MapService, $routeParams, $sce) {
+app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapService', 'UserService', '$routeParams', '$sce', function ($mdDialog, $mdToast, $http, MapService, UserService, $routeParams, $sce) {
     const self = this;
     console.log('in details controller');
     self.trailComments = MapService.trailComments;
-    self.trailName = '';
-    self.trailDescription = '';
     let lat = $routeParams.trail_lat;
     let lon = $routeParams.trail_lon;
     let id = $routeParams.id;
@@ -12,8 +10,6 @@ app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$route
             .then(response => {
                 console.log('response favorite ', response);
                 self.trailInfo = response;
-                self.trailName = self.trailInfo.name;
-                self.trailDescription = self.trailInfo.description;
                 // if (response.activities.length > 0) {
                 //     let activities = response.activities;
                 //     for (let i = 0; i < activities.length; i++) {
@@ -23,30 +19,36 @@ app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$route
 
             });
     }
+    self.getTrail();
 
-    self.renderHTML = function (html){
+    self.renderHTML = function (html) {
         return $sce.trustAsHtml(html);
     };
 
     self.favoriteTrail = function () {
         MapService.favoriteTrail(self.trailInfo)
-            .then((response)=>{
+            .then((response) => {
                 if (response == 'Must be logged in to add items!') {
-                    alert('Must be logged in to favorite items! Please login or register to add favorites.');
-                }
+                    swal('Must be logged in to favorite items! Please login or register to add favorites.', '', 'error', {
+                        className: "error-alert",
+                    });
+                } else {
+                    UserService.getFavorites()
+                };
             });
     }
 
-    self.getTrail();
     self.comment = '';
     self.submitComment = function () {
         let comment = {};
         comment.comment = self.comment;
         comment.trailInfo = self.trailInfo;
         MapService.submitComment(comment)
-            .then((response)=>{
+            .then((response) => {
                 if (response == 'Must be logged in to add items!') {
-                    alert('Must be logged in to comment! Please login or register to add comments.');
+                    swal('Must be logged in to comment! Please login or register to add comments.', '', 'error', {
+                        className: "error-alert",
+                    });
                 }
             });
         self.getComments(id);
@@ -66,8 +68,25 @@ app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$route
         }).then((response) => {
             console.log('response stack ', response.filesUploaded[0].url);
             let imageUrl = response.filesUploaded[0].url;
-            //   handleFilestack(response);
             MapService.saveTrailImage(id, response).then(MapService.showImages(id));
         });
     }
+
+    self.imagePosition = 0;
+    self.imageBackward = function () {
+        if (self.imagePosition === 0) {
+            alert('No more images this direction');
+        } else {
+            self.imagePosition--;
+        }
+    }
+    self.imageForward = function () {
+        if (self.imagePosition === MapService.totalImages.count-1) {
+            alert('No more images this direction');
+        } else {
+            self.imagePosition++;
+        }
+    }
+
+    
 }]);

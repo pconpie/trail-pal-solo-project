@@ -1,7 +1,24 @@
 app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, $location, $mdDialog) {
   console.log('UserService Loaded');
-  var self = this;
+  const self = this;
 
+  self.rateTrail = function(trail, rating){
+    let newTrailRating = {
+      trail,
+      rating
+    }
+    return $http.put(`/favorites/rating`, newTrailRating)
+      .then((response) => {
+        // self.newTrailRating.rating = 
+        self.getFavorites();
+      })
+      .catch((err) => {
+        swal(`Error marking trail as explored! Please try again later.`, '', 'error', {
+          className: "error-alert",
+        });
+        console.log('err from explore put ', err);
+      });
+  }
   self.markExplored = function (fave) {
     fave.explored = !fave.explored;
     return $http.put(`/favorites`, fave)
@@ -9,15 +26,17 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         self.getFavorites();
       })
       .catch((err) => {
-        alert(`Error marking trail as explored! Please try again later.`)
+        swal(`Error marking trail as explored! Please try again later.`, '', 'error', {
+          className: "error-alert",
+        });
         console.log('err from explore put ', err);
       });
   };
-  
+
   self.loggedIn = {
     is: localStorage.getItem('loggedIn')
   };
-  
+
   localStorage.getItem('loggedIn');
 
   self.favorites = {
@@ -27,11 +46,13 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
     let faveId = fave._id;
     return $http.delete(`/favorites/${faveId}`)
       .then((response) => {
-          return response;
-//        //Are your sure you want to delete here?
+        return response;
+        //Are your sure you want to delete here?
       })
       .catch((err) => {
-        alert('Error deleting favorite! Please try again later.')
+        swal('Error deleting favorite! Please try again later.', '', 'error', {
+          className: "error-alert",
+        });
         console.log('delete favorite error ', err);
       });
   }
@@ -39,12 +60,14 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
   self.getFavorites = function () {
     $http.get('/favorites')
       .then((response) => {
-        console.log('got em!');
+        console.log('got all favorites!', response.data);
         self.favorites.list = response.data;
         return response.data;
       })
       .catch((err) => {
-        alert(err + '!');
+        swal(err + '!', '', 'error', {
+          className: "error-alert",
+        });
         console.log('err on get favorites ', err);
       });
   }
@@ -62,13 +85,14 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
   }
 
   self.getuser = function () {
-    console.log('UserService -- getuser');
+    // console.log('UserService -- getuser');
     return $http.get('/api/user')
       .then(function (response) {
           if (response.data.username) {
             // user has a curret session on the server
             self.userObject.userName = response.data.username;
-            console.log('UserService -- getuser -- User Data: ', self.userObject.userName);
+            self.userObject.userFullName = response.data.userFullName;
+            // console.log('UserService -- getuser -- User Data: ', self.userObject.userName);
             return response.data;
           } else {
             console.log('UserService -- getuser -- failure');
@@ -103,7 +127,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         clickOutsideToClose: true
       })
       .then(function (answer) {
-        // alert(answer);
+        // swal(answer);
       }, function () {
         self.status = 'You cancelled the dialog.';
       });
@@ -120,19 +144,19 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
     }
 
     self.registerUser = function (user) {
-      if (user.username === '' || user.password === '') {
-        self.answer("Choose a username and password!");
+      if (user === undefined || user.username === '' || user.password === '') {
+        self.error("Choose a username and password!");
       } else {
-        console.log('sending to server...', user);
+        // console.log('sending to server...', user);
         return $http.post('/api/user/register', user)
           .then(function (response) {
-              console.log('success');
-              self.answer(`Successfully registered, you may now login!`);
+              // console.log('success');
+              self.success(`Successfully registered, you may now login!`);
               // $location.path('/home');
             },
             function (response) {
               console.log('error');
-              self.answer("Something went wrong. Please try again.");
+              self.error("Something went wrong. Please try again.");
             });
       }
     }
@@ -142,10 +166,10 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
 
     self.login = function (user) {
       console.log('user ', user);
-      if (user.username === '' || user.password === '') {
-        self.answer("Enter your username and password!");
+      if (user === undefined || user.username === '' || user.password === '') {
+        self.error("Enter your username and password!");
       } else {
-        console.log('sending login to server...', user);
+        // console.log('sending login to server...', user);
         return $http.post('/api/user/login', user)
           .then(
             function (response) {
@@ -157,12 +181,12 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
                 self.getFavorites();
               } else {
                 console.log('failure error post: ', response);
-                self.answer("Incorrect credentials. Please try again.");
+                self.error("Incorrect credentials. Please try again.");
               }
             })
           .catch(function (response) {
             console.log('failure error: ', response);
-            self.answer("Incorrect credentials. Please try again.");
+            self.error("Incorrect credentials. Please try again.");
           });
       }
 
@@ -175,10 +199,66 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
       $mdDialog.cancel();
     };
 
-    self.answer = function (answer) {
+    self.success = function (answer) {
       console.log('answer', answer);
-      alert(answer);
+      swal(answer, '', {
+        className: "success-alert",
+      });
       // $mdDialog.hide(answer);
     };
+    self.error = function (answer) {
+      console.log('answer', answer);
+      swal(answer, '', 'error', {
+        className: "error-alert",
+      });
+      // $mdDialog.hide(answer);
+    };
+  }
+
+  self.profilePicture = {};
+  self.getProfilePicture = function () {
+    return $http.get(`/images/user`)
+      .then((response) => {
+        self.profilePicture.list = response.data;
+        // console.log('get profile image response ', response);
+        // console.log('self list', self.profilePicture);
+
+      })
+      .catch((err) => {
+        console.log('get profile images err ', err);
+      })
+  }
+
+  self.updateProfilePicture = function (image) {
+    return $http.put(`/images/user/${self.profilePicture.list._id}`, image)
+      .then((response) => {
+        // console.log('put request for profile image', response);
+      })
+      .catch((err) => {
+        console.log('put err for profile image', err);
+      });
+  };
+
+  self.saveProfilePicture = function (image) {
+    return $http.post(`/images/user`, image)
+      .then((response) => {
+        console.log('save profile image response ', response);
+        return response
+      })
+      .catch((err) => {
+        console.log('err saving profile image ', err);
+      });
+  }
+
+  self.updateUserInfo = function (user) {
+    console.log('user ', user);
+    return $http.put('/api/user', user)
+      .then((response) => {
+        self.userObject.userFullName = user.userFullName;
+        // console.log('put user response ', response);
+      })
+      .catch((err) => {
+        console.log('put user err ', err);
+      })
   }
 }]);

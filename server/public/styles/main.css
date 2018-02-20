@@ -1,7 +1,8 @@
 md-toast {
   position: fixed !important;
   width: 100%;
-  background-color: beige !important;
+  text-align: center;
+  /* background-color: beige !important; */
 }
 
 body {
@@ -71,6 +72,14 @@ h2 {
 
 .favorite-container {
   padding: 15px;
+}
+
+.fave-button:hover {
+  color: black;
+}
+
+.fave-button {
+  color: gold;
 }
 
 .nav-text {
@@ -215,20 +224,70 @@ header {
   position: absolute;
 }
 
-.welcome-container{
+.welcome-container {
   z-index: 10;
   padding: 100px;
   background-color: #ffffff00;
   color: black;
   position: absolute;
-} 
+}
 
-.welcome-text{
+.welcome-text {
   color: black;
   font-weight: bold;
 }
 
-.login-button{
-  float:right; 
-  padding-right:10px;
+.login-button {
+  float: right;
+  padding-right: 10px;
+}
+.error-alert{
+  background-color: rgba(157, 0, 0, 0.853);
+  border: 3px solid white;
+}
+.success-alert{
+  background-color: rgba(18, 86, 10, 0.976);
+  border: 3px solid white;
+}
+.no-fave-style{
+  text-align: center;
+}
+.edit-profile-picture{
+  height: 185px !important;
+  min-width: 150px !important;
+}
+.profile-username{
+  min-height: 50px;
+}
+.profile-picture-comment{
+  max-height: 110px;
+  max-width: 110px;
+  border-radius: 100%;
+  margin-right: 10px;
+}
+img {
+  font-family: inherit;
+  font-weight: 300;
+  line-height: 2;  
+  text-align: center;
+  
+  width: 100%;
+  height: auto;
+  display: block;
+  position: relative;
+}
+
+img::before { 
+  font-family: 'Font Awesome 5 Free';
+  content: "\f1c5" " " attr(alt);
+  font-size: 16px;
+  color: rgb(100, 100, 100);
+  display: block;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
 }

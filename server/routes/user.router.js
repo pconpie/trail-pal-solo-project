@@ -5,6 +5,12 @@ const userStrategy = require('../strategies/user.strategy');
 
 const router = express.Router();
 
+let isAuthenticated = function (req, res, next) {
+  if (req.isAuthenticated()) {
+      return next();
+  }
+  res.send('Must be logged in to add items!');
+}
 // Handles Ajax request for user information if user is authenticated
 router.get('/', (req, res) => {
   // check if logged in
@@ -44,5 +50,22 @@ router.get('/logout', (req, res) => {
   req.logout();
   res.sendStatus(200);
 });
+
+router.put('/', isAuthenticated, (req, res)=>{
+  // console.log('req user ', req.body);
+  Person.findByIdAndUpdate({
+    '_id': req.user._id
+}, {
+    $set: {
+        userFullName: req.body.userFullName
+    }
+}, (err, data) => {
+    if (err) {
+        console.log('error updating explored  ', err);
+        res.sendStatus(500);
+    } else {
+        res.sendStatus(201);
+    }
+})})
 
 module.exports = router;
