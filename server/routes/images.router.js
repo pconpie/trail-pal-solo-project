@@ -105,26 +105,11 @@ router.put('/user/:id', (req, res) => {
             console.log('error updating profile picture  ', err);
             res.sendStatus(500);
         } else {
-            updateCommentReference(req.user._id, imageFile.filename, imageFile.url);
             res.sendStatus(201);
         }
     })
 
 });
 
-function updateCommentReference(id, userId, imageName, imageUrl) {
-    // console.log('id ', id, 'image info ', imageName, imageUrl );
-    let query = { "_id": id, "userPicture.userId": userId };
-    Comment.update(query, { $set : {imageUrl: imageUrl, imageName: imageName}},
-        (err, data) => {
-        if (err) {
-            console.log('error updating comments profile picture  ', err);
-            res.sendStatus(500);
-        } else {
-            // console.log('success update comment picture', data);
-            res.sendStatus(201);
-        }
-    })
-}
 
 module.exports = router;

@@ -94,13 +94,13 @@
             <md-subheader class="md-no-sticky">Comments for this trail!</md-subheader>
             <md-list-item class="md-3-line" ng-repeat="comment in vm.trailComments.list | orderBy : '-comment.dateAdded'">
                 <!-- <img  class="md-avatar" alt="{{todos[0].who}}" /> -->
-                {{comment.comment}}
-                <img ng-src="{{comment.comment.userPicture.imageUrl}}" class="profile-picture-comment"></img>
+                <!-- {{comment.comment}} -->
+                <img ng-src="{{comment.picture.imageUrl}}" class="profile-picture-comment"></img>
                 <div class="md-list-item-text">
-                    <h3 ng-if="comment.user.userFullName">{{comment.user.userFullName}}</h3>
-                    <h3 ng-if="!comment.user.userFullName">{{comment.user.cuserFullName}}</h3>
-                    <h4>{{comment.comment.comment}}</h4>
-                    <p>{{comment.comment.dateAdded | date}}</p>
+                    <h3 ng-if="comment.comment.user.userFullName">{{comment.comment.user.userFullName}}</h3>
+                    <h3 ng-if="!comment.comment.user.userFullName">{{comment.comment.user.user}}</h3>
+                    <h4>{{comment.comment.comment.comment}}</h4>
+                    <p>{{comment.comment.comment.dateAdded | date}}</p>
                 </div>
             </md-list-item>
         </md-list>
