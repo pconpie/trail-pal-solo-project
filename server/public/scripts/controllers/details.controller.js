@@ -57,6 +57,10 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
     self.getComments = MapService.getComments;
     self.getComments(id);
 
+    self.getCommentPictures = function () {
+        UserService.getProfilePicture();
+    }
+
     self.showImages = MapService.showImages;
     MapService.showImages(id);
 

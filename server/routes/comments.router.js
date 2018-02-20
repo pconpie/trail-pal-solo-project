@@ -5,6 +5,7 @@ const axios = require('axios');
 const Comment = require('../models/Comment');
 const Person = require('../models/Person');
 const UserImageGet = require('../modules/UserImageGet');
+const getProfilePicture = require('../modules/getProfilePicture');
 
 
 let isAuthenticated = function (req, res, next) {
@@ -45,28 +46,34 @@ router.get('/:trailId', (req, res) => {
                             }
                         });
                     });
-                    res.send(result);
+                    getProfilePicture(result).then((response) => {
+                        res.send(response)
+                    }).catch((err) => {
+                        console.log('error getting pics ', err)
+                    });
+
+                    // res.send(getProfilePicture(result));
                 }
             })
         }
     })
 }); //end GET
 
-
 /* POST REQUESTS */
 router.post('/', isAuthenticated, (req, res) => {
     UserImageGet(req)
         .then((response) => {
-            let userPicture = response;
+            // let userPicture = response;
             let newComment = {
                 trailName: req.body.trailInfo.name,
                 trailID: req.body.trailInfo.unique_id,
                 trailLat: req.body.trailInfo.lat,
                 trailLon: req.body.trailInfo.lon,
                 comment: req.body.comment,
-                userPicture,
+                userPicture: response._id,
                 user: req.user._id
             }
+            // console.log('comment info, ', userPicture, 'and ', newComment);
 
             let commentToSave = new Comment(newComment);
             commentToSave.save()

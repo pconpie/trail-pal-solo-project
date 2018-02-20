@@ -63,7 +63,7 @@ app.service('MapService', ['$http', '$mdToast', function ($http, $mdToast) {
 
             })
             .catch((err) => {
-                alert(err + '!');
+                // alert(err + '!');
                 console.log('err on get comments ', err);
             })
     }

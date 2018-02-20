@@ -10,7 +10,7 @@ const CommentsSchema = new Schema({
   trailLon: { type: String, required: true },
   comment: {type: String, required: true},
   dateAdded: {type:Date, default: Date.now},
-  userPicture: Schema.Types.Mixed,
+  userPicture: {type: mongoose.Schema.ObjectId, ref: 'ProfilePictures'},
   user: {type: mongoose.Schema.ObjectId, ref: 'Users'}
 });
 
