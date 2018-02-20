@@ -19,15 +19,22 @@ app.controller('ProfileController', ['$location', 'UserService', function ($loca
             if (self.pictureChosen === true) {
                 UserService.updateProfilePicture(response).then(UserService.getProfilePicture()).then(pictureCheck())
             } else if (self.pictureChosen === false) {
-                UserService.saveProfilePicture(response).then(UserService.getProfilePicture()).then(pictureCheck());
+                UserService.saveProfilePicture(response).then((response) => {
+                    if (response.status == 201) {
+                        self.getProfilePicture()
+                    } else {
+                        console.log('error saving picture');//make alert
+                    }
+                }).then(pictureCheck());
             } else {
                 console.log('Something is messed up with profile pictures!');
             }
         });
     }
-    pictureCheck();
 
-    self.setUserFullName = function(userObject){
+    // pictureCheck();
+
+    self.setUserFullName = function (userObject) {
         UserService.updateUserInfo(userObject);
     }
 
@@ -44,8 +51,8 @@ app.controller('ProfileController', ['$location', 'UserService', function ($loca
     self.getProfilePicture = function () {
         UserService.getProfilePicture()
             .then((response) => {
-                console.log('some response ', response);
-                console.log('picture ', self.profilePicture);
+                // console.log('some response ', response);
+                console.log('profile picture loaded', self.profilePicture);
                 pictureCheck();
 
             });

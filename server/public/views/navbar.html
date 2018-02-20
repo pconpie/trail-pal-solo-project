@@ -1,12 +1,12 @@
 <div ng-controller="LoginController as vm" id="map-show">
     <div class="login-button" layout layout-align="end">
         <!-- {{vm.loggedIn.is}} -->
-        <md-button flex="5" ng-click="vm.loginDialog()" ng-if="!vm.userObject.loggedIn" class="login-button">
+        <span flex="5"><md-button ng-click="vm.loginDialog()" ng-if="!vm.userObject.loggedIn" class="login-button">
             Login
-        </md-button>
-        <md-button flex="5" ng-click="vm.logout()" ng-if="vm.userObject.loggedIn" class="login-button">
+        </md-button></span>
+        <span flex="5"><md-button ng-click="vm.logout()" ng-if="vm.userObject.loggedIn" class="login-button">
             Logout
-        </md-button>
+        </md-button></span>
     </div>
     <div>
         <a ng-href="#!/" style="float:left; height:50px; width:20px; min-width: 1px !important;">

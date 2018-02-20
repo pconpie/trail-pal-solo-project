@@ -1,6 +1,14 @@
-app.service('MapService', ['$http', function ($http) {
+app.service('MapService', ['$http', '$mdToast', function ($http, $mdToast) {
     const self = this;
     self.trailInfo = {};
+
+    self.showSimpleToast = function() {
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent('Trail Favorited!')
+            .hideDelay(3000)
+        );
+      };
 
     self.favoriteTrail = function (fave) {
         console.log('IN map service favorite');
@@ -9,7 +17,8 @@ app.service('MapService', ['$http', function ($http) {
             .then((response) => {
                 console.log(response);
                 if (response.status == 201) {
-                    alert('This is a toast...Trail Favorited!');
+                    self.showSimpleToast();
+                    // alert('This is a toast...Trail Favorited!');
                 }
                 return response.data;
             })
@@ -60,10 +69,15 @@ app.service('MapService', ['$http', function ($http) {
     }
 
     self.images = {};
+    self.totalImages = {
+        count: 0
+    };
     self.showImages = function (id) {
         return $http.get(`/images/trailImage/${id}`)
             .then((response) => {
                 self.images.list = response.data;
+                self.totalImages.count = self.images.list.length;
+                console.log('total images ', self.totalImages.count);
                 console.log('get image response ', response);
             })
             .catch((err) => {

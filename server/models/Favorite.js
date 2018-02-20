@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 const FavoritesSchema = new Schema({
   faveTrailInfo: Schema.Types.Mixed,
   explored: { type: Boolean, default: false},
+  rating: {type: Number, default: 0 },
   user: { type: String, required: true}
 });
 

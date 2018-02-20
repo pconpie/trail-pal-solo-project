@@ -17,7 +17,7 @@ let isAuthenticated = function (req, res, next) {
 /* GET REQUESTS */
 
 router.get('/:trailId', (req, res) => {
-    console.log('get comments trail id ', req.params.trailId);
+    // console.log('get comments trail id ', req.params.trailId);
     // let trailID = req.body;
     // let userId = req.user._id;
     Comment.find({
@@ -27,7 +27,7 @@ router.get('/:trailId', (req, res) => {
             console.log('MongoDB error on get comments', err);
             res.sendStatus(500);
         } else {
-            console.log('Found comments, ', data);
+            // console.log('Found comments, ', data);
             Person.find({}, (err, users) => {
                 if (err) {
                     console.log('MongoDB error on get users of comment', err);

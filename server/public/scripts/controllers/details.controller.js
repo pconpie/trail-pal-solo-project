@@ -1,4 +1,4 @@
-app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$routeParams', '$sce', function ($mdDialog, $http, MapService, $routeParams, $sce) {
+app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapService', 'UserService', '$routeParams', '$sce', function ($mdDialog, $mdToast, $http, MapService, UserService, $routeParams, $sce) {
     const self = this;
     console.log('in details controller');
     self.trailComments = MapService.trailComments;
@@ -32,7 +32,9 @@ app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$route
                     swal('Must be logged in to favorite items! Please login or register to add favorites.', '', 'error', {
                         className: "error-alert",
                     });
-                }
+                } else {
+                    UserService.getFavorites()
+                };
             });
     }
 
@@ -66,10 +68,25 @@ app.controller('DetailsController', ['$mdDialog', '$http', 'MapService', '$route
         }).then((response) => {
             console.log('response stack ', response.filesUploaded[0].url);
             let imageUrl = response.filesUploaded[0].url;
-            //   handleFilestack(response);
-            console.log(imageUrl, response);
-            
             MapService.saveTrailImage(id, response).then(MapService.showImages(id));
         });
     }
+
+    self.imagePosition = 0;
+    self.imageBackward = function () {
+        if (self.imagePosition === 0) {
+            alert('No more images this direction');
+        } else {
+            self.imagePosition--;
+        }
+    }
+    self.imageForward = function () {
+        if (self.imagePosition === MapService.totalImages.count-1) {
+            alert('No more images this direction');
+        } else {
+            self.imagePosition++;
+        }
+    }
+
+    
 }]);

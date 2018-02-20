@@ -1,4 +1,4 @@
-let app = angular.module('app', ['ngRoute', 'ngMaterial']);
+let app = angular.module('app', ['ngRoute', 'ngRateIt', 'ngMaterial']);
 
 
 app.config(function ($routeProvider, $mdThemingProvider) {

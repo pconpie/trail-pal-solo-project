@@ -52,7 +52,7 @@ router.get('/logout', (req, res) => {
 });
 
 router.put('/', isAuthenticated, (req, res)=>{
-  console.log('req user ', req.body);
+  // console.log('req user ', req.body);
   Person.findByIdAndUpdate({
     '_id': req.user._id
 }, {

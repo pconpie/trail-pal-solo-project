@@ -2,8 +2,7 @@ app.controller('UserController', ['UserService', 'MapService', function (UserSer
   console.log('UserController created');
   var self = this;
   self.favorites = UserService.favorites;
-  console.log('self', self.favorites);
-  UserService.getFavorites();
+  // UserService.getFavorites();
   self.userService = UserService;
   self.removeFavorite = function (fave) {
     // console.log('fave, ', fave);
@@ -19,4 +18,15 @@ app.controller('UserController', ['UserService', 'MapService', function (UserSer
     UserService.markExplored(fave);
   };
 
+  self.rateTrail = function (trail, rating){
+    console.log('trail ', trail, 'rating ', rating);
+    UserService.rateTrail(trail, rating);
+  }
+  // self.imagePosition = 0;
+  // self.imageBackward = function(){
+  //   self.imagePosition--;
+  // }
+  // self.imageForward = function(){
+  //   self.imagePosition++;
+  // }
 }]);

@@ -16,20 +16,25 @@
                     </md-card-title-text>
                     <md-card-title-media>
                         <div class="md-media-sm card-media trail-image-container">
-                            <span ng-repeat="activity in favorite.faveTrailInfo.activities">
-                                <img ng-src="{{activity.thumbnail}}" style="min-height:100px; min-width:200px;"></img>
-                            </span>
                             <span>
-                                
+                                <span><button ng-click="vm.imageBackward()"><</button></span>                                <span><button ng-click="vm.imageForward()">></button></span>
+                                <img ng-src="{{favorite.faveTrailInfo.activity[vm.imagePosition].thumbnail}}" style="min-height:100px; min-width:200px;"></img>
                             </span>
                         </div>
                     </md-card-title-media>
                 </md-card-title>
                 <md-card-actions layout="row" layout-align="space-between end">
-                    <md-button flex="50" ng-click="vm.removeFavorite(favorite)">Remove Favorite</md-button>
+                    <span flex="50">
+                        <md-button ng-click="vm.removeFavorite(favorite)">Remove Favorite</md-button>
+                    </span>
+                    <span flex="20" ng-if="favorite.explored" layout="column" layout-align="space-around center">
+                        <!-- <md-button ng-click="vm.rateTrail(favorite)">Rate This Trail!</md-button> -->
+                        <ng-rate-it resetable="false" rated="vm.rateTrail(favorite, favorite.rating)" ng-model="favorite.rating"></ng-rate-it>
+                        Rating: {{favorite.rating}}
+                    </span>
                     <span class="explored-span">
-                        <span ng-if="!vm.trailExplored">Mark Explored</span>
-                        <span ng-if="vm.trailExplored">Mark Not Explored</span>
+                        <span ng-if="!favorite.explored">Check Explored</span>
+                        <span ng-if="favorite.explored">Uncheck Explored</span>
                         <br/>
                         <md-checkbox ng-click="vm.toggleExplored(favorite)" ng-checked="favorite.explored" aria-label="explored-check">
                         </md-checkbox>
