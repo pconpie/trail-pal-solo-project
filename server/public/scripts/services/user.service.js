@@ -7,6 +7,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
       trail,
       rating
     }
+
     return $http.put(`/favorites/rating`, newTrailRating)
       .then((response) => {
         // self.newTrailRating.rating = 
@@ -160,6 +161,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
             });
       }
     }
+
     self.favorites = UserService.favorites;
 
     self.getFavorites = UserService.getFavorites;
@@ -220,7 +222,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
     return $http.get(`/images/user`)
       .then((response) => {
         self.profilePicture.list = response.data;
-        // console.log('get profile image response ', response);
+        console.log('get profile image response ', response);
         // console.log('self list', self.profilePicture);
 
       })
@@ -243,7 +245,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
     return $http.post(`/images/user`, image)
       .then((response) => {
         console.log('save profile image response ', response);
-        return response
+        return response;
       })
       .catch((err) => {
         console.log('err saving profile image ', err);

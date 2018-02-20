@@ -1,6 +1,6 @@
 md-toast {
   position: fixed !important;
-  width: 100%;
+  width: 50%;
   text-align: center;
   /* background-color: beige !important; */
 }

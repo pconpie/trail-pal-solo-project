@@ -30,8 +30,12 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
             .then((response) => {
                 if (response == 'Must be logged in to add items!') {
                     swal('Must be logged in to favorite items! Please login or register to add favorites.', '', 'error', {
-                        className: "error-alert",
+                        className: "error-alert"
                     });
+                } else if (response === 'Repeat Fave') {
+                    swal('Already favorited!', '', 'error', {
+                        className: 'error-alert'
+                    })
                 } else {
                     UserService.getFavorites()
                 };
@@ -76,21 +80,30 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
         });
     }
 
+    self.showSimpleToast = function (text) {
+        $mdToast.show(
+            $mdToast.simple()
+            .textContent(`${text}`)
+            .position('bottom right')
+            .hideDelay(3000)
+        );
+    };
+
     self.imagePosition = 0;
     self.imageBackward = function () {
         if (self.imagePosition === 0) {
-            alert('No more images this direction');
+            self.showSimpleToast('No more images in this direction!');
         } else {
             self.imagePosition--;
         }
     }
     self.imageForward = function () {
-        if (self.imagePosition === MapService.totalImages.count-1) {
-            alert('No more images this direction');
+        if (self.imagePosition === MapService.totalImages.count - 1) {
+            self.showSimpleToast('No more images in this direction!');
         } else {
             self.imagePosition++;
         }
     }
 
-    
+
 }]);

@@ -92,7 +92,7 @@
     <md-content style="font-size:22px !important;">
         <md-list flex>
             <md-subheader class="md-no-sticky">Comments for this trail!</md-subheader>
-            <md-list-item class="md-3-line" ng-repeat="comment in vm.trailComments.list | orderBy : '-comment.dateAdded'">
+            <md-list-item class="md-3-line" ng-repeat="comment in vm.trailComments.list | orderBy : '-comment.comment.dateAdded'">
                 <!-- <img  class="md-avatar" alt="{{todos[0].who}}" /> -->
                 <!-- {{comment.comment}} -->
                 <img ng-src="{{comment.picture.imageUrl}}" class="profile-picture-comment"></img>
