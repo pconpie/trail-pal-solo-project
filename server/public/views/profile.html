@@ -1,0 +1,37 @@
+<div>
+    <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch>
+        <md-card-title>
+            <md-card-title-text flex="80">
+                <div class="profile-full-name">
+                    <h1>Name: </h1>
+                    <form>
+                        <md-input-container>
+                            <input aria-label="User Full Name" ng-model="vm.userObject.userFullName" />
+                        </md-input-container>
+                        <input type="submit" value="Save" ng-click="vm.setUserFullName(vm.userObject)" />
+                    </form>
+                </div>
+                <div class="profile-username">
+                    <h2 style="float:left;">
+                        Username: {{vm.userObject.userName}}
+                    </h2>
+                </div>
+            </md-card-title-text>
+            <md-card-title-media>
+                <div class="md-media-lg card-media">
+                    <button ng-cloak ng-if="!vm.pictureChosen" ng-click="vm.openPicker()">
+                        +
+                    </button>
+                    <md-button ng-if="vm.pictureChosen" aria-label="Edit Profile Picture" ng-cloak class="edit-profile-picture" ng-click="vm.openPicker()">
+                        <span>Edit Picture</span>
+                        <img ng-cloak ng-src="{{vm.profilePicture.list.imageUrl}}" alt="Profile Picture">
+                    </md-button>
+                    <!-- <img style="max-height:300px; max-width:300px;" ng-src="{{vm.profilePicture.list[vm.profilePicture.list.length-1].imageUrl}}" alt="profile picture"> -->
+                </div>
+            </md-card-title-media>
+        </md-card-title>
+        <md-card-content layout="row" layout-align="space-between end">
+            <p>Profile gobbledy gook</p>
+        </md-card-content>
+    </md-card>
+</div>

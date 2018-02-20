@@ -1,30 +1,30 @@
-<div ng-controller="LoginController as vm" class="map-show">
-    <div>
-        <button ng-click="vm.loginDialog()" ng-if="!vm.userObject.loggedIn" style="float:right; padding-right:10px;">
+<div ng-controller="LoginController as vm" id="map-show">
+    <div class="login-button" layout layout-align="end">
+        <!-- {{vm.loggedIn.is}} -->
+        <span flex="5"><md-button ng-click="vm.loginDialog()" ng-if="!vm.userObject.loggedIn" class="login-button">
             Login
-        </button>
-        <button ng-click="vm.logout()" ng-if="vm.userObject.loggedIn" style="float:right; padding-right:10px;">
+        </md-button></span>
+        <span flex="5"><md-button ng-click="vm.logout()" ng-if="vm.userObject.loggedIn" class="login-button">
             Logout
-        </button>
+        </md-button></span>
     </div>
+    <div>
+        <a ng-href="#!/" style="float:left; height:50px; width:20px; min-width: 1px !important;">
+            <md-icon md-svg-icon="images/home_icon.svg"></md-icon>
+        </a>
 
-    <md-content class="md-padding" style="margin:0;">
-        <md-nav-bar md-no-ink-bar="disableInkBar" md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
-            <md-nav-item md-nav-href="#!map" name="map" class="nav-text">
-                Map
-            </md-nav-item>
-            <md-nav-item md-nav-href="#!favorites" ng-if="vm.userObject.loggedIn" name="favorites" class="nav-text">
-                Favorites
-            </md-nav-item>
-            <!-- these require actual routing with ui-router or ng-route, so they
-      won't work in the demo
-      <md-nav-item md-nav-href="#page4" name="page5">Page Four</md-nav-item>
-      <md-nav-item md-nav-sref="app.page5" name="page4">Page Five</md-nav-item>
-      You can also add options for the <code>ui-sref-opts</code> attribute.
-      <md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">
-        Page Six
-      </md-nav-item>
-      -->
-        </md-nav-bar>
-    </md-content>
+        <md-content class="md-padding" style="margin:0;">
+            <md-nav-bar md-no-ink-bar="disableInkBar" md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+                <md-nav-item md-nav-href="#!map" name="map" class="nav-text">
+                    Map
+                </md-nav-item>
+                <md-nav-item md-nav-href="#!favorites" ng-if="vm.userObject.loggedIn" name="favorites" class="nav-text">
+                    Favorites
+                </md-nav-item>
+                <md-nav-item md-nav-href="#!profile" ng-if="vm.userObject.loggedIn" name="profile" class="nav-text">
+                    Profile
+                </md-nav-item>
+            </md-nav-bar>
+        </md-content>
+    </div>
 </div>

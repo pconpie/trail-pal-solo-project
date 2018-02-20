@@ -1,45 +1,75 @@
 app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, $location, $mdDialog) {
   console.log('UserService Loaded');
-  var self = this;
-  self.markExplored = function(fave){
-    fave.explored = !fave.explored;
-    console.log('fave.explored ', fave.explored);
-    $http.put(`/favorites`, fave)
-      .then((response)=>{
+  const self = this;
+
+  self.rateTrail = function(trail, rating){
+    let newTrailRating = {
+      trail,
+      rating
+    }
+    return $http.put(`/favorites/rating`, newTrailRating)
+      .then((response) => {
+        // self.newTrailRating.rating = 
         self.getFavorites();
       })
-      .catch((err)=>{
+      .catch((err) => {
+        swal(`Error marking trail as explored! Please try again later.`, '', 'error', {
+          className: "error-alert",
+        });
+        console.log('err from explore put ', err);
+      });
+  }
+  self.markExplored = function (fave) {
+    fave.explored = !fave.explored;
+    return $http.put(`/favorites`, fave)
+      .then((response) => {
+        self.getFavorites();
+      })
+      .catch((err) => {
+        swal(`Error marking trail as explored! Please try again later.`, '', 'error', {
+          className: "error-alert",
+        });
         console.log('err from explore put ', err);
       });
   };
 
+  self.loggedIn = {
+    is: localStorage.getItem('loggedIn')
+  };
+
   localStorage.getItem('loggedIn');
-  // console.log(localStorage.getItem('loggedIn'));
-  
-  self.favorites = { list: [] };
+
+  self.favorites = {
+    list: []
+  };
   self.removeFavorite = function (fave) {
     let faveId = fave._id;
-    $http.delete(`/favorites/${faveId}`)
-      .then((response)=>{
-        self.getFavorites();
-        console.log('delete favorite response ', response);
+    return $http.delete(`/favorites/${faveId}`)
+      .then((response) => {
+        return response;
+        //Are your sure you want to delete here?
       })
-      .catch((err)=>{
-        alert('Error deleting favorite! Please try again later.')
+      .catch((err) => {
+        swal('Error deleting favorite! Please try again later.', '', 'error', {
+          className: "error-alert",
+        });
         console.log('delete favorite error ', err);
-      })
+      });
   }
 
   self.getFavorites = function () {
     $http.get('/favorites')
       .then((response) => {
+        console.log('got all favorites!', response.data);
         self.favorites.list = response.data;
-        console.log('get favorites ', response);
+        return response.data;
       })
       .catch((err) => {
-        alert(err + '!');
+        swal(err + '!', '', 'error', {
+          className: "error-alert",
+        });
         console.log('err on get favorites ', err);
-      })
+      });
   }
 
   if (localStorage.getItem('loggedIn') == 'true') {
@@ -55,13 +85,15 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
   }
 
   self.getuser = function () {
-    console.log('UserService -- getuser');
-    $http.get('/api/user')
+    // console.log('UserService -- getuser');
+    return $http.get('/api/user')
       .then(function (response) {
           if (response.data.username) {
             // user has a curret session on the server
             self.userObject.userName = response.data.username;
-            console.log('UserService -- getuser -- User Data: ', self.userObject.userName);
+            self.userObject.userFullName = response.data.userFullName;
+            // console.log('UserService -- getuser -- User Data: ', self.userObject.userName);
+            return response.data;
           } else {
             console.log('UserService -- getuser -- failure');
             // user has no session, bounce them back to the login page
@@ -76,11 +108,13 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
 
   self.logout = function () {
     console.log('UserService -- logout');
-    $http.get('/api/user/logout').then(function (response) {
-      console.log('UserService -- logout -- logged out');
-      self.userObject.loggedIn = false;
-      $location.path("/");
-    });
+    return $http.get('/api/user/logout')
+      .then(function (response) {
+        console.log('UserService -- logout -- logged out');
+        self.userObject.loggedIn = false;
+        localStorage.setItem('loggedIn', false);
+        $location.path("/map");
+      });
   }
 
   self.loginDialog = function (ev) {
@@ -93,7 +127,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         clickOutsideToClose: true
       })
       .then(function (answer) {
-        alert('clicked');
+        // swal(answer);
       }, function () {
         self.status = 'You cancelled the dialog.';
       });
@@ -106,25 +140,23 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
     self.displayLogin = true;
     self.userObject = UserService.userObject;
     self.switchView = function () {
-      console.log('switch');
       self.displayLogin = !self.displayLogin;
-      console.log(self.displayLogin);
-
     }
 
     self.registerUser = function (user) {
-      if (user.username === '' || user.password === '') {
-        self.message = "Choose a username and password!";
+      if (user === undefined || user.username === '' || user.password === '') {
+        self.error("Choose a username and password!");
       } else {
-        console.log('sending to server...', user);
-        $http.post('/api/user/register', user)
+        // console.log('sending to server...', user);
+        return $http.post('/api/user/register', user)
           .then(function (response) {
-              console.log('success');
+              // console.log('success');
+              self.success(`Successfully registered, you may now login!`);
               // $location.path('/home');
             },
             function (response) {
               console.log('error');
-              self.message = "Something went wrong. Please try again."
+              self.error("Something went wrong. Please try again.");
             });
       }
     }
@@ -134,30 +166,27 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
 
     self.login = function (user) {
       console.log('user ', user);
-      if (user.username === '' || user.password === '') {
-        self.message = "Enter your username and password!";
+      if (user === undefined || user.username === '' || user.password === '') {
+        self.error("Enter your username and password!");
       } else {
-        console.log('sending login to server...', user);
-        $http.post('/api/user/login', user).then(
+        // console.log('sending login to server...', user);
+        return $http.post('/api/user/login', user)
+          .then(
             function (response) {
               if (response.status == 200) {
-                console.log('success: ', response.data);
-                // location works with SPA (ng-route)
-                console.log('user', self.userObject.loggedIn);
                 self.userObject.loggedIn = true;
                 localStorage.setItem('loggedIn', true);
-                console.log('user', self.userObject.loggedIn);
                 self.hide();
                 $location.path('/favorites');
                 self.getFavorites();
               } else {
                 console.log('failure error post: ', response);
-                self.message = "Incorrect credentials. Please try again.";
+                self.error("Incorrect credentials. Please try again.");
               }
             })
           .catch(function (response) {
             console.log('failure error: ', response);
-            self.message = "Incorrect credentials. Please try again.";
+            self.error("Incorrect credentials. Please try again.");
           });
       }
 
@@ -170,9 +199,66 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
       $mdDialog.cancel();
     };
 
-    self.answer = function (answer) {
+    self.success = function (answer) {
       console.log('answer', answer);
-      $mdDialog.hide(answer);
+      swal(answer, '', {
+        className: "success-alert",
+      });
+      // $mdDialog.hide(answer);
     };
+    self.error = function (answer) {
+      console.log('answer', answer);
+      swal(answer, '', 'error', {
+        className: "error-alert",
+      });
+      // $mdDialog.hide(answer);
+    };
+  }
+
+  self.profilePicture = {};
+  self.getProfilePicture = function () {
+    return $http.get(`/images/user`)
+      .then((response) => {
+        self.profilePicture.list = response.data;
+        // console.log('get profile image response ', response);
+        // console.log('self list', self.profilePicture);
+
+      })
+      .catch((err) => {
+        console.log('get profile images err ', err);
+      })
+  }
+
+  self.updateProfilePicture = function (image) {
+    return $http.put(`/images/user/${self.profilePicture.list._id}`, image)
+      .then((response) => {
+        // console.log('put request for profile image', response);
+      })
+      .catch((err) => {
+        console.log('put err for profile image', err);
+      });
+  };
+
+  self.saveProfilePicture = function (image) {
+    return $http.post(`/images/user`, image)
+      .then((response) => {
+        console.log('save profile image response ', response);
+        return response
+      })
+      .catch((err) => {
+        console.log('err saving profile image ', err);
+      });
+  }
+
+  self.updateUserInfo = function (user) {
+    console.log('user ', user);
+    return $http.put('/api/user', user)
+      .then((response) => {
+        self.userObject.userFullName = user.userFullName;
+        // console.log('put user response ', response);
+      })
+      .catch((err) => {
+        console.log('put user err ', err);
+      })
   }
 }]);

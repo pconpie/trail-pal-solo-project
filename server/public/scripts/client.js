@@ -1,4 +1,4 @@
-let app = angular.module('app', ['ngRoute', 'ngMaterial']);
+let app = angular.module('app', ['ngRoute', 'ngRateIt', 'ngMaterial']);
 
 
 app.config(function ($routeProvider, $mdThemingProvider) {
@@ -9,7 +9,8 @@ app.config(function ($routeProvider, $mdThemingProvider) {
 
     $routeProvider
         .when('/', {
-            redirectTo: 'map'
+            templateUrl: '/views/landing-page.html',
+            controller: 'LandingController as vm'
         })
         .when('/map', {
             templateUrl: '/views/map.html',
@@ -22,6 +23,15 @@ app.config(function ($routeProvider, $mdThemingProvider) {
         .when('/favorites', {
             templateUrl: '/views/favorites.html',
             controller: 'UserController as vm',
+            resolve: {
+                getuser: function (UserService) {
+                    return UserService.getuser();
+                }
+            }
+        })
+        .when('/profile', {
+            templateUrl: '/views/profile.html',
+            controller: 'ProfileController as vm',
             resolve: {
                 getuser: function (UserService) {
                     return UserService.getuser();

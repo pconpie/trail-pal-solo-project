@@ -2,6 +2,8 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     const self = this;
     console.log('in map service');
     self.userService = UserService;
+    document.getElementById('header').style.display = "block";
+    self.loading = false;
 
     let defaultCoords = [37.8, -96];
     let map = L.map('mapid').setView(defaultCoords, 5);
@@ -4621,6 +4623,7 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     var myLayer = L.geoJSON().addTo(map);
 
     function findStateTrails(state) {
+        self.loading = true;
         $http.get(`/geoInfo/${state}`)
             .then((response) => {
                 console.log('get geoInfo response ', response);
@@ -4635,6 +4638,10 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
             .catch((err) => {
                 console.log('get geoInfo err ', err);
             })
+            .finally(function () {
+                // called no matter success or failure
+                self.loading = false;
+            });
     }
 
     let favoriteButton = `<button ng-click="vm.favoriteTrail()">Favorite Me!</button>`;
@@ -4681,18 +4688,10 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
                         <br/>
                         <p>Description: ${markerDescription(element.properties.description)}</p>
                         <p>Click on name to get more details!</p>
-                        <button ng-click="vm.favoriteTrail()">Favorite Me!</button>
                         </div>
                         `,
                 controllerAs: 'vm',
-                controller: ['MapService', function (MapService) {
-                    const self = this;
-                    self.favoriteTrail = function () {
-                        console.log('FAVORITE!');
-                        console.log('this trail', element);
-                        MapService.favoriteTrail(element);
-                    }
-                }]
+                controller: PopupInfoController
             });
 
             let marker = L.marker(element.geometry.coordinates).bindPopup(popup).openPopup();
@@ -4700,7 +4699,14 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
         }
         map.addLayer(markers);
     }
+    // <button ng-click="vm.favoriteTrail()">Favorite Me!</button>
 
+    function PopupInfoController(MapService) {
+        const self = this;
+        self.favoriteTrail = function (element) {
+            MapService.favoriteTrail(element);
+        }
+    }
     // map.on('click', function(ev) {
     //     alert(ev.containerPoint); // ev is an event object (MouseEvent in this case)
     // });

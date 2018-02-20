@@ -1,25 +1,30 @@
 <div layout>
     <md-card md-theme-watch layout="row" flex="60">
         <md-card-title flex="80">
-            <md-card-title-text>
-                <span class="md-headline" style="font-weight: bold; text-align:center;">{{vm.trailName}}</span>
-                <span class="md-subhead" ng-hide="vm.trailDescription == null">Description:
-                    <br/>{{vm.trailDescription}}
+            <md-card-title-text ng-cloak>
+                <span class="md-headline" style="font-weight: bold; text-align:center;">{{vm.trailInfo.name}}</span>
+                <span class="md-subhead" ng-show="vm.trailInfo.description">Description:
+                    <!-- <br/>{{vm.trailInfo.description}} -->
+                    <p ng-bind-html="vm.renderHTML(vm.trailInfo.description)"></p>
                 </span>
-                <span class="md-subhead" ng-repeat="trail in vm.trailInfo.activities" ng-show="trail.description" style="text-transform:capitalize;">{{trail.activity_type_name}} Description:
-                    <br/>{{trail.description}}
-                </span>
-                <span ng-repeat="trail in vm.trailInfo.activities" ng-if="(trail.description == null && vm.trailDescription == null)" style="text-align:center;">
-                    We are sorry, but there are no descriptions available at this time. Please try our 'Research Trail' button on the side to
-                    find more information!
-                </span>
+                <div ng-repeat="trail in vm.trailInfo.activities">
+                    <span class="md-subhead" ng-show="trail.description" style="text-transform:capitalize;">{{trail.activity_type_name}} Description:
+                        <!-- <br/>{{trail.description}} -->
+                        <p ng-bind-html="vm.renderHTML(trail.description)"></p>
+                    </span>
+                    <span ng-if="(trail.description == null && vm.trailDescription == null)" style="text-align:center;">
+                        We are sorry, but there are no descriptions available at this time. Please try our 'Research Trail' button on the side to
+                        find more information!
+                    </span>
+                </div>
             </md-card-title-text>
         </md-card-title>
         <md-card-content flex="20" layout="column" layout-align="space-around">
-            <div class="md-media-xl card-media"></div>
+            <!-- <div class="md-media-xl card-media"></div> -->
             <md-card-actions layout="column">
-                <md-button class="md-icon-button" aria-label="Favorite">
-                    <md-icon md-svg-icon="images/ic_favorite_black_24px.svg"></md-icon>
+                <md-button class="md-icon-button" aria-label="Favorite" md-no-ink ng-click="vm.favoriteTrail(trail)">
+                    <md-icon class="fave-button" md-svg-icon="images/star_empty_icon.svg"></md-icon>
+                </md-button>
             </md-card-actions>
         </md-card-content>
     </md-card>
@@ -39,12 +44,27 @@
             Link to helpful page:
             <br/>
             <span>
-                <a ng-href="http://www.google.com/search#q={{vm.trailName}}&btnI" target="_blank">Research Trail!</a>
+                <a ng-href="http://www.google.com/search#q={{vm.trailInfo.name}}&btnI" target="_blank">Research Trail!</a>
             </span>
         </h4>
         <span ng-repeat="trail in vm.trailInfo.activities">
             <img ng-src="{{trail.thumbnail}}" style="max-height:300px; max-width:300px;"></img>
         </span>
+        <span>
+            <span>
+                <button ng-click="vm.imageBackward()">
+                    <
+                </button>
+            </span>
+            <span>
+                <button ng-click="vm.imageForward()">
+                    >
+                </button>
+            </span>
+            <img ng-cloak style="max-height:300px; max-width:300px;" ng-src="{{vm.images.list[vm.imagePosition].imageUrl}}" alt="Photo not available">
+        </span>
+        <button style="height:30px; width:30px;" ng-click="vm.openPicker()">+</button>
+
     </div>
 </div>
 
@@ -74,8 +94,10 @@
             <md-subheader class="md-no-sticky">Comments for this trail!</md-subheader>
             <md-list-item class="md-3-line" ng-repeat="comment in vm.trailComments.list | orderBy : '-comment.dateAdded'">
                 <!-- <img  class="md-avatar" alt="{{todos[0].who}}" /> -->
+                <img ng-src="{{comment.comment.userPicture.imageUrl}}" class="profile-picture-comment"></img>
                 <div class="md-list-item-text">
-                    <h3>{{comment.user.username}}</h3>
+                    <h3 ng-if="comment.user.userFullName">{{comment.user.userFullName}}</h3>
+                    <h3 ng-if="!comment.user.userFullName">{{comment.user.cuserFullName}}</h3>
                     <h4>{{comment.comment.comment}}</h4>
                     <p>{{comment.comment.dateAdded | date}}</p>
                 </div>

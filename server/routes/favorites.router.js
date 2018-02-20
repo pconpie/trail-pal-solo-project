@@ -33,18 +33,32 @@ router.get('/', isAuthenticated, (req, res) => {
 
 /* POST REQUESTS */
 router.post('/', isAuthenticated, (req, res) => {
-    // console.log(req.body, 'req');
-    // console.log('user ', req.user._id);
+
+    // let newFavorite = {};
+    // if (req.body.properties) {
+    //     newFavorite = {
+    //         favoriteName: req.body.properties.name,
+    //         favoriteID: req.body.properties.id,
+    //         favoriteLat: req.body.geometry.coordinates[0],
+    //         favoriteLon: req.body.geometry.coordinates[1],
+    //         user: req.user._id
+    //     }
+    // } else {
+    //     newFavorite = {
+    //         favoriteName: req.body.name,
+    //         favoriteID: req.body.unique_id,
+    //         favoriteLat: req.body.lat,
+    //         favoriteLon: req.body.lon,
+    //         user: req.user._id
+    //     }
+    // }
     let newFavorite = {
-        favoriteName: req.body.properties.name,
-        favoriteID: req.body.properties.id,
-        favoriteLat: req.body.geometry.coordinates[0],
-        favoriteLon: req.body.geometry.coordinates[1],
+        faveTrailInfo: req.body,
         user: req.user._id
     }
     let faveToSave = new Favorite(newFavorite);
     faveToSave.save()
-        .then(() => {
+        .then((result) => {
             res.sendStatus(201);
         })
         .catch((err) => {
@@ -57,21 +71,43 @@ router.post('/', isAuthenticated, (req, res) => {
 }); // end post route
 
 /* PUT REQUESTS */
-router.put('/', (req, res) => {
-    console.log('req.body ', req.body);
+router.put('/', isAuthenticated, (req, res) => {
+    // console.log('req.body ', req.body);
     let newFavorite = new Favorite(req.body);
     let explored = newFavorite.explored;
     Favorite.findByIdAndUpdate({
         '_id': req.body._id
     }, {
         $set: {
-            explored : explored
+            explored: explored
         }
     }, (err, data) => {
         if (err) {
             console.log('error updating explored  ', err);
             res.sendStatus(500);
         } else {
+            res.sendStatus(201);
+        }
+    })
+});
+router.put('/rating', isAuthenticated, (req, res) => {
+    // console.log('req.body rating ', req.body);
+    let ratedFavorite = req.body.trail;
+    ratedFavorite.rating = req.body.rating;
+    let newFavorite = new Favorite(ratedFavorite);
+    let rating = ratedFavorite.rating;
+    Favorite.findByIdAndUpdate({
+        '_id': ratedFavorite._id
+    }, {
+        $set: {
+            rating: rating
+        }
+    }, (err, data) => {
+        if (err) {
+            console.log('error updating explored  ', err);
+            res.sendStatus(500);
+        } else {
+            // console.log('updated rating ', data);
             res.sendStatus(201);
         }
     })
@@ -86,16 +122,12 @@ router.delete('/:id', isAuthenticated, (req, res) => {
         },
         (err, data) => {
             if (err) {
-                console.log('error finding user for favorite delete ', err, 'err');
+                console.log('error finding user for favorite delete ', err)
                 res.sendStatus(500);
             } else {
-                console.log('user found matching favorites ', data, 'data');
                 res.send(data);
-            }
-        }
-
-
-    )
+            };
+        });
 });
 
 /* MISC FUNCTIONS (If any) */
