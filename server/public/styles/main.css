@@ -308,3 +308,7 @@ img::before {
   border: 2px solid black;
   text-shadow: 2px 2px black;
 }
+.favorite-image{
+  max-height: 100px;
+  max-width: 200px;
+}

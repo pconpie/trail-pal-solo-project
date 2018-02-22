@@ -28,9 +28,9 @@ app.controller('ProfileController', ['$location', 'UserService', function ($loca
                 }).then(pictureCheck());
             } else {
                 console.log('Something is messed up with profile pictures!');
-            }
-        });
-    }
+                }
+            });
+        }   
 
     // pictureCheck();
 

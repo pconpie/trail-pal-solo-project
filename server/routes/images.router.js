@@ -6,13 +6,8 @@ const Image = require('../models/Image');
 const ProfilePicture = require('../models/ProfilePicture');
 const UserImageGet = require('../modules/UserImageGet');
 const Comment = require('../models/Comment');
+const isAuthenticated = require('../models/Authenticated');
 
-let isAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.send('Must be logged in to add items!');
-}
 
 router.get('/trailImage/:id', (req, res) => {
     // console.log('user ', req.user._id);

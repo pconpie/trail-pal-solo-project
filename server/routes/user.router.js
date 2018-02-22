@@ -2,15 +2,11 @@ const express = require('express');
 const encryptLib = require('../modules/encryption');
 const Person = require('../models/Person');
 const userStrategy = require('../strategies/user.strategy');
+const isAuthenticated = require('../models/Authenticated');
 
 const router = express.Router();
 
-let isAuthenticated = function (req, res, next) {
-  if (req.isAuthenticated()) {
-      return next();
-  }
-  res.send('Must be logged in to add items!');
-}
+
 // Handles Ajax request for user information if user is authenticated
 router.get('/', (req, res) => {
   // check if logged in

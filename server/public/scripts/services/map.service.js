@@ -1,4 +1,5 @@
 app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, $mdToast, UserService) {
+    console.log('MapService')
     const self = this;
     self.trailInfo = {};
 
@@ -54,7 +55,7 @@ app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, 
     self.getTrailInfo = function (lat, lon, id) {
         return $http.get(`/geoInfo/single/${lat}/${lon}/${id}`)
             .then((response) => {
-                // console.log('get geoInfo response ', response);
+                console.log('get geoInfo response ', response);
                 return response.data;
             })
             .catch((err) => {

@@ -20,6 +20,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         console.log('err from explore put ', err);
       });
   }
+  
   self.markExplored = function (fave) {
     fave.explored = !fave.explored;
     return $http.put(`/favorites`, fave)
@@ -59,16 +60,14 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
   }
 
   self.getFavorites = function () {
-    $http.get('/favorites')
+    return $http.get('/favorites')
       .then((response) => {
         console.log('got all favorites!', response.data);
         self.favorites.list = response.data;
         return response.data;
       })
       .catch((err) => {
-        swal(err + '!', '', 'error', {
-          className: "error-alert",
-        });
+        swal(err + '!', '', 'error', {className: "error-alert"});
         console.log('err on get favorites ', err);
       });
   }

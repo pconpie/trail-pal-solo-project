@@ -16,11 +16,7 @@
                     </md-card-title-text>
                     <md-card-title-media class="favorite-card-title-media">
                         <div class="card-media trail-image-container">
-                            <div layout="row" layout-align="space-around end">
-                                <span flex><button ng-click="vm.imageBackward()"><</button></span> <span flex><button ng-click="vm.imageForward()">></button></span>
-                            </div>
-
-                                <img ng-src="{{favorite.faveTrailInfo.activity[vm.imagePosition].thumbnail}}" style="min-height:100px; min-width:200px;"></img>
+                            <img ng-src="{{vm.images.list[5].imageUrl}}" class="favorite-image"></img>
                         </div>
                         <span class="explored-span">
                             <span ng-if="!favorite.explored">Check Explored</span>

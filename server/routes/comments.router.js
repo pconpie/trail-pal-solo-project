@@ -6,14 +6,7 @@ const Comment = require('../models/Comment');
 const Person = require('../models/Person');
 const UserImageGet = require('../modules/UserImageGet');
 const getProfilePicture = require('../modules/getProfilePicture');
-
-
-let isAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.send('Must be logged in to add items!');
-}
+const isAuthenticated = require('../models/Authenticated');
 
 /* GET REQUESTS */
 

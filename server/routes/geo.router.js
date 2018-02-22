@@ -66,36 +66,35 @@ router.get('/single/:lat/:lon/:id', (req, res) => {
                 if (element.unique_id == req.params.id) {
                     console.log('MATCH', element.unique_id);
                     // trailId = element.unique_id;
-                    let pipeline = [{
-                        "$group": {
-                            "_id": trailId,
-                            "averageRating": {
-                                "$avg": "$rating"
-                            }
-                        }
-                    }];
-                    Favorite.aggregate().match({ "faveTrailInfo.unique_id" : trailId }).group({"_id": trailId, "averageRating": { "$avg": "$rating"}
-                    }, function (err, result) {
-                        if (err) {
-                            console.log('avg err ', err)
-                            // res.send(String(err));
-                        } else {
-                        console.log('avg result ', result);
-                        // res.send(result);
-                        }
-                    })
-                }
+                    res.send(element);
+            //         let pipeline = [{
+            //             "$group": {
+            //                 "_id": trailId,
+            //                 "averageRating": {
+            //                     "$avg": "$rating"
+            //                 }
+            //             }
+            //         }];
+            //         Favorite.aggregate().match({ "faveTrailInfo.unique_id" : trailId }).group({"_id": trailId, "averageRating": { "$avg": "$rating"}
+            //         }, function (err, result) {
+            //             if (err) {
+            //                 console.log('avg err ', err)
+            //                 // res.send(String(err));
+            //             } else {
+            //             console.log('avg result ', result);
+            //             // res.send(result);
+            //             }
+            //         })
+            //     }
             }
-           
-                       // res.send(element);
+        }
         })
             // console.log(response.data.places, 'response from single search');
         .catch((err) => {
             console.log('err on single ', err);
 
         })
-    })
-
+})
 
 router.get('/:state', (req, res) => {
 
