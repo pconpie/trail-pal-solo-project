@@ -12,6 +12,7 @@ const CommentsSchema = new Schema({
   dateAdded: {type:Date, default: Date.now},
   userPicture: {type: mongoose.Schema.ObjectId, ref: 'ProfilePictures'},
   user: {type: mongoose.Schema.ObjectId, ref: 'Users'}
-});
+},
+{minimize: false});
 
 module.exports = mongoose.model('Comment', CommentsSchema, 'Comments');

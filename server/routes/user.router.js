@@ -3,6 +3,8 @@ const encryptLib = require('../modules/encryption');
 const Person = require('../models/Person');
 const userStrategy = require('../strategies/user.strategy');
 const isAuthenticated = require('../models/Authenticated');
+const ProfilePicture = require('../models/ProfilePicture');
+
 
 const router = express.Router();
 
@@ -28,6 +30,20 @@ router.post('/register', (req, res, next) => {
 
   const newPerson = new Person({ username, password });
   newPerson.save()
+    .then((response)=>{
+        console.log(response, 'from user save')
+      let newProfilePicture = {
+        user: response._id
+    };
+    let profilePictureToSave = new ProfilePicture(newProfilePicture);
+    profilePictureToSave.save()
+        .then(() => {
+            console.log('success picture save default to new user')
+        })
+        .catch((err) => {
+            console.log('err picture save default to new user', err);
+        });
+    })
     .then(() => { res.sendStatus(201); })
     .catch((err) => { next(err); });
 });

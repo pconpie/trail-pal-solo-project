@@ -19,12 +19,12 @@ router.get('/trailImage/:id', (req, res) => {
             console.log('MongoDB error on get images', err);
             res.sendStatus(500);
         } else {
-            console.log('Found images, ', data);
+            // console.log('Found images, ', data);
             res.send(data);
         }
     })
 }); //end GET
-router.get('/user', (req, res) => {
+router.get('/user', isAuthenticated, (req, res) => {
     UserImageGet(req).then((response) => {
         // console.log('last picture response, ', response);
         res.send(response)
@@ -59,7 +59,6 @@ router.post('/user', isAuthenticated, (req, res) => {
     // console.log('image ', imageFile);
     // console.log('user ', req.user._id);
     let newProfilePicture = {
-        userId,
         imageUrl: imageFile.url,
         imageName: imageFile.filename,
         user: userId
@@ -76,7 +75,7 @@ router.post('/user', isAuthenticated, (req, res) => {
 });
 
 /* PUT REQUESTS */
-router.put('/user/:id', (req, res) => {
+router.put('/user/:id', isAuthenticated, (req, res) => {
     let imageFile = req.body.filesUploaded[0];
     // console.log('req.body ', req.body);
     // console.log('req id ', req.user.id);

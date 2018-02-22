@@ -16,9 +16,13 @@ app.controller('UserController', ['UserService', 'MapService', function (UserSer
   self.images = MapService.images;
 
   self.toggleExplored = function (fave) {
-    UserService.markExplored(fave);
+    UserService.markExplored(fave)
+      .then(()=>{
+        getFavesAndPictures();
+      });
   };
 
+function getFavesAndPictures (){
   UserService.getFavorites()
     .then((response)=>{
       console.log(response)
@@ -29,6 +33,8 @@ app.controller('UserController', ['UserService', 'MapService', function (UserSer
     .catch((err)=>{
       console.log('fucking err ', err)
     });
+  }
+  getFavesAndPictures();
 
   self.rateTrail = function (trail, rating){
     console.log('trail ', trail, 'rating ', rating);

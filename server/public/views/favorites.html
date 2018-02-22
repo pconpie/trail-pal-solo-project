@@ -16,7 +16,7 @@
                     </md-card-title-text>
                     <md-card-title-media class="favorite-card-title-media">
                         <div class="card-media trail-image-container">
-                            <img ng-src="{{vm.images.list[5].imageUrl}}" class="favorite-image"></img>
+                            <img ng-cloak ng-src="{{vm.images.list[5].imageUrl}}" class="favorite-image"></img>
                         </div>
                         <span class="explored-span">
                             <span ng-if="!favorite.explored">Check Explored</span>

@@ -24,7 +24,7 @@
                     </button>
                     <md-button ng-if="vm.pictureChosen" aria-label="Edit Profile Picture" ng-cloak class="edit-profile-picture" ng-click="vm.openPicker()">
                         <span>Edit Picture</span>
-                        <img ng-cloak ng-src="{{vm.profilePicture.list.imageUrl}}" alt="Profile Picture">
+                        <img ng-cloak ng-src="{{vm.profilePicture.list.imageUrl}}" alt="Profile Picture" style="object-fit: cover;">
                     </md-button>
                     <!-- <img style="max-height:300px; max-width:300px;" ng-src="{{vm.profilePicture.list[vm.profilePicture.list.length-1].imageUrl}}" alt="profile picture"> -->
                 </div>

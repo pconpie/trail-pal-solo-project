@@ -19,13 +19,15 @@
                 </div>
             </md-card-title-text>
         </md-card-title>
-        <md-card-content flex="20" layout="column" layout-align="center">
+        <md-card-content flex="20" layout="column" layout-align="space-between center">
             <!-- <div class="md-media-xl card-media"></div> -->
+            <div flex="33"></div>
             <md-card-actions layout="column">
                 <md-button class="md-icon-button" aria-label="Favorite" md-no-ink ng-click="vm.favoriteTrail(trail)">
                     <md-icon class="fave-button" md-svg-icon="images/star_empty_icon.svg"></md-icon>
                 </md-button>
             </md-card-actions>
+            <ng-rate-it resetable="false" read-only="true" ng-model="vm.trailAverageRating"></ng-rate-it>
         </md-card-content>
     </md-card>
     <div>
@@ -94,7 +96,7 @@
             <md-subheader class="md-no-sticky">Comments for this trail!</md-subheader>
             <md-list-item class="md-3-line" ng-repeat="comment in vm.trailComments.list | orderBy : '-comment.comment.dateAdded'">
                 <!-- <img  class="md-avatar" alt="{{todos[0].who}}" /> -->
-                <!-- {{comment.comment}} -->
+                <!-- {{comment}} -->
                 <img ng-src="{{comment.picture.imageUrl}}" class="profile-picture-comment"></img>
                 <div class="md-list-item-text">
                     <h3 ng-if="comment.comment.user.userFullName">{{comment.comment.user.userFullName}}</h3>

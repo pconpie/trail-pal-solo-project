@@ -45,6 +45,17 @@ function parseGeoInfo(array) {
     return geoJsons;
 }
 
+
+function averageTrailRatings(arrayOfTrails){
+    let averageRating = 0;
+    for (trail of arrayOfTrails){
+        console.log('trail rating', trail.rating)
+        averageRating += trail.rating;
+    }
+    averageRating = averageRating/(arrayOfTrails.length);
+    console.log(averageRating, 'rating')
+    return averageRating;
+}
 /* GET REQUESTS */
 
 router.get('/single/:lat/:lon/:id', (req, res) => {
@@ -66,7 +77,20 @@ router.get('/single/:lat/:lon/:id', (req, res) => {
                 if (element.unique_id == req.params.id) {
                     console.log('MATCH', element.unique_id);
                     // trailId = element.unique_id;
-                    res.send(element);
+                    Favorite.find({
+                        'faveTrailInfo.unique_id': element.unique_id
+                    }, (err, data) => {
+                        if (err) {
+                            console.log('MongoDB error on get faves', err);
+                            // res.sendStatus(500);
+                        } else {
+                            // console.log('Found trail ratings, ', data);
+                            element.averageRating = averageTrailRatings(data);
+                            console.log(element);
+                            res.send(element);
+                        }
+                    })
+                    // res.send(element);
             //         let pipeline = [{
             //             "$group": {
             //                 "_id": trailId,

@@ -40,6 +40,7 @@ router.get('/:trailId', (req, res) => {
                         });
                     });
                     getProfilePicture(result).then((response) => {
+                        console.log('get comments ', response)
                         res.send(response)
                     }).catch((err) => {
                         console.log('error getting pics ', err)
@@ -54,16 +55,23 @@ router.get('/:trailId', (req, res) => {
 
 /* POST REQUESTS */
 router.post('/', isAuthenticated, (req, res) => {
+    console.log('user id ', req.user._id)
     UserImageGet(req)
         .then((response) => {
-            // let userPicture = response;
+            console.log('picture id ', response)    
+            let userPicture = response;
+            if (userPicture == undefined){
+                userPicture = undefined;
+            } else {
+                userPicture = response._id;
+            };
             let newComment = {
                 trailName: req.body.trailInfo.name,
                 trailID: req.body.trailInfo.unique_id,
                 trailLat: req.body.trailInfo.lat,
                 trailLon: req.body.trailInfo.lon,
                 comment: req.body.comment,
-                userPicture: response._id,
+                userPicture,
                 user: req.user._id
             }
             // console.log('comment info, ', userPicture, 'and ', newComment);

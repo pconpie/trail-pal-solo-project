@@ -265,6 +265,7 @@ header {
   max-width: 110px;
   border-radius: 100%;
   margin-right: 10px;
+  object-fit: cover;
 }
 img {
   font-family: inherit;

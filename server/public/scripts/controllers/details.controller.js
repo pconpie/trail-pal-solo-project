@@ -10,6 +10,7 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
             .then(response => {
                 console.log('response favorite ', response);
                 self.trailInfo = response;
+                self.trailAverageRating = response.averageRating;
                 // if (response.activities.length > 0) {
                 //     let activities = response.activities;
                 //     for (let i = 0; i < activities.length; i++) {
@@ -47,6 +48,7 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
         let comment = {};
         comment.comment = self.comment;
         comment.trailInfo = self.trailInfo;
+        console.log('clicked')
         MapService.submitComment(comment)
             .then((response) => {
                 if (response == 'Must be logged in to add items!') {
