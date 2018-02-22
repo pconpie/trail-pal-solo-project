@@ -18,8 +18,9 @@ h2 {
 }
 
 #mapid {
-  min-height: 800px;
-  width: 80%;
+  min-height: 85vh;
+  width: 100%;
+  z-index: 1;
 }
 
 .md-button {
@@ -42,7 +43,7 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-right: 46px;
+  padding-top: 5px;
 }
 
 .trail-image {
@@ -54,16 +55,17 @@ h2 {
 
 .trail-image-container {
   display: flex;
+  flex-direction: column;
   justify-content: flex-end;
   align-items: center;
 }
-
+/* 
 .favorite-card {
   height: 225px;
-}
+} */
 
-.favorite-card-title {
-  padding-top: 33px;
+.favorite-card-title-media {
+  padding-left: 10px;
 }
 
 .favorite-display {
@@ -119,7 +121,6 @@ h2 {
 .favorite-card-title-text {}
 
 header {
-  padding-bottom: 35px;
 }
 
 /* .map-show{
@@ -253,8 +254,8 @@ header {
   text-align: center;
 }
 .edit-profile-picture{
-  height: 185px !important;
-  min-width: 150px !important;
+  height: 200px !important;
+  min-width: 300px !important;
 }
 .profile-username{
   min-height: 50px;
@@ -293,4 +294,17 @@ img::before {
 }
 .profile-view-card{
   height: 80vh;
+}
+.profile-picture-container{
+  height: 200px !important;
+  width: 300px !important;
+  padding: 10px;
+}
+.welcome-modal{
+  text-align: center;
+  color: hsl(267, 100%, 85%);
+  background-color: hsl(145, 51%, 34%);
+  padding: 20px;
+  border: 2px solid black;
+  text-shadow: 2px 2px black;
 }

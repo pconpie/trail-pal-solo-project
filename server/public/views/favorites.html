@@ -4,7 +4,7 @@
         <li flex-xs flex-gt-xs="100" layout="column" ng-repeat="favorite in vm.favorites.list">
             <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch class="favorite-card">
                 <md-card-title layout-align="space-between center" class="favorite-card-title">
-                    <md-card-title-text flex="80">
+                    <md-card-title-text>
                         <span class="md-headline">
                             <a class="trail-title-favorites" ng-href="/#!/details/{{favorite.faveTrailInfo.lat}}/{{favorite.faveTrailInfo.lon}}/{{favorite.faveTrailInfo.unique_id}}">{{favorite.faveTrailInfo.name}}</a>
                         </span>
@@ -14,30 +14,31 @@
                             We are sorry, but there are no descriptions available at this time. Please click on the trail title to find more information!
                         </span>
                     </md-card-title-text>
-                    <md-card-title-media>
-                        <div class="md-media-sm card-media trail-image-container">
-                            <span>
-                                <span><button ng-click="vm.imageBackward()"><</button></span>                                <span><button ng-click="vm.imageForward()">></button></span>
+                    <md-card-title-media class="favorite-card-title-media">
+                        <div class="card-media trail-image-container">
+                            <div layout="row" layout-align="space-around end">
+                                <span flex><button ng-click="vm.imageBackward()"><</button></span> <span flex><button ng-click="vm.imageForward()">></button></span>
+                            </div>
+
                                 <img ng-src="{{favorite.faveTrailInfo.activity[vm.imagePosition].thumbnail}}" style="min-height:100px; min-width:200px;"></img>
-                            </span>
                         </div>
+                        <span class="explored-span">
+                            <span ng-if="!favorite.explored">Check Explored</span>
+                            <span ng-if="favorite.explored">Uncheck Explored</span>
+                            <br/>
+                            <md-checkbox ng-click="vm.toggleExplored(favorite)" ng-checked="favorite.explored" aria-label="explored-check">
+                            </md-checkbox>
+                        </span>
                     </md-card-title-media>
                 </md-card-title>
                 <md-card-actions layout="row" layout-align="space-between end">
-                    <span flex="50">
+                    <span flex-gt-sm="80" flex="50">
                         <md-button ng-click="vm.removeFavorite(favorite)">Remove Favorite</md-button>
                     </span>
-                    <span flex="20" ng-if="favorite.explored" layout="column" layout-align="space-around center">
+                    <span flex-gt-sm="20" flex="50" ng-if="favorite.explored" layout="column" layout-align="space-around center">
                         <!-- <md-button ng-click="vm.rateTrail(favorite)">Rate This Trail!</md-button> -->
                         <ng-rate-it resetable="false" rated="vm.rateTrail(favorite, favorite.rating)" ng-model="favorite.rating"></ng-rate-it>
                         Rating: {{favorite.rating}}
-                    </span>
-                    <span class="explored-span">
-                        <span ng-if="!favorite.explored">Check Explored</span>
-                        <span ng-if="favorite.explored">Uncheck Explored</span>
-                        <br/>
-                        <md-checkbox ng-click="vm.toggleExplored(favorite)" ng-checked="favorite.explored" aria-label="explored-check">
-                        </md-checkbox>
                     </span>
                 </md-card-actions>
             </md-card>

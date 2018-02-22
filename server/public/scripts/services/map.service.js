@@ -39,7 +39,12 @@ app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, 
                 })
         } else {
             return new Promise((resolve, reject) => {
+                if  (localStorage.getItem('loggedIn') == 'true'){
                 resolve('Repeat Fave');
+                } else {
+                    resolve('Must be logged in to add items!');
+
+                }
             });
         }
     }
@@ -78,7 +83,6 @@ app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, 
                 self.trailComments.list = response.data;
                 console.log('get comments ', response.data);
                 return response.data;
-
             })
             .catch((err) => {
                 // alert(err + '!');

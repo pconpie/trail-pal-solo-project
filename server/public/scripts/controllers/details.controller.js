@@ -53,9 +53,10 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
                     swal('Must be logged in to comment! Please login or register to add comments.', '', 'error', {
                         className: "error-alert",
                     });
+                } else {
+                    self.getComments(id);
                 }
             });
-        self.getComments(id);
         self.comment = '';
     }
     self.getComments = MapService.getComments;

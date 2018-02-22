@@ -4,8 +4,8 @@ let app = angular.module('app', ['ngRoute', 'ngRateIt', 'ngMaterial']);
 app.config(function ($routeProvider, $mdThemingProvider) {
     console.log('config loaded');
 
-    // $mdThemingProvider.theme('default')
-    // .dark();
+    $mdThemingProvider.theme('default')
+    .dark();
 
     $routeProvider
         .when('/', {

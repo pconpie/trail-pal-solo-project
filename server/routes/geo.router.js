@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const axios = require('axios');
-
+const Favorite = require('../models/Favorite');
 let geoJsons = [];
 
 function parseGeoInfo(array) {
@@ -50,6 +50,8 @@ function parseGeoInfo(array) {
 router.get('/single/:lat/:lon/:id', (req, res) => {
     let trail_lat = req.params.lat;
     let trail_lon = req.params.lon;
+    let trailId = req.params.id;
+
     // console.log('lat, ', req.params.lat, 'lon, ', req.params.lon, 'id ', req.params.id);
 
     axios.get(`https://trailapi-trailapi.p.mashape.com/?lat=${trail_lat}&lon=${trail_lon}`, {
@@ -62,17 +64,38 @@ router.get('/single/:lat/:lon/:id', (req, res) => {
             for (let i = 0; i < response.data.places.length; i++) {
                 const element = response.data.places[i];
                 if (element.unique_id == req.params.id) {
-                    // console.log('MATCH', element);
-                    res.send(element);
+                    console.log('MATCH', element.unique_id);
+                    // trailId = element.unique_id;
+                    let pipeline = [{
+                        "$group": {
+                            "_id": trailId,
+                            "averageRating": {
+                                "$avg": "$rating"
+                            }
+                        }
+                    }];
+                    Favorite.aggregate().match({ "faveTrailInfo.unique_id" : trailId }).group({"_id": trailId, "averageRating": { "$avg": "$rating"}
+                    }, function (err, result) {
+                        if (err) {
+                            console.log('avg err ', err)
+                            // res.send(String(err));
+                        } else {
+                        console.log('avg result ', result);
+                        // res.send(result);
+                        }
+                    })
                 }
             }
-            // console.log(response.data.places, 'response from single search');
+           
+                       // res.send(element);
         })
+            // console.log(response.data.places, 'response from single search');
         .catch((err) => {
             console.log('err on single ', err);
 
         })
-})
+    })
+
 
 router.get('/:state', (req, res) => {
 

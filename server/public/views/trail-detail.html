@@ -1,7 +1,7 @@
 <div layout>
     <md-card md-theme-watch layout="row" flex="60">
-        <md-card-title flex="80">
-            <md-card-title-text ng-cloak>
+        <md-card-title flex flex-gt-sm="80" layout>
+            <md-card-title-text flex ng-cloak>
                 <span class="md-headline" style="font-weight: bold; text-align:center;">{{vm.trailInfo.name}}</span>
                 <span class="md-subhead" ng-show="vm.trailInfo.description">Description:
                     <!-- <br/>{{vm.trailInfo.description}} -->
@@ -19,7 +19,7 @@
                 </div>
             </md-card-title-text>
         </md-card-title>
-        <md-card-content flex="20" layout="column" layout-align="space-around">
+        <md-card-content flex="20" layout="column" layout-align="center">
             <!-- <div class="md-media-xl card-media"></div> -->
             <md-card-actions layout="column">
                 <md-button class="md-icon-button" aria-label="Favorite" md-no-ink ng-click="vm.favoriteTrail(trail)">
@@ -72,14 +72,14 @@
 <div layout="row" layout="column">
     <div flex="60" ng-cloak class="md-inline-form">
         <md-content layout-padding>
-            <form name="userForm">
+            <form name="userForm" ng-submit="vm.submitComment()">
                 <div layout-gt-sm="column">
                     <md-input-container class="md-block">
                         <label>Leave a Comment</label>
-                        <textarea ng-model="vm.comment" md-maxlength="150" rows="2" md-select-on-focus></textarea>
+                        <input ng-model="vm.comment" md-maxlength="150" rows="2" md-select-on-focus></textarea>
                     </md-input-container>
                     <div class="submit-button">
-                        <input type="submit" value="Submit" ng-click="vm.submitComment()" flex="10" />
+                        <md-button flex="20">Submit</md-button>
                     </div>
                 </div>
             </form>

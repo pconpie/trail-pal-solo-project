@@ -14,14 +14,14 @@
         </a>
 
         <md-content class="md-padding" style="margin:0;">
-            <md-nav-bar md-no-ink-bar="disableInkBar" md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+            <md-nav-bar md-no-ink-bar="true" md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
                 <md-nav-item md-nav-href="#!map" name="map" class="nav-text">
                     Map
                 </md-nav-item>
                 <md-nav-item md-nav-href="#!favorites" ng-if="vm.userObject.loggedIn" name="favorites" class="nav-text">
                     Favorites
                 </md-nav-item>
-                <md-nav-item md-nav-href="#!profile" ng-if="vm.userObject.loggedIn" name="profile" class="nav-text">
+                <md-nav-item  md-nav-href="#!profile" ng-if="vm.userObject.loggedIn" name="profile" class="nav-text">
                     Profile
                 </md-nav-item>
             </md-nav-bar>

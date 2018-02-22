@@ -215,7 +215,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
       });
       // $mdDialog.hide(answer);
     };
-  }
+  } //end DialogController
 
   self.profilePicture = {};
   self.getProfilePicture = function () {

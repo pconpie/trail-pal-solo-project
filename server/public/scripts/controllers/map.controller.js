@@ -16,9 +16,11 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     })
     
     let defaultCoords = [37.8, -96];
-    let map = L.map('mapid').setView(defaultCoords, 5);
+    let map = L.map('mapid', {
+        zoomSnap: .2
+    }).setView(defaultCoords, 4.5);
     self.mapReset = function () {
-        map.setView(defaultCoords, 5);
+        map.setView(defaultCoords, 4.5);
     }
     
 

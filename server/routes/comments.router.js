@@ -83,7 +83,7 @@ router.post('/', isAuthenticated, (req, res) => {
                 .catch((err) => {
                     console.log('err on post favorite ', err);
                     res.sendStatus(500);
-                    next(err);
+                    // next(err);
                 });
         })
         .catch((err) => {

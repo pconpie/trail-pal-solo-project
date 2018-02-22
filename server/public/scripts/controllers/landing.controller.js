@@ -2,6 +2,7 @@ app.controller('LandingController', ['StateService', '$location', function (Stat
     const self = this;
     self.enterSite = function () {
         $location.path('/map')
+        StateService.loadWelcomeModal();
     }
     document.getElementById('header').style.display = "none";
 }]);
