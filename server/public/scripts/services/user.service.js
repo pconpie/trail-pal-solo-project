@@ -2,7 +2,11 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
   console.log('UserService Loaded');
   const self = this;
 
-  self.rateTrail = function(trail, rating){
+  self.currentNavItem = {
+    value: ""
+  };
+
+  self.rateTrail = function (trail, rating) {
     let newTrailRating = {
       trail,
       rating
@@ -20,7 +24,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         console.log('err from explore put ', err);
       });
   }
-  
+
   self.markExplored = function (fave) {
     fave.explored = !fave.explored;
     return $http.put(`/favorites`, fave)
@@ -67,7 +71,9 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         return response.data;
       })
       .catch((err) => {
-        swal(err + '!', '', 'error', {className: "error-alert"});
+        swal(err + '!', '', 'error', {
+          className: "error-alert"
+        });
         console.log('err on get favorites ', err);
       });
   }
@@ -156,7 +162,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
             },
             function (response) {
               console.log('error');
-              self.error("Something went wrong. Please try again.");
+              self.error("Username is taken. Please pick a new username and try again.");
             });
       }
     }
@@ -178,7 +184,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
                 self.userObject.loggedIn = true;
                 localStorage.setItem('loggedIn', true);
                 self.hide();
-                $location.path('/favorites');
+                // $location.path('/profile');
                 self.getFavorites();
               } else {
                 console.log('failure error post: ', response);

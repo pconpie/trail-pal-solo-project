@@ -1,10 +1,12 @@
-app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapService', 'UserService', '$routeParams', '$sce', function ($mdDialog, $mdToast, $http, MapService, UserService, $routeParams, $sce) {
+app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapService', 'UserService', '$routeParams', '$route', '$sce', function ($mdDialog, $mdToast, $http, MapService, UserService, $routeParams, $route, $sce) {
     const self = this;
     console.log('in details controller');
     self.trailComments = MapService.trailComments;
     let lat = $routeParams.trail_lat;
     let lon = $routeParams.trail_lon;
     let id = $routeParams.id;
+    console.log($route);
+    
     self.getTrail = function () {
         MapService.getTrailInfo(lat, lon, id)
             .then(response => {
@@ -21,6 +23,10 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
             });
     }
     self.getTrail();
+
+    if ($route.current.loadedTemplateUrl == "/views/trail-detail.html") {
+        UserService.currentNavItem.value = "";
+    }
 
     self.renderHTML = function (html) {
         return $sce.trustAsHtml(html);

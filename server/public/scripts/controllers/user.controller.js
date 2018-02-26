@@ -1,4 +1,4 @@
-app.controller('UserController', ['UserService', 'MapService', function (UserService, MapService) {
+app.controller('UserController', ['UserService', 'MapService', '$route', function (UserService, MapService, $route) {
   console.log('UserController created');
   var self = this;
   self.favorites = UserService.favorites;
@@ -12,8 +12,13 @@ app.controller('UserController', ['UserService', 'MapService', function (UserSer
       });
   }
 
+    if ($route.current.loadedTemplateUrl == "/views/favorites.html") {
+        UserService.currentNavItem.value = "favorites";
+    }
+    
   self.userObject = UserService.userObject;
   self.images = MapService.images;
+  self.totalImages = MapService.totalImages;
 
   self.toggleExplored = function (fave) {
     UserService.markExplored(fave)
@@ -25,7 +30,7 @@ app.controller('UserController', ['UserService', 'MapService', function (UserSer
 function getFavesAndPictures (){
   UserService.getFavorites()
     .then((response)=>{
-      console.log(response)
+      console.log(response, 'stuff')
       for(trail of response){
         MapService.showImages(trail.faveTrailInfo.unique_id);
       }

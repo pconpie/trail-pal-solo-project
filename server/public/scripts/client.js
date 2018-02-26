@@ -4,8 +4,18 @@ let app = angular.module('app', ['ngRoute', 'ngRateIt', 'ngMaterial']);
 app.config(function ($routeProvider, $mdThemingProvider) {
     console.log('config loaded');
 
+    var newYellowMap = $mdThemingProvider.extendPalette('yellow', {
+        '500': '#fbc500',
+        'contrastDefaultColor': 'dark'
+      });
+
+    $mdThemingProvider.definePalette('newYellow', newYellowMap)
+
     $mdThemingProvider.theme('default')
-    .dark();
+    .dark()
+    .accentPalette('newYellow', {
+        'default': '500' // use shade 200 for default, and keep all other shades the same
+      });
 
     $routeProvider
         .when('/', {

@@ -4,7 +4,31 @@ md-toast {
   text-align: center;
   /* background-color: beige !important; */
 }
-
+.more-trail-info{
+  text-decoration: none;
+}
+.more-trail-info:link{
+  color: rgb(251, 197, 0);
+}
+.more-trail-info:visited{
+  color: rgb(251, 197, 0);
+}
+.more-trail-info:hover{
+  color: rgb(255, 106, 0);
+}
+.more-trail-info:active{
+  color: rgb(215, 169, 4);
+}
+.login-modal-submit{
+  color: white !important;
+  border: 1px solid white !important;
+}
+.login-modal-other{
+  color: rgb(215, 169, 4) !important;
+}
+.login-modal-toolbar{
+  background-color: rgb(183, 143, 1) !important;
+}
 body {
   font-family: 'Comfortaa', cursive;
 }
@@ -77,13 +101,18 @@ h2 {
 }
 
 .fave-button:hover {
-  color: black;
+  color: rgb(255, 106, 0);
 }
 
 .fave-button {
   color: gold;
 }
-
+.comment-label{
+  color:white;
+}
+.comment-input{
+  border-bottom-color: rgb(219, 219, 219) !important;
+}
 .nav-text {
   font-weight: bolder !important;
   font-size: 16px;
@@ -224,7 +253,31 @@ header {
   background-size: cover;
   position: absolute;
 }
-
+.map-page{
+  height: 100vh;
+  width: 100%;
+  position: relative;
+}
+.trail-loading-spinner{
+  height: 100vh;
+  width: 100%;
+  z-index: 100;
+  position: absolute;
+  color: rgb(251, 197, 0);
+  text-shadow: 3px 3px black;
+}
+.trail-loading-spinner-backdrop{
+  text-align: center;
+  height: 10vh;
+  width: 100vh;
+  background-color: rgba(118, 103, 47, 0.5);
+  border: 1px solid rgba(118, 103, 47, 1);
+  border-radius: 2%;
+}
+#mapid {
+  position: absolute;
+  margin-top: 285px;
+}
 .welcome-container {
   z-index: 10;
   padding: 100px;
@@ -243,12 +296,36 @@ header {
   padding-right: 10px;
 }
 .error-alert{
-  background-color: rgba(157, 0, 0, 0.853);
-  border: 3px solid white;
+  background-color : hsla(0, 0%, 31%, 0.87);
+  /* border: 3px solid white; */
 }
+.error-alert button{
+  background-color : rgb(242, 116, 116);
+  box-shadow: 0;
+  /* border: 3px solid yellow; */
+}
+.error-alert button:focus{
+  background-color : rgb(242, 116, 116);
+  box-shadow: 0;
+  /* border: 3px solid yellow; */
+}
+.error-alert .swal-title{
+  color:white;
+}
+
 .success-alert{
-  background-color: rgba(18, 86, 10, 0.976);
-  border: 3px solid white;
+  background-color : hsla(0, 0%, 31%, 0.897);
+  box-shadow: 0;
+  /* border: 3px solid white; */
+}
+.success-alert .swal-title{
+  color:white;
+}
+
+.success-alert button{
+  background-color : hsla(116, 62%, 38%, 0.87);
+  box-shadow: 0;
+  /* border: 3px solid white; */
 }
 .no-fave-style{
   text-align: center;
@@ -303,7 +380,8 @@ img::before {
 }
 .welcome-modal{
   text-align: center;
-  color: hsl(267, 100%, 85%);
+  /* color: hsl(267, 100%, 85%); */
+  color: rgb(251, 197, 0);
   background-color: hsl(145, 51%, 34%);
   padding: 20px;
   border: 2px solid black;

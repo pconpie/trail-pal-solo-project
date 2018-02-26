@@ -3,12 +3,12 @@
         <md-card-title>
             <md-card-title-text flex="80">
                 <div class="profile-full-name">
-                    <h1>Name: </h1>
                     <form>
                         <md-input-container>
-                            <input aria-label="User Full Name" ng-model="vm.userObject.userFullName" />
+                            <label class="comment-label">Name</label>
+                            <input aria-label="User Full Name" ng-model="vm.userObject.userFullName" class="comment-label" />
+                            <md-button ng-click="vm.setUserFullName(vm.userObject)" >Save</md-button>
                         </md-input-container>
-                        <input type="submit" value="Save" ng-click="vm.setUserFullName(vm.userObject)" />
                     </form>
                 </div>
                 <div class="profile-username">
@@ -31,7 +31,7 @@
             </md-card-title-media>
         </md-card-title>
         <md-card-content layout="row" layout-align="space-between end">
-            <p>Profile gobbledy gook</p>
+            <!-- <p>Profile gobbledy gook</p> -->
         </md-card-content>
     </md-card>
 </div>

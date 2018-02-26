@@ -38,7 +38,7 @@
         <h4>Links to website with directions/fees/other info:
             <br/>
             <span ng-repeat="trail in vm.trailInfo.activities">
-                <a ng-href="{{trail.url}}" target="_blank">{{trail.url}}</a>
+                <a class="more-trail-info" ng-href="{{trail.url}}" target="_blank">{{trail.url}}</a>
                 <br/>
             </span>
         </h4>
@@ -46,7 +46,7 @@
             Link to helpful page:
             <br/>
             <span>
-                <a ng-href="http://www.google.com/search#q={{vm.trailInfo.name}}&btnI" target="_blank">Research Trail!</a>
+                <a class="more-trail-info" ng-href="http://www.google.com/search#q={{vm.trailInfo.name}}&btnI" target="_blank">Research Trail!</a>
             </span>
         </h4>
         <span ng-repeat="trail in vm.trailInfo.activities">
@@ -77,8 +77,8 @@
             <form name="userForm" ng-submit="vm.submitComment()">
                 <div layout-gt-sm="column">
                     <md-input-container class="md-block">
-                        <label>Leave a Comment</label>
-                        <input ng-model="vm.comment" md-maxlength="150" rows="2" md-select-on-focus></textarea>
+                        <label class="comment-label">Leave a Comment</label>
+                        <input ng-model="vm.comment" md-maxlength="150" rows="2" md-select-on-focus class="comment-input"></textarea>
                     </md-input-container>
                     <div class="submit-button">
                         <md-button flex="20">Submit</md-button>

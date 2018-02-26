@@ -2,7 +2,7 @@
     <ul class="favorite-display">
         <h1 ng-if="vm.favorites.list.length == 0" class="no-fave-style">No favorites added, find some trails to explore!</h1>
         <li flex-xs flex-gt-xs="100" layout="column" ng-repeat="favorite in vm.favorites.list">
-            <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch class="favorite-card">
+            <md-card ng-cloak md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch class="favorite-card">
                 <md-card-title layout-align="space-between center" class="favorite-card-title">
                     <md-card-title-text>
                         <span class="md-headline">
@@ -16,7 +16,8 @@
                     </md-card-title-text>
                     <md-card-title-media class="favorite-card-title-media">
                         <div class="card-media trail-image-container">
-                            <img ng-cloak ng-src="{{vm.images.list[5].imageUrl}}" class="favorite-image"></img>
+                            <!-- {{vm.images}}{{vm.totalImages.count}}/ -->
+                            <img ng-cloak ng-src="{{vm.images.list[0].imageUrl}}" class="favorite-image"></img>
                         </div>
                         <span class="explored-span">
                             <span ng-if="!favorite.explored">Check Explored</span>

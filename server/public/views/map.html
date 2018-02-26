@@ -1,5 +1,5 @@
-<!-- <div style="height:100vh; width:100%;"> -->
-    <div>
+<div class="map-page">
+    <div class="map-container">
         <div layout="row" layout-align="center center">
             <div id="mapid" flex="auto">
                 <div id="button-wrapper">
@@ -8,8 +8,12 @@
             </div>
         </div>
     </div>
-    <div layout="column" layout-align="center center" ng-show="vm.loading">
-        <h1 style="z-index:100;">Loading Trail Details! Please Standby.</h1>
-        <md-progress-circular md-mode="indeterminate" md-diameter="100px" style="z-index:100;"></md-progress-circular>
+    <div layout="column" layout-align="center center" ng-if="vm.loading" class="trail-loading-spinner">
+        <div class="trail-loading-spinner-backdrop">
+            <div class="trail-loading-spinner-text">
+                <h1 style="z-index:100;">Loading Trail Details! Please Standby.</h1>
+            </div>
+        </div>
+        <md-progress-circular md-mode="indeterminate" md-diameter="100px" style="z-index:100; "></md-progress-circular>
     </div>
 </div>
