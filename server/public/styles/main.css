@@ -2,7 +2,8 @@ md-toast {
   position: fixed !important;
   width: 50%;
   text-align: center;
-  /* background-color: beige !important; */
+  border: 1px solid white;
+  background-color: beige !important;
 }
 .more-trail-info{
   text-decoration: none;
@@ -36,13 +37,11 @@ body {
 h2 {
   text-align: center;
 }
-
-.gif {
-  min-height: 600px;
-}
-
 #mapid {
   min-height: 85vh;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   z-index: 1;
 }
@@ -125,7 +124,9 @@ h2 {
   justify-content: flex-end;
 }
 
-.trail-title-favorites {}
+.trail-title-favorites {
+  color: white;
+}
 
 .trail-title-favorites:link {
   color: black;
@@ -133,17 +134,17 @@ h2 {
 }
 
 .trail-title-favorites:visited {
-  color: gray;
+  color: rgb(171, 171, 171);
   text-decoration: none;
 }
 
 .trail-title-favorites:hover {
-  color: darkslategray;
+  color: rgb(108, 108, 108);
   text-decoration: none;
 }
 
 .trail-title-favorites:active {
-  color: black;
+  color: rgb(95, 95, 95);
   text-decoration: none;
 }
 
@@ -274,10 +275,6 @@ header {
   border: 1px solid rgba(118, 103, 47, 1);
   border-radius: 2%;
 }
-#mapid {
-  position: absolute;
-  margin-top: 285px;
-}
 .welcome-container {
   z-index: 10;
   padding: 100px;
@@ -288,7 +285,7 @@ header {
 
 .welcome-text {
   color: black;
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 .login-button {
@@ -298,6 +295,15 @@ header {
 .error-alert{
   background-color : hsla(0, 0%, 31%, 0.87);
   /* border: 3px solid white; */
+}
+.warning-alert .swal-title{
+  color:white;
+}
+.warning-alert{
+  background-color : hsla(0, 0%, 31%, 0.87);
+}
+.warning-alert button{
+  background-color: rgb(248, 195, 134);
 }
 .error-alert button{
   background-color : rgb(242, 116, 116);
@@ -321,7 +327,6 @@ header {
 .success-alert .swal-title{
   color:white;
 }
-
 .success-alert button{
   background-color : hsla(116, 62%, 38%, 0.87);
   box-shadow: 0;
@@ -385,9 +390,24 @@ img::before {
   background-color: hsl(145, 51%, 34%);
   padding: 20px;
   border: 2px solid black;
-  text-shadow: 2px 2px black;
+  text-shadow: 1px 2px black;
 }
 .favorite-image{
   max-height: 100px;
   max-width: 200px;
+}
+.legend {
+  background-color: hsla(0, 0%, 86%, 0.922);
+  line-height: 18px;
+  color: #555;
+}
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.9;
+}
+.profile-favorite-card{
+  min-width: 100vh;
 }

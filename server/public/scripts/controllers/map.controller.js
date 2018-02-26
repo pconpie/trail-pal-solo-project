@@ -50,6 +50,27 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
             '#a1d99b';
     }
 
+    var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (map) {
+    
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = [0, 50, 100, 200, 300, 400],
+            labels = [];
+            div.innerHTML += `<h3 style="text-align:center;">Number of trails<br> per state</h3>`;
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        }
+    
+        return div;
+    };
+    
+    legend.addTo(map);
+
     function highlightFeature(e) {
         var layer = e.target;
 

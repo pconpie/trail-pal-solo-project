@@ -6,7 +6,7 @@ app.controller('ProfileController', ['$location', 'UserService', '$route', funct
     self.logout = UserService.logout;
     self.loggedIn = UserService.loggedIn;
 
-
+    self.favorites = UserService.favorites;
     
     if ($route.current.loadedTemplateUrl == "/views/profile.html") {
         UserService.currentNavItem.value = "profile";

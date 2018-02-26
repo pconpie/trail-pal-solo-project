@@ -1345,7 +1345,7 @@ var statesData = {
             "id": "04",
             "properties": {
                 "name": "Arkansas",
-                "trailTotal": 24
+                "trailTotal": 301
             },
             "geometry": {
                 "type": "Polygon",
@@ -3247,7 +3247,7 @@ var statesData = {
             "id": "33",
             "properties": {
                 "name": "New York",
-                "trailTotal": 99
+                "trailTotal": 280
             },
             "geometry": {
                 "type": "Polygon",
@@ -4112,7 +4112,7 @@ var statesData = {
             "id": "47",
             "properties": {
                 "name": "Virginia",
-                "trailTotal": 95
+                "trailTotal": 310
             },
             "geometry": {
                 "type": "MultiPolygon",
