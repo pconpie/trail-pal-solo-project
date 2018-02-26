@@ -9,7 +9,7 @@ function userImageGet(req, res) {
     return new Promise((resolve, reject)=>{
         let userId = req.user._id;
         ProfilePicture.find({
-            'userId': userId
+            'user': req.user._id
         }, (err, data) => {
             if (err) {
                 console.log('MongoDB error on get profile images', err);

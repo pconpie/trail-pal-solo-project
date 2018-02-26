@@ -13,6 +13,8 @@ const geoRouter = require('./routes/geo.router');
 const favoritesRouter = require('./routes/favorites.router');
 const commentsRouter = require('./routes/comments.router');
 const imagesRouter = require('./routes/images.router');
+const onLoadRouter = require('./routes/onLoad.router');
+
 
 const stateGrabber = require('./modules/stateData.module');
 
@@ -34,6 +36,8 @@ app.use('/geoInfo', geoRouter);
 app.use('/favorites', favoritesRouter);
 app.use('/comments', commentsRouter);
 app.use('/images', imagesRouter);
+app.use('/onLoad', onLoadRouter);
+
 
 
 

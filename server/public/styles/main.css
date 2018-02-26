@@ -1,10 +1,35 @@
 md-toast {
   position: fixed !important;
-  width: 100%;
+  width: 50%;
   text-align: center;
-  /* background-color: beige !important; */
+  border: 1px solid white;
+  background-color: beige !important;
 }
-
+.more-trail-info{
+  text-decoration: none;
+}
+.more-trail-info:link{
+  color: rgb(251, 197, 0);
+}
+.more-trail-info:visited{
+  color: rgb(251, 197, 0);
+}
+.more-trail-info:hover{
+  color: rgb(255, 106, 0);
+}
+.more-trail-info:active{
+  color: rgb(215, 169, 4);
+}
+.login-modal-submit{
+  color: white !important;
+  border: 1px solid white !important;
+}
+.login-modal-other{
+  color: rgb(215, 169, 4) !important;
+}
+.login-modal-toolbar{
+  background-color: rgb(183, 143, 1) !important;
+}
 body {
   font-family: 'Comfortaa', cursive;
 }
@@ -12,14 +37,13 @@ body {
 h2 {
   text-align: center;
 }
-
-.gif {
-  min-height: 600px;
-}
-
 #mapid {
-  min-height: 800px;
-  width: 80%;
+  min-height: 85vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
 }
 
 .md-button {
@@ -42,7 +66,7 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-right: 46px;
+  padding-top: 5px;
 }
 
 .trail-image {
@@ -54,16 +78,17 @@ h2 {
 
 .trail-image-container {
   display: flex;
+  flex-direction: column;
   justify-content: flex-end;
   align-items: center;
 }
-
+/* 
 .favorite-card {
   height: 225px;
-}
+} */
 
-.favorite-card-title {
-  padding-top: 33px;
+.favorite-card-title-media {
+  padding-left: 10px;
 }
 
 .favorite-display {
@@ -75,13 +100,18 @@ h2 {
 }
 
 .fave-button:hover {
-  color: black;
+  color: rgb(255, 106, 0);
 }
 
 .fave-button {
   color: gold;
 }
-
+.comment-label{
+  color:white;
+}
+.comment-input{
+  border-bottom-color: rgb(219, 219, 219) !important;
+}
 .nav-text {
   font-weight: bolder !important;
   font-size: 16px;
@@ -94,7 +124,9 @@ h2 {
   justify-content: flex-end;
 }
 
-.trail-title-favorites {}
+.trail-title-favorites {
+  color: white;
+}
 
 .trail-title-favorites:link {
   color: black;
@@ -102,24 +134,23 @@ h2 {
 }
 
 .trail-title-favorites:visited {
-  color: gray;
+  color: rgb(171, 171, 171);
   text-decoration: none;
 }
 
 .trail-title-favorites:hover {
-  color: darkslategray;
+  color: rgb(108, 108, 108);
   text-decoration: none;
 }
 
 .trail-title-favorites:active {
-  color: black;
+  color: rgb(95, 95, 95);
   text-decoration: none;
 }
 
 .favorite-card-title-text {}
 
 header {
-  padding-bottom: 35px;
 }
 
 /* .map-show{
@@ -223,7 +254,27 @@ header {
   background-size: cover;
   position: absolute;
 }
-
+.map-page{
+  height: 100vh;
+  width: 100%;
+  position: relative;
+}
+.trail-loading-spinner{
+  height: 100vh;
+  width: 100%;
+  z-index: 100;
+  position: absolute;
+  color: rgb(251, 197, 0);
+  text-shadow: 3px 3px black;
+}
+.trail-loading-spinner-backdrop{
+  text-align: center;
+  height: 10vh;
+  width: 100vh;
+  background-color: rgba(118, 103, 47, 0.5);
+  border: 1px solid rgba(118, 103, 47, 1);
+  border-radius: 2%;
+}
 .welcome-container {
   z-index: 10;
   padding: 100px;
@@ -234,7 +285,7 @@ header {
 
 .welcome-text {
   color: black;
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 .login-button {
@@ -242,19 +293,51 @@ header {
   padding-right: 10px;
 }
 .error-alert{
-  background-color: rgba(157, 0, 0, 0.853);
-  border: 3px solid white;
+  background-color : hsla(0, 0%, 31%, 0.87);
+  /* border: 3px solid white; */
 }
+.warning-alert .swal-title{
+  color:white;
+}
+.warning-alert{
+  background-color : hsla(0, 0%, 31%, 0.87);
+}
+.warning-alert button{
+  background-color: rgb(248, 195, 134);
+}
+.error-alert button{
+  background-color : rgb(242, 116, 116);
+  box-shadow: 0;
+  /* border: 3px solid yellow; */
+}
+.error-alert button:focus{
+  background-color : rgb(242, 116, 116);
+  box-shadow: 0;
+  /* border: 3px solid yellow; */
+}
+.error-alert .swal-title{
+  color:white;
+}
+
 .success-alert{
-  background-color: rgba(18, 86, 10, 0.976);
-  border: 3px solid white;
+  background-color : hsla(0, 0%, 31%, 0.897);
+  box-shadow: 0;
+  /* border: 3px solid white; */
+}
+.success-alert .swal-title{
+  color:white;
+}
+.success-alert button{
+  background-color : hsla(116, 62%, 38%, 0.87);
+  box-shadow: 0;
+  /* border: 3px solid white; */
 }
 .no-fave-style{
   text-align: center;
 }
 .edit-profile-picture{
-  height: 185px !important;
-  min-width: 150px !important;
+  height: 200px !important;
+  min-width: 300px !important;
 }
 .profile-username{
   min-height: 50px;
@@ -264,6 +347,7 @@ header {
   max-width: 110px;
   border-radius: 100%;
   margin-right: 10px;
+  object-fit: cover;
 }
 img {
   font-family: inherit;
@@ -293,4 +377,37 @@ img::before {
 }
 .profile-view-card{
   height: 80vh;
+}
+.profile-picture-container{
+  height: 200px !important;
+  width: 300px !important;
+  padding: 10px;
+}
+.welcome-modal{
+  text-align: center;
+  /* color: hsl(267, 100%, 85%); */
+  color: rgb(251, 197, 0);
+  background-color: hsl(145, 51%, 34%);
+  padding: 20px;
+  border: 2px solid black;
+  text-shadow: 1px 2px black;
+}
+.favorite-image{
+  max-height: 100px;
+  max-width: 200px;
+}
+.legend {
+  background-color: hsla(0, 0%, 86%, 0.922);
+  line-height: 18px;
+  color: #555;
+}
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.9;
+}
+.profile-favorite-card{
+  min-width: 100vh;
 }
