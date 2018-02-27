@@ -1,15 +1,18 @@
-app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapService', 'UserService', '$routeParams', '$sce', function ($mdDialog, $mdToast, $http, MapService, UserService, $routeParams, $sce) {
+app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapService', 'UserService', '$routeParams', '$route', '$sce', function ($mdDialog, $mdToast, $http, MapService, UserService, $routeParams, $route, $sce) {
     const self = this;
     console.log('in details controller');
     self.trailComments = MapService.trailComments;
     let lat = $routeParams.trail_lat;
     let lon = $routeParams.trail_lon;
     let id = $routeParams.id;
+    console.log($route);
+    
     self.getTrail = function () {
         MapService.getTrailInfo(lat, lon, id)
             .then(response => {
                 console.log('response favorite ', response);
                 self.trailInfo = response;
+                self.trailAverageRating = response.averageRating;
                 // if (response.activities.length > 0) {
                 //     let activities = response.activities;
                 //     for (let i = 0; i < activities.length; i++) {
@@ -21,6 +24,10 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
     }
     self.getTrail();
 
+    if ($route.current.loadedTemplateUrl == "/views/trail-detail.html") {
+        UserService.currentNavItem.value = "";
+    }
+
     self.renderHTML = function (html) {
         return $sce.trustAsHtml(html);
     };
@@ -30,8 +37,12 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
             .then((response) => {
                 if (response == 'Must be logged in to add items!') {
                     swal('Must be logged in to favorite items! Please login or register to add favorites.', '', 'error', {
-                        className: "error-alert",
+                        className: "error-alert"
                     });
+                } else if (response === 'Repeat Fave') {
+                    swal('Already favorited!', '', 'error', {
+                        className: 'error-alert'
+                    })
                 } else {
                     UserService.getFavorites()
                 };
@@ -43,19 +54,25 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
         let comment = {};
         comment.comment = self.comment;
         comment.trailInfo = self.trailInfo;
+        console.log('clicked')
         MapService.submitComment(comment)
             .then((response) => {
                 if (response == 'Must be logged in to add items!') {
                     swal('Must be logged in to comment! Please login or register to add comments.', '', 'error', {
                         className: "error-alert",
                     });
+                } else {
+                    self.getComments(id);
                 }
             });
-        self.getComments(id);
         self.comment = '';
     }
     self.getComments = MapService.getComments;
     self.getComments(id);
+
+    self.getCommentPictures = function () {
+        UserService.getProfilePicture();
+    }
 
     self.showImages = MapService.showImages;
     MapService.showImages(id);
@@ -72,21 +89,30 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
         });
     }
 
+    self.showSimpleToast = function (text) {
+        $mdToast.show(
+            $mdToast.simple()
+            .textContent(`${text}`)
+            .position('bottom right')
+            .hideDelay(3000)
+        );
+    };
+
     self.imagePosition = 0;
     self.imageBackward = function () {
         if (self.imagePosition === 0) {
-            alert('No more images this direction');
+            self.showSimpleToast('No more images in this direction!');
         } else {
             self.imagePosition--;
         }
     }
     self.imageForward = function () {
-        if (self.imagePosition === MapService.totalImages.count-1) {
-            alert('No more images this direction');
+        if (self.imagePosition === MapService.totalImages.count - 1) {
+            self.showSimpleToast('No more images in this direction!');
         } else {
             self.imagePosition++;
         }
     }
 
-    
+
 }]);

@@ -6,13 +6,8 @@ const Image = require('../models/Image');
 const ProfilePicture = require('../models/ProfilePicture');
 const UserImageGet = require('../modules/UserImageGet');
 const Comment = require('../models/Comment');
+const isAuthenticated = require('../models/Authenticated');
 
-let isAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.send('Must be logged in to add items!');
-}
 
 router.get('/trailImage/:id', (req, res) => {
     // console.log('user ', req.user._id);
@@ -24,12 +19,12 @@ router.get('/trailImage/:id', (req, res) => {
             console.log('MongoDB error on get images', err);
             res.sendStatus(500);
         } else {
-            console.log('Found images, ', data);
+            // console.log('Found images, ', data);
             res.send(data);
         }
     })
 }); //end GET
-router.get('/user', (req, res) => {
+router.get('/user', isAuthenticated, (req, res) => {
     UserImageGet(req).then((response) => {
         // console.log('last picture response, ', response);
         res.send(response)
@@ -64,7 +59,6 @@ router.post('/user', isAuthenticated, (req, res) => {
     // console.log('image ', imageFile);
     // console.log('user ', req.user._id);
     let newProfilePicture = {
-        userId,
         imageUrl: imageFile.url,
         imageName: imageFile.filename,
         user: userId
@@ -81,7 +75,7 @@ router.post('/user', isAuthenticated, (req, res) => {
 });
 
 /* PUT REQUESTS */
-router.put('/user/:id', (req, res) => {
+router.put('/user/:id', isAuthenticated, (req, res) => {
     let imageFile = req.body.filesUploaded[0];
     // console.log('req.body ', req.body);
     // console.log('req id ', req.user.id);
@@ -105,26 +99,11 @@ router.put('/user/:id', (req, res) => {
             console.log('error updating profile picture  ', err);
             res.sendStatus(500);
         } else {
-            updateCommentReference(req.user._id, imageFile.filename, imageFile.url);
             res.sendStatus(201);
         }
     })
 
 });
 
-function updateCommentReference(id, userId, imageName, imageUrl) {
-    // console.log('id ', id, 'image info ', imageName, imageUrl );
-    let query = { "_id": id, "userPicture.userId": userId };
-    Comment.update(query, { $set : {imageUrl: imageUrl, imageName: imageName}},
-        (err, data) => {
-        if (err) {
-            console.log('error updating comments profile picture  ', err);
-            res.sendStatus(500);
-        } else {
-            // console.log('success update comment picture', data);
-            res.sendStatus(201);
-        }
-    })
-}
 
 module.exports = router;

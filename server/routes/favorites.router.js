@@ -3,14 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const axios = require('axios');
 const Favorite = require('../models/Favorite');
-
-
-let isAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.send('Must be logged in to add items!');
-}
+const isAuthenticated = require('../models/Authenticated');
 
 /* GET REQUESTS */
 

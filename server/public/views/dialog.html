@@ -1,7 +1,7 @@
 <div style="z-index: 3;">
-    <md-dialog aria-label="Add an Item to the Shelf">
+    <md-dialog aria-label="Login dialog">
         <form ng-cloak>
-            <md-toolbar>
+            <md-toolbar class="login-modal-toolbar">
                 <div class="md-toolbar-tools">
                     <h2 ng-if="vm.displayLogin">Login</h2>
                     <h2 ng-if="!vm.displayLogin">Register</h2>
@@ -13,27 +13,31 @@
                 <div class="md-dialog-content">
                     <h2 ng-if="vm.displayLogin">Enter your login information and login!</h2>
                     <h2 ng-if="!vm.displayLogin">To register select a unique username and password!</h2>
-                    Username:
-                    <input ng-model="vm.user.username">
-                    <br> Password:
-                    <input type="password" ng-model="vm.user.password">
+                    <md-input-container>
+                        <label class="comment-label">Username</label>
+                        <input class="comment-input" ng-model="vm.user.username">
+                    </md-input-container>
+                    <md-input-container>
+                        <label class="comment-label">Password</label>
+                        <input class="comment-input" type="password" ng-model="vm.user.password">
+                    </md-input-container>
                 </div>
             </md-dialog-content>
 
             <md-dialog-actions layout="row">
-                <md-button ng-if="vm.displayLogin" ng-click="vm.switchView()">
+                <md-button ng-if="vm.displayLogin" ng-click="vm.switchView()" class="login-modal-other">
                     Register
                 </md-button>
-                <md-button ng-if="!vm.displayLogin" ng-click="vm.switchView()">
+                <md-button ng-if="!vm.displayLogin" ng-click="vm.switchView()" class="login-modal-other">
                     Login
                 </md-button>
-                <md-button ng-click="vm.cancel()">
+                <md-button md-whiteframe="5dp" class="login-modal-submit" ng-click="vm.cancel()">
                     Cancel
                 </md-button>
-                <md-button ng-if="vm.displayLogin" ng-click="vm.login(vm.user)" class="md-primary center">
+                <md-button md-whiteframe="5dp" ng-if="vm.displayLogin" ng-click="vm.login(vm.user)" class="login-modal-submit md-primary center">
                     Login
                 </md-button>
-                <md-button ng-if="!vm.displayLogin" ng-click="vm.registerUser(vm.user)" class="md-primary center">
+                <md-button md-whiteframe="5dp" ng-if="!vm.displayLogin" ng-click="vm.registerUser(vm.user)" class="login-modal-submit md-primary center">
                     Register
                 </md-button>
             </md-dialog-actions>

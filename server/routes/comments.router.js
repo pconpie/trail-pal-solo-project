@@ -5,14 +5,8 @@ const axios = require('axios');
 const Comment = require('../models/Comment');
 const Person = require('../models/Person');
 const UserImageGet = require('../modules/UserImageGet');
-
-
-let isAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.send('Must be logged in to add items!');
-}
+const getProfilePicture = require('../modules/getProfilePicture');
+const isAuthenticated = require('../models/Authenticated');
 
 /* GET REQUESTS */
 
@@ -45,19 +39,32 @@ router.get('/:trailId', (req, res) => {
                             }
                         });
                     });
-                    res.send(result);
+                    getProfilePicture(result).then((response) => {
+                        console.log('get comments ', response)
+                        res.send(response)
+                    }).catch((err) => {
+                        console.log('error getting pics ', err)
+                    });
+
+                    // res.send(getProfilePicture(result));
                 }
             })
         }
     })
 }); //end GET
 
-
 /* POST REQUESTS */
 router.post('/', isAuthenticated, (req, res) => {
+    console.log('user id ', req.user._id)
     UserImageGet(req)
         .then((response) => {
+            console.log('picture id ', response)    
             let userPicture = response;
+            if (userPicture == undefined){
+                userPicture = undefined;
+            } else {
+                userPicture = response._id;
+            };
             let newComment = {
                 trailName: req.body.trailInfo.name,
                 trailID: req.body.trailInfo.unique_id,
@@ -67,6 +74,7 @@ router.post('/', isAuthenticated, (req, res) => {
                 userPicture,
                 user: req.user._id
             }
+            // console.log('comment info, ', userPicture, 'and ', newComment);
 
             let commentToSave = new Comment(newComment);
             commentToSave.save()
@@ -76,7 +84,7 @@ router.post('/', isAuthenticated, (req, res) => {
                 .catch((err) => {
                     console.log('err on post favorite ', err);
                     res.sendStatus(500);
-                    next(err);
+                    // next(err);
                 });
         })
         .catch((err) => {

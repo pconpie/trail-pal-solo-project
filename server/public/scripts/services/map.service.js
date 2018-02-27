@@ -1,37 +1,61 @@
-app.service('MapService', ['$http', '$mdToast', function ($http, $mdToast) {
+app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, $mdToast, UserService) {
+    console.log('MapService')
     const self = this;
     self.trailInfo = {};
 
-    self.showSimpleToast = function() {
+    self.showSimpleToast = function () {
         $mdToast.show(
-          $mdToast.simple()
+            $mdToast.simple()
             .textContent('Trail Favorited!')
             .hideDelay(3000)
         );
-      };
+    };
+    self.favorites = UserService.favorites;
+
 
     self.favoriteTrail = function (fave) {
         console.log('IN map service favorite');
         console.log('fave to post ', fave);
-        return $http.post('/favorites', fave)
-            .then((response) => {
-                console.log(response);
-                if (response.status == 201) {
-                    self.showSimpleToast();
-                    // alert('This is a toast...Trail Favorited!');
+        console.log('favorites ', self.favorites.list);
+        let repeat = false;
+        self.favorites.list.forEach(element => {
+            if (element.faveTrailInfo.unique_id === fave.unique_id) {
+                repeat = true;
+            }
+        });
+
+        if (repeat == false) {
+            return $http.post('/favorites', fave)
+                .then((response) => {
+                    console.log(response);
+                    if (response.status == 201) {
+                        self.showSimpleToast();
+                        // alert('This is a toast...Trail Favorited!');
+                    }
+                    return response.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                    alert(`Error favoriting this trail! Please try again later.`);
+                })
+        } else {
+            return new Promise((resolve, reject) => {
+                if  (localStorage.getItem('loggedIn') == 'true'){
+                resolve('Repeat Fave');
+                } else {
+                    resolve('Must be logged in to add items!');
+
                 }
-                return response.data;
-            })
-            .catch((err) => {
-                console.log(err);
-                alert(`Error favoriting this trail! Please try again later.`);
-            })
+            });
+        }
     }
+
+
 
     self.getTrailInfo = function (lat, lon, id) {
         return $http.get(`/geoInfo/single/${lat}/${lon}/${id}`)
             .then((response) => {
-                // console.log('get geoInfo response ', response);
+                console.log('get geoInfo response ', response);
                 return response.data;
             })
             .catch((err) => {
@@ -60,10 +84,9 @@ app.service('MapService', ['$http', '$mdToast', function ($http, $mdToast) {
                 self.trailComments.list = response.data;
                 console.log('get comments ', response.data);
                 return response.data;
-
             })
             .catch((err) => {
-                alert(err + '!');
+                // alert(err + '!');
                 console.log('err on get comments ', err);
             })
     }
