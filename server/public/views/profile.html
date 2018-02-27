@@ -11,11 +11,11 @@
                         </md-input-container>
                     </form>
                 </div>
-                <div class="profile-username">
+                <!-- <div class="profile-username">
                     <h2 style="float:left;">
                         Username: {{vm.userObject.userName}}
                     </h2>
-                </div>
+                </div> -->
             </md-card-title-text>
             <md-card-title-media>
                 <div class="md-media-lg card-media profile-picture-container">
@@ -24,7 +24,7 @@
                     </button>
                     <md-button ng-if="vm.pictureChosen" aria-label="Edit Profile Picture" ng-cloak class="edit-profile-picture" ng-click="vm.openPicker()">
                         <span>Edit Picture</span>
-                        <img ng-cloak ng-src="{{vm.profilePicture.list.imageUrl}}" alt="Profile Picture" style="object-fit: cover;">
+                        <img ng-cloak ng-src="{{vm.profilePicture.list.imageUrl}}" alt="Profile Picture" class="profile-picture-img">
                     </md-button>
                     <!-- <img style="max-height:300px; max-width:300px;" ng-src="{{vm.profilePicture.list[vm.profilePicture.list.length-1].imageUrl}}" alt="profile picture"> -->
                 </div>

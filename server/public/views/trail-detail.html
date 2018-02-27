@@ -81,7 +81,7 @@
                         <input ng-model="vm.comment" md-maxlength="150" rows="2" md-select-on-focus class="comment-input"></textarea>
                     </md-input-container>
                     <div class="submit-button">
-                        <md-button flex="20">Submit</md-button>
+                        <md-button ng-click="vm.submitComment()" flex="20">Submit</md-button>
                     </div>
                 </div>
             </form>
