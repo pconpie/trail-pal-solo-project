@@ -4,5 +4,7 @@ app.controller('LandingController', ['StateService', '$location', function (Stat
         $location.path('/map')
         StateService.loadWelcomeModal();
     }
-    document.getElementById('header').style.display = "none";
+    if (document.getElementById('header')) {
+        document.getElementById('header').style.display = "none";
+    }
 }]);
