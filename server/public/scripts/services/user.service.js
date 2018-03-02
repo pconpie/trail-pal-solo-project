@@ -1,7 +1,9 @@
 app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, $location, $mdDialog) {
   console.log('UserService Loaded');
   const self = this;
-
+  self.landingPage = {
+    is: false
+  };
   self.currentNavItem = {
     value: ""
   };

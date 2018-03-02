@@ -4,7 +4,7 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     self.userService = UserService;
     document.getElementById('header').style.display = "block";
     self.loading = false;
-
+    UserService.landingPage.is = false;
     
     if ($route.current.loadedTemplateUrl == "/views/map.html") {
         UserService.currentNavItem.value = "map";

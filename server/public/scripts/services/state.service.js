@@ -22,6 +22,7 @@ app.service('StateService', ['$http', '$mdToast', '$mdDialog', function ($http, 
             targetEvent: ev,
             clickOutsideToClose: true
         })
+        
     }
 
     function WelcomeController($mdDialog, StateService) {
