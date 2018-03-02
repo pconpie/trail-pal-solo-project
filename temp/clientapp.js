@@ -3,9 +3,18 @@
 var app = angular.module('app', ['ngRoute', 'ngRateIt', 'ngMaterial']);
 
 app.config(function ($routeProvider, $mdThemingProvider) {
-    console.log('config loaded');
+    // console.log('config loaded');
 
-    $mdThemingProvider.theme('default').dark();
+    var newYellowMap = $mdThemingProvider.extendPalette('yellow', {
+        '500': '#fbc500',
+        'contrastDefaultColor': 'dark'
+    });
+
+    $mdThemingProvider.definePalette('newYellow', newYellowMap);
+
+    $mdThemingProvider.theme('default').dark().accentPalette('newYellow', {
+        'default': '500' // use shade 200 for default, and keep all other shades the same
+    });
 
     $routeProvider.when('/', {
         templateUrl: '/views/landing-page.html',
@@ -33,22 +42,26 @@ app.config(function ($routeProvider, $mdThemingProvider) {
             }
         }
     }).otherwise({
-        template: '<h1>404</h1>'
+        template: '<h1>404 Page not found.</h1>'
     });
 });
 
 'use strict';
 
-app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapService', 'UserService', '$routeParams', '$sce', function ($mdDialog, $mdToast, $http, MapService, UserService, $routeParams, $sce) {
+app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapService', 'UserService', '$routeParams', '$route', '$sce', function ($mdDialog, $mdToast, $http, MapService, UserService, $routeParams, $route, $sce) {
     var self = this;
-    console.log('in details controller');
+    // console.log('in details controller');
     self.trailComments = MapService.trailComments;
     var lat = $routeParams.trail_lat;
     var lon = $routeParams.trail_lon;
     var id = $routeParams.id;
+    UserService.landingPage.is = false;
+
+    // console.log($route);
+
     self.getTrail = function () {
         MapService.getTrailInfo(lat, lon, id).then(function (response) {
-            console.log('response favorite ', response);
+            // console.log('response favorite ', response);
             self.trailInfo = response;
             self.trailAverageRating = response.averageRating;
             // if (response.activities.length > 0) {
@@ -57,9 +70,15 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
             //         const element = activities[i];
             //         console.log('activities, ', element);
             // }
+        }).catch(function () {
+            swal('Error getting trail information! Please try again later.', '', 'warning');
         });
     };
     self.getTrail();
+
+    if ($route.current.loadedTemplateUrl == "/views/trail-detail.html") {
+        UserService.currentNavItem.value = "";
+    }
 
     self.renderHTML = function (html) {
         return $sce.trustAsHtml(html);
@@ -86,7 +105,7 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
         var comment = {};
         comment.comment = self.comment;
         comment.trailInfo = self.trailInfo;
-        console.log('clicked');
+        // console.log('clicked')
         MapService.submitComment(comment).then(function (response) {
             if (response == 'Must be logged in to add items!') {
                 swal('Must be logged in to comment! Please login or register to add comments.', '', 'error', {
@@ -114,9 +133,11 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
         fsClient.pick({
             fromSources: ["local_file_system", "url", "imagesearch", "facebook", "instagram", "googledrive", "dropbox", "clouddrive"]
         }).then(function (response) {
-            console.log('response stack ', response.filesUploaded[0].url);
+            // console.log('response stack ', response.filesUploaded[0].url);
             var imageUrl = response.filesUploaded[0].url;
             MapService.saveTrailImage(id, response).then(MapService.showImages(id));
+        }).catch(function () {
+            swal('Error uploading trail image! Please try again later.', '', 'warning');
         });
     };
 
@@ -143,19 +164,29 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
 
 'use strict';
 
-app.controller('LandingController', ['StateService', '$location', function (StateService, $location) {
+app.controller('HeaderController', ['UserService', '$location', function (UserService, $location) {
     var self = this;
+    self.landingPage = UserService.landingPage;
+}]);
+
+'use strict';
+
+app.controller('LandingController', ['StateService', 'UserService', '$location', function (StateService, UserService, $location) {
+    var self = this;
+    UserService.landingPage.is = true;
     self.enterSite = function () {
         $location.path('/map');
         StateService.loadWelcomeModal();
     };
-    document.getElementById('header').style.display = "none";
+    // if (document.getElementById('header')) {
+    //     document.getElementById('header').style.display = "none";
+    // }
 }]);
 
 'use strict';
 
 app.controller('LoginController', ['$location', 'UserService', function ($location, UserService) {
-  console.log('LoginController created');
+  // console.log('LoginController created');
   var self = this;
   self.userObject = UserService.userObject;
 
@@ -168,23 +199,29 @@ app.controller('LoginController', ['$location', 'UserService', function ($locati
     password: ''
   };
 
+  self.currentNavItem = UserService.currentNavItem;
+
   self.logout = UserService.logout;
   self.loggedIn = UserService.loggedIn;
 }]);
 
 'use strict';
 
-app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService', 'UserService', 'StateService', function ($mdDialog, $http, $compile, MapService, UserService, StateService) {
+app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService', 'UserService', 'StateService', '$route', function ($mdDialog, $http, $compile, MapService, UserService, StateService, $route) {
     var self = this;
-    console.log('in map service');
     self.userService = UserService;
-    document.getElementById('header').style.display = "block";
+    // document.getElementById('header').style.display = "block";
     self.loading = false;
+    UserService.landingPage.is = false;
+
+    if ($route.current.loadedTemplateUrl == "/views/map.html") {
+        UserService.currentNavItem.value = "map";
+    }
 
     var statesData = {};
     StateService.getStateBounds().then(function (response) {
         statesData = response;
-        console.log('data ', statesData);
+        // console.log('data ', statesData);
         geojson = L.geoJson(statesData, {
             style: style,
             onEachFeature: onEachFeature
@@ -192,10 +229,14 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     });
 
     var defaultCoords = [37.8, -96];
+
     var map = L.map('mapid', {
         zoomSnap: .2
     }).setView(defaultCoords, 4.5);
+
     self.mapReset = function () {
+        markers.clearLayers();
+        map.removeLayer(markers);
         map.setView(defaultCoords, 4.5);
     };
 
@@ -210,6 +251,25 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     function getColor(d) {
         return d > 400 ? '#00441b' : d > 300 ? '#006d2c' : d > 200 ? '#238b45' : d > 100 ? '#41ab5d' : d > 50 ? '#74c476' : '#a1d99b';
     }
+
+    var legend = L.control({ position: 'bottomright' });
+
+    legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = [0, 50, 100, 200, 300, 400],
+            labels = [];
+        div.innerHTML += '<h3 style="text-align:center;">Number of trails<br> per state</h3>';
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML += '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' + grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        }
+
+        return div;
+    };
+
+    legend.addTo(map);
 
     function highlightFeature(e) {
         var layer = e.target;
@@ -231,7 +291,9 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     }
 
     function zoomToFeature(e) {
-        console.log('State: ', e.target.feature.properties.name);
+        // console.log('State: ', e.target.feature.properties.name);
+        markers.clearLayers();
+        map.removeLayer(markers);
         findStateTrails(e.target.feature.properties.name);
         map.fitBounds(e.target.getBounds());
     }
@@ -261,7 +323,7 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     function findStateTrails(state) {
         self.loading = true;
         $http.get('/geoInfo/' + state).then(function (response) {
-            console.log('get geoInfo response ', response);
+            // console.log('get geoInfo response ', response);
             for (var i = 0; i < response.data.length; i++) {
                 var element = response.data[i];
                 // console.log('data ', element);
@@ -270,7 +332,8 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
             mapGeoJSONs(geoJSONs);
             // console.log('geoJsons ', geoJSONs);
         }).catch(function (err) {
-            console.log('get geoInfo err ', err);
+            // console.log('get geoInfo err ', err);
+            swal('Error finding trail data! Please try again later.', '', 'warning');
         }).finally(function () {
             // called no matter success or failure
             self.loading = false;
@@ -308,11 +371,11 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     //     });
     // }
 
+    var markers = L.markerClusterGroup({
+        showCoverageOnHover: false
+    });
 
     function mapGeoJSONs(array) {
-        var markers = L.markerClusterGroup({
-            showCoverageOnHover: false
-        });
         for (var i = 0; i < array.length; i++) {
             var element = array[i];
             var popup = L.popup.angular({
@@ -320,7 +383,6 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
                 controllerAs: 'vm',
                 controller: PopupInfoController
             });
-
             var marker = L.marker(element.geometry.coordinates).bindPopup(popup).openPopup();
             markers.addLayer(marker);
         }
@@ -350,13 +412,20 @@ exports.default = statesData;
 
 'use strict';
 
-app.controller('ProfileController', ['$location', 'UserService', function ($location, UserService) {
-    console.log('ProfileController created');
+app.controller('ProfileController', ['$location', 'UserService', '$route', function ($location, UserService, $route) {
+    // console.log('ProfileController created');
     var self = this;
     self.userObject = UserService.userObject;
     self.pictureChosen = false;
     self.logout = UserService.logout;
     self.loggedIn = UserService.loggedIn;
+    UserService.landingPage.is = false;
+
+    self.favorites = UserService.favorites;
+
+    if ($route.current.loadedTemplateUrl == "/views/profile.html") {
+        UserService.currentNavItem.value = "profile";
+    }
 
     self.profilePicture = UserService.profilePicture;
     var fsClient = filestack.init('ATXZUruRS5SwZq4htsjJwz');
@@ -364,7 +433,7 @@ app.controller('ProfileController', ['$location', 'UserService', function ($loca
         fsClient.pick({
             fromSources: ["local_file_system", "url", "imagesearch", "facebook", "instagram", "googledrive", "dropbox", "clouddrive"]
         }).then(function (response) {
-            console.log('response stack ', response.filesUploaded[0].url);
+            // console.log('response stack ', response.filesUploaded[0].url);
             var imageUrl = response.filesUploaded[0].url;
             //   handleFilestack(response);
             if (self.pictureChosen === true) {
@@ -375,10 +444,12 @@ app.controller('ProfileController', ['$location', 'UserService', function ($loca
                         self.getProfilePicture();
                     } else {
                         console.log('error saving picture'); //make alert
+                        swal('Error saving new profile picture! Please try again later.', '', 'warning');
                     }
                 }).then(pictureCheck());
             } else {
-                console.log('Something is messed up with profile pictures!');
+                // console.log('Something is messed up with profile pictures!');
+                swal('Error saving new profile picture! Please try again later.', '', 'warning');
             }
         });
     };
@@ -392,18 +463,20 @@ app.controller('ProfileController', ['$location', 'UserService', function ($loca
     function pictureCheck() {
         if (self.profilePicture.list) {
             self.pictureChosen = true;
-            console.log('HAZ PICTURE', self.pictureChosen);
+            // console.log('HAZ PICTURE', self.pictureChosen);
         } else {
             self.pictureChosen = false;
-            console.log('NO PICTURE', self.pictureChosen);
+            // console.log('NO PICTURE', self.pictureChosen);
         }
     }
 
     self.getProfilePicture = function () {
         UserService.getProfilePicture().then(function (response) {
             // console.log('some response ', response);
-            console.log('profile picture loaded', self.profilePicture);
+            // console.log('profile picture loaded', self.profilePicture);
             pictureCheck();
+        }).catch(function () {
+            swal('Error getting user profile picture! Please try again later.', '', 'warning');
         });
     };
     self.getProfilePicture();
@@ -411,31 +484,59 @@ app.controller('ProfileController', ['$location', 'UserService', function ($loca
 
 'use strict';
 
-app.controller('UserController', ['UserService', 'MapService', function (UserService, MapService) {
-  console.log('UserController created');
+app.controller('UserController', ['UserService', 'MapService', '$route', function (UserService, MapService, $route) {
+  // console.log('UserController created');
   var self = this;
   self.favorites = UserService.favorites;
   // UserService.getFavorites();
+  UserService.landingPage.is = false;
   self.userService = UserService;
   self.removeFavorite = function (fave) {
     // console.log('fave, ', fave);
-    UserService.removeFavorite(fave).then(function () {
-      UserService.getFavorites();
+    swal({
+      title: "Are you sure you want to delete this favorite?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+      className: "warning-alert"
+    }).then(function (willDelete) {
+      if (willDelete) {
+        UserService.removeFavorite(fave).then(function () {
+          UserService.getFavorites();
+        });
+        getFavesAndPictures();
+        swal({
+          title: "Your favorite has been removed!",
+          className: "warning-alert"
+        });
+      } else {
+        swal({
+          title: "Your favorite was not deleted!",
+          className: "warning-alert"
+        });
+      }
     });
   };
 
+  if ($route.current.loadedTemplateUrl == "/views/favorites.html") {
+    UserService.currentNavItem.value = "favorites";
+  }
+
   self.userObject = UserService.userObject;
   self.images = MapService.images;
+  self.totalImages = MapService.totalImages;
 
   self.toggleExplored = function (fave) {
     UserService.markExplored(fave).then(function () {
       getFavesAndPictures();
+    }).catch(function () {
+      swal('Error toggling trail as explored! Please try again later.', '', 'warning');
     });
   };
 
   function getFavesAndPictures() {
     UserService.getFavorites().then(function (response) {
-      console.log(response);
+      // console.log(response, 'stuff')
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
@@ -461,14 +562,19 @@ app.controller('UserController', ['UserService', 'MapService', function (UserSer
         }
       }
     }).catch(function (err) {
-      console.log('fucking err ', err);
+      // console.log('error getting favorites ');
+      swal('Error getting favorite pictures! Please try again later.', '', 'warning');
     });
   }
   getFavesAndPictures();
 
   self.rateTrail = function (trail, rating) {
-    console.log('trail ', trail, 'rating ', rating);
-    UserService.rateTrail(trail, rating);
+    // console.log('trail ', trail, 'rating ', rating);
+    UserService.rateTrail(trail, rating).then(function () {
+      getFavesAndPictures();
+    }).catch(function () {
+      swal('Error rating trail! Please try again later.', '', 'warning');
+    });
   };
   // self.imagePosition = 0;
   // self.imageBackward = function(){
@@ -482,7 +588,7 @@ app.controller('UserController', ['UserService', 'MapService', function (UserSer
 'use strict';
 
 app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, $mdToast, UserService) {
-    console.log('MapService');
+    // console.log('MapService')
     var self = this;
     self.trailInfo = {};
 
@@ -492,9 +598,9 @@ app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, 
     self.favorites = UserService.favorites;
 
     self.favoriteTrail = function (fave) {
-        console.log('IN map service favorite');
-        console.log('fave to post ', fave);
-        console.log('favorites ', self.favorites.list);
+        // console.log('IN map service favorite');
+        // console.log('fave to post ', fave);
+        // console.log('favorites ', self.favorites.list);
         var repeat = false;
         self.favorites.list.forEach(function (element) {
             if (element.faveTrailInfo.unique_id === fave.unique_id) {
@@ -504,15 +610,15 @@ app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, 
 
         if (repeat == false) {
             return $http.post('/favorites', fave).then(function (response) {
-                console.log(response);
+                // console.log(response);
                 if (response.status == 201) {
                     self.showSimpleToast();
                     // alert('This is a toast...Trail Favorited!');
                 }
                 return response.data;
             }).catch(function (err) {
-                console.log(err);
-                alert('Error favoriting this trail! Please try again later.');
+                // console.log(err);
+                swal('Error favoriting this trail! Please try again later.', '', 'warning');
             });
         } else {
             return new Promise(function (resolve, reject) {
@@ -527,22 +633,22 @@ app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, 
 
     self.getTrailInfo = function (lat, lon, id) {
         return $http.get('/geoInfo/single/' + lat + '/' + lon + '/' + id).then(function (response) {
-            console.log('get geoInfo response ', response);
+            // console.log('get geoInfo response ', response);
             return response.data;
         }).catch(function (err) {
-            console.log('get geoInfo err ', err);
-            alert('Error getting trail info from server! Please try again later.');
+            // console.log('get geoInfo err ', err);
+            swal('Error getting trail information from server! Please try again later.', '', 'warning');
         });
     };
 
     self.submitComment = function (comment) {
-        console.log('in submit comment ,', comment);
+        // console.log('in submit comment ,', comment);
         return $http.post('/comments', comment).then(function (response) {
-            console.log(response);
+            // console.log(response);
             return response.data;
         }).catch(function (err) {
-            console.log(err);
-            alert('Error submitting your comment! Please try again later.');
+            // console.log(err);
+            swal('Error submitting your comment! Please try again later.', '', 'warning');
         });
     };
 
@@ -550,11 +656,12 @@ app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, 
     self.getComments = function (trailID) {
         return $http.get('/comments/' + trailID).then(function (response) {
             self.trailComments.list = response.data;
-            console.log('get comments ', response.data);
+            // console.log('get comments ', response.data);
             return response.data;
         }).catch(function (err) {
             // alert(err + '!');
-            console.log('err on get comments ', err);
+            // console.log('err on get comments ', err);
+            swal('Error getting comments! Please try again later.', '', 'warning');
         });
     };
 
@@ -566,19 +673,21 @@ app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, 
         return $http.get('/images/trailImage/' + id).then(function (response) {
             self.images.list = response.data;
             self.totalImages.count = self.images.list.length;
-            console.log('total images ', self.totalImages.count);
-            console.log('get image response ', response);
+            // console.log('total images ', self.totalImages.count);
+            // console.log('get image response ', response);
         }).catch(function (err) {
-            console.log('get images err ', err);
+            // console.log('get images err ', err);
+            swal('Error getting trail pictures! Please try again later.', '', 'warning');
         });
     };
 
     self.saveTrailImage = function (trail, image) {
         return $http.post('/images/trailImage/' + trail, image).then(function (response) {
             // self.showImages();
-            console.log('save image response ', response);
+            // console.log('save image response ', response);
         }).catch(function (err) {
-            console.log('err saving image ', err);
+            // console.log('err saving image ', err);
+            swal('Error saving trail picture! Please try again later.', '', 'warning');
         });
     };
 }]);
@@ -594,7 +703,7 @@ app.service('StateService', ['$http', '$mdToast', '$mdDialog', function ($http, 
             return response.data;
         }).catch(function (err) {
             swal('Error loading state data!', '', 'warning');
-            console.log('load get err ', err);
+            // console.log('load get err ', err);
         });
     };
 
@@ -621,14 +730,14 @@ app.service('StateService', ['$http', '$mdToast', '$mdDialog', function ($http, 
         };
 
         self.success = function (answer) {
-            console.log('answer', answer);
+            // console.log('answer', answer);
             swal(answer, '', {
                 className: "success-alert"
             });
             // $mdDialog.hide(answer);
         };
         self.error = function (answer) {
-            console.log('answer', answer);
+            // console.log('answer', answer);
             swal(answer, '', 'error', {
                 className: "error-alert"
             });
@@ -640,8 +749,14 @@ app.service('StateService', ['$http', '$mdToast', '$mdDialog', function ($http, 
 'use strict';
 
 app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, $location, $mdDialog) {
-  console.log('UserService Loaded');
+  // console.log('UserService Loaded');
   var self = this;
+  self.landingPage = {
+    is: false
+  };
+  self.currentNavItem = {
+    value: ""
+  };
 
   self.rateTrail = function (trail, rating) {
     var newTrailRating = {
@@ -656,7 +771,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
       swal('Error marking trail as explored! Please try again later.', '', 'error', {
         className: "error-alert"
       });
-      console.log('err from explore put ', err);
+      // console.log('err from explore put ', err);
     });
   };
 
@@ -668,7 +783,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
       swal('Error marking trail as explored! Please try again later.', '', 'error', {
         className: "error-alert"
       });
-      console.log('err from explore put ', err);
+      // console.log('err from explore put ', err);
     });
   };
 
@@ -690,18 +805,20 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
       swal('Error deleting favorite! Please try again later.', '', 'error', {
         className: "error-alert"
       });
-      console.log('delete favorite error ', err);
+      // console.log('delete favorite error ', err);
     });
   };
 
   self.getFavorites = function () {
     return $http.get('/favorites').then(function (response) {
-      console.log('got all favorites!', response.data);
+      // console.log('got all favorites!', response.data);
       self.favorites.list = response.data;
       return response.data;
     }).catch(function (err) {
-      swal(err + '!', '', 'error', { className: "error-alert" });
-      console.log('err on get favorites ', err);
+      swal(err + '!', '', 'error', {
+        className: "error-alert"
+      });
+      // console.log('err on get favorites ', err);
     });
   };
 
@@ -726,20 +843,22 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         // console.log('UserService -- getuser -- User Data: ', self.userObject.userName);
         return response.data;
       } else {
-        console.log('UserService -- getuser -- failure');
+        // console.log('UserService -- getuser -- failure');
+        swal('Error getting user information! Please try again later.', '', 'warning');
         // user has no session, bounce them back to the login page
         $location.path("/home");
       }
     }, function (response) {
-      console.log('UserService -- getuser -- failure: ', response);
+      // console.log('UserService -- getuser -- failure: ', response);
+      swal('Error getting user information! Please try again later.', '', 'warning');
       $location.path("/home");
     });
   };
 
   self.logout = function () {
-    console.log('UserService -- logout');
+    // console.log('UserService -- logout');
     return $http.get('/api/user/logout').then(function (response) {
-      console.log('UserService -- logout -- logged out');
+      // console.log('UserService -- logout -- logged out');
       self.userObject.loggedIn = false;
       localStorage.setItem('loggedIn', false);
       $location.path("/map");
@@ -781,8 +900,8 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
           self.success('Successfully registered, you may now login!');
           // $location.path('/home');
         }, function (response) {
-          console.log('error');
-          self.error("Something went wrong. Please try again.");
+          // console.log('error');
+          self.error("Username is taken. Please pick a new username and try again.");
         });
       }
     };
@@ -792,7 +911,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
     self.getFavorites = UserService.getFavorites;
 
     self.login = function (user) {
-      console.log('user ', user);
+      // console.log('user ', user);
       if (user === undefined || user.username === '' || user.password === '') {
         self.error("Enter your username and password!");
       } else {
@@ -802,14 +921,14 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
             self.userObject.loggedIn = true;
             localStorage.setItem('loggedIn', true);
             self.hide();
-            $location.path('/favorites');
+            // $location.path('/profile');
             self.getFavorites();
           } else {
-            console.log('failure error post: ', response);
+            // console.log('failure error post: ', response);
             self.error("Incorrect credentials. Please try again.");
           }
         }).catch(function (response) {
-          console.log('failure error: ', response);
+          // console.log('failure error: ', response);
           self.error("Incorrect credentials. Please try again.");
         });
       }
@@ -823,14 +942,14 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
     };
 
     self.success = function (answer) {
-      console.log('answer', answer);
+      // console.log('answer', answer);
       swal(answer, '', {
         className: "success-alert"
       });
       // $mdDialog.hide(answer);
     };
     self.error = function (answer) {
-      console.log('answer', answer);
+      // console.log('answer', answer);
       swal(answer, '', 'error', {
         className: "error-alert"
       });
@@ -842,10 +961,11 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
   self.getProfilePicture = function () {
     return $http.get('/images/user').then(function (response) {
       self.profilePicture.list = response.data;
-      console.log('get profile image response ', response);
+      // console.log('get profile image response ', response);
       // console.log('self list', self.profilePicture);
     }).catch(function (err) {
-      console.log('get profile images err ', err);
+      // console.log('get profile images err ', err);
+      swal('Error retrieving profile picture! Please try again later.', '', 'warning');
     });
   };
 
@@ -853,26 +973,29 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
     return $http.put('/images/user/' + self.profilePicture.list._id, image).then(function (response) {
       // console.log('put request for profile image', response);
     }).catch(function (err) {
-      console.log('put err for profile image', err);
+      // console.log('put err for profile image', err);
+      swal('Error updating profile picture! Please try again later.', '', 'warning');
     });
   };
 
   self.saveProfilePicture = function (image) {
     return $http.post('/images/user', image).then(function (response) {
-      console.log('save profile image response ', response);
+      // console.log('save profile image response ', response);
       return response;
     }).catch(function (err) {
-      console.log('err saving profile image ', err);
+      // console.log('err saving profile image ', err);
+      swal('Error saving profile picture! Please try again later.', '', 'warning');
     });
   };
 
   self.updateUserInfo = function (user) {
-    console.log('user ', user);
+    // console.log('user ', user);
     return $http.put('/api/user', user).then(function (response) {
       self.userObject.userFullName = user.userFullName;
       // console.log('put user response ', response);
     }).catch(function (err) {
-      console.log('put user err ', err);
+      // console.log('put user err ', err);
+      swal('Error updating name! Please try again later.', '', 'warning');
     });
   };
 }]);

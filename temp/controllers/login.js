@@ -1,7 +1,7 @@
 'use strict';
 
 app.controller('LoginController', ['$location', 'UserService', function ($location, UserService) {
-  console.log('LoginController created');
+  // console.log('LoginController created');
   var self = this;
   self.userObject = UserService.userObject;
 
@@ -13,6 +13,8 @@ app.controller('LoginController', ['$location', 'UserService', function ($locati
     username: '',
     password: ''
   };
+
+  self.currentNavItem = UserService.currentNavItem;
 
   self.logout = UserService.logout;
   self.loggedIn = UserService.loggedIn;

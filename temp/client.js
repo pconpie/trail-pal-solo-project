@@ -3,9 +3,18 @@
 var app = angular.module('app', ['ngRoute', 'ngRateIt', 'ngMaterial']);
 
 app.config(function ($routeProvider, $mdThemingProvider) {
-    console.log('config loaded');
+    // console.log('config loaded');
 
-    $mdThemingProvider.theme('default').dark();
+    var newYellowMap = $mdThemingProvider.extendPalette('yellow', {
+        '500': '#fbc500',
+        'contrastDefaultColor': 'dark'
+    });
+
+    $mdThemingProvider.definePalette('newYellow', newYellowMap);
+
+    $mdThemingProvider.theme('default').dark().accentPalette('newYellow', {
+        'default': '500' // use shade 200 for default, and keep all other shades the same
+    });
 
     $routeProvider.when('/', {
         templateUrl: '/views/landing-page.html',
@@ -33,6 +42,6 @@ app.config(function ($routeProvider, $mdThemingProvider) {
             }
         }
     }).otherwise({
-        template: '<h1>404</h1>'
+        template: '<h1>404 Page not found.</h1>'
     });
 });

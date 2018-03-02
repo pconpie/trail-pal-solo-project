@@ -1,15 +1,19 @@
 'use strict';
 
-app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapService', 'UserService', '$routeParams', '$sce', function ($mdDialog, $mdToast, $http, MapService, UserService, $routeParams, $sce) {
+app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapService', 'UserService', '$routeParams', '$route', '$sce', function ($mdDialog, $mdToast, $http, MapService, UserService, $routeParams, $route, $sce) {
     var self = this;
-    console.log('in details controller');
+    // console.log('in details controller');
     self.trailComments = MapService.trailComments;
     var lat = $routeParams.trail_lat;
     var lon = $routeParams.trail_lon;
     var id = $routeParams.id;
+    UserService.landingPage.is = false;
+
+    // console.log($route);
+
     self.getTrail = function () {
         MapService.getTrailInfo(lat, lon, id).then(function (response) {
-            console.log('response favorite ', response);
+            // console.log('response favorite ', response);
             self.trailInfo = response;
             self.trailAverageRating = response.averageRating;
             // if (response.activities.length > 0) {
@@ -18,9 +22,15 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
             //         const element = activities[i];
             //         console.log('activities, ', element);
             // }
+        }).catch(function () {
+            swal('Error getting trail information! Please try again later.', '', 'warning');
         });
     };
     self.getTrail();
+
+    if ($route.current.loadedTemplateUrl == "/views/trail-detail.html") {
+        UserService.currentNavItem.value = "";
+    }
 
     self.renderHTML = function (html) {
         return $sce.trustAsHtml(html);
@@ -47,7 +57,7 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
         var comment = {};
         comment.comment = self.comment;
         comment.trailInfo = self.trailInfo;
-        console.log('clicked');
+        // console.log('clicked')
         MapService.submitComment(comment).then(function (response) {
             if (response == 'Must be logged in to add items!') {
                 swal('Must be logged in to comment! Please login or register to add comments.', '', 'error', {
@@ -75,9 +85,11 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
         fsClient.pick({
             fromSources: ["local_file_system", "url", "imagesearch", "facebook", "instagram", "googledrive", "dropbox", "clouddrive"]
         }).then(function (response) {
-            console.log('response stack ', response.filesUploaded[0].url);
+            // console.log('response stack ', response.filesUploaded[0].url);
             var imageUrl = response.filesUploaded[0].url;
             MapService.saveTrailImage(id, response).then(MapService.showImages(id));
+        }).catch(function () {
+            swal('Error uploading trail image! Please try again later.', '', 'warning');
         });
     };
 

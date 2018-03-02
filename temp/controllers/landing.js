@@ -1,10 +1,13 @@
 'use strict';
 
-app.controller('LandingController', ['StateService', '$location', function (StateService, $location) {
+app.controller('LandingController', ['StateService', 'UserService', '$location', function (StateService, UserService, $location) {
     var self = this;
+    UserService.landingPage.is = true;
     self.enterSite = function () {
         $location.path('/map');
         StateService.loadWelcomeModal();
     };
-    document.getElementById('header').style.display = "none";
+    // if (document.getElementById('header')) {
+    //     document.getElementById('header').style.display = "none";
+    // }
 }]);
