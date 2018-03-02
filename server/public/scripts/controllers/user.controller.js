@@ -1,5 +1,5 @@
 app.controller('UserController', ['UserService', 'MapService', '$route', function (UserService, MapService, $route) {
-  console.log('UserController created');
+  // console.log('UserController created');
   var self = this;
   self.favorites = UserService.favorites;
   // UserService.getFavorites();
@@ -47,28 +47,35 @@ app.controller('UserController', ['UserService', 'MapService', '$route', functio
     UserService.markExplored(fave)
       .then(() => {
         getFavesAndPictures();
+      })
+      .catch(()=>{
+        swal('Error toggling trail as explored! Please try again later.', '', 'warning');
       });
   };
 
   function getFavesAndPictures() {
     UserService.getFavorites()
       .then((response) => {
-        console.log(response, 'stuff')
+        // console.log(response, 'stuff')
         for (trail of response) {
           MapService.showImages(trail.faveTrailInfo.unique_id);
         }
       })
       .catch((err) => {
-        console.log('fucking err ', err)
+        // console.log('error getting favorites ');
+        swal('Error getting favorite pictures! Please try again later.', '', 'warning');
       });
   }
   getFavesAndPictures();
 
   self.rateTrail = function (trail, rating) {
-    console.log('trail ', trail, 'rating ', rating);
+    // console.log('trail ', trail, 'rating ', rating);
     UserService.rateTrail(trail, rating)
       .then(() => {
         getFavesAndPictures();
+      })
+      .catch(()=>{
+        swal('Error rating trail! Please try again later.', '', 'warning');
       })
   }
   // self.imagePosition = 0;

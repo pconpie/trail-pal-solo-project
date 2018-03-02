@@ -1,18 +1,18 @@
 app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapService', 'UserService', '$routeParams', '$route', '$sce', function ($mdDialog, $mdToast, $http, MapService, UserService, $routeParams, $route, $sce) {
     const self = this;
-    console.log('in details controller');
+    // console.log('in details controller');
     self.trailComments = MapService.trailComments;
     let lat = $routeParams.trail_lat;
     let lon = $routeParams.trail_lon;
     let id = $routeParams.id;
     UserService.landingPage.is = false;
-    
-    console.log($route);
+
+    // console.log($route);
     
     self.getTrail = function () {
         MapService.getTrailInfo(lat, lon, id)
             .then(response => {
-                console.log('response favorite ', response);
+                // console.log('response favorite ', response);
                 self.trailInfo = response;
                 self.trailAverageRating = response.averageRating;
                 // if (response.activities.length > 0) {
@@ -22,6 +22,9 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
                 //         console.log('activities, ', element);
                 // }
 
+            })
+            .catch(()=>{
+                swal('Error getting trail information! Please try again later.', '', 'warning');
             });
     }
     self.getTrail();
@@ -56,7 +59,7 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
         let comment = {};
         comment.comment = self.comment;
         comment.trailInfo = self.trailInfo;
-        console.log('clicked')
+        // console.log('clicked')
         MapService.submitComment(comment)
             .then((response) => {
                 if (response == 'Must be logged in to add items!') {
@@ -85,9 +88,12 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
         fsClient.pick({
             fromSources: ["local_file_system", "url", "imagesearch", "facebook", "instagram", "googledrive", "dropbox", "clouddrive"]
         }).then((response) => {
-            console.log('response stack ', response.filesUploaded[0].url);
+            // console.log('response stack ', response.filesUploaded[0].url);
             let imageUrl = response.filesUploaded[0].url;
             MapService.saveTrailImage(id, response).then(MapService.showImages(id));
+        })
+        .catch(()=>{
+            swal('Error uploading trail image! Please try again later.', '', 'warning');
         });
     }
 

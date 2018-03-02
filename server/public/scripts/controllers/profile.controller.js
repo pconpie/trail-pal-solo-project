@@ -1,5 +1,5 @@
 app.controller('ProfileController', ['$location', 'UserService', '$route', function ($location, UserService, $route) {
-    console.log('ProfileController created');
+    // console.log('ProfileController created');
     var self = this;
     self.userObject = UserService.userObject;
     self.pictureChosen = false;
@@ -19,7 +19,7 @@ app.controller('ProfileController', ['$location', 'UserService', '$route', funct
         fsClient.pick({
             fromSources: ["local_file_system", "url", "imagesearch", "facebook", "instagram", "googledrive", "dropbox", "clouddrive"]
         }).then((response) => {
-            console.log('response stack ', response.filesUploaded[0].url);
+            // console.log('response stack ', response.filesUploaded[0].url);
             let imageUrl = response.filesUploaded[0].url;
             //   handleFilestack(response);
             if (self.pictureChosen === true) {
@@ -30,10 +30,12 @@ app.controller('ProfileController', ['$location', 'UserService', '$route', funct
                         self.getProfilePicture()
                     } else {
                         console.log('error saving picture');//make alert
+                        swal('Error saving new profile picture! Please try again later.', '', 'warning');
                     }
                 }).then(pictureCheck());
             } else {
-                console.log('Something is messed up with profile pictures!');
+                // console.log('Something is messed up with profile pictures!');
+                swal('Error saving new profile picture! Please try again later.', '', 'warning');
                 }
             });
         }   
@@ -47,10 +49,10 @@ app.controller('ProfileController', ['$location', 'UserService', '$route', funct
     function pictureCheck() {
         if (self.profilePicture.list) {
             self.pictureChosen = true;
-            console.log('HAZ PICTURE', self.pictureChosen);
+            // console.log('HAZ PICTURE', self.pictureChosen);
         } else {
             self.pictureChosen = false
-            console.log('NO PICTURE', self.pictureChosen);
+            // console.log('NO PICTURE', self.pictureChosen);
         }
     }
 
@@ -58,9 +60,11 @@ app.controller('ProfileController', ['$location', 'UserService', '$route', funct
         UserService.getProfilePicture()
             .then((response) => {
                 // console.log('some response ', response);
-                console.log('profile picture loaded', self.profilePicture);
+                // console.log('profile picture loaded', self.profilePicture);
                 pictureCheck();
-
+            })
+            .catch(()=>{
+                swal('Error getting user profile picture! Please try again later.', '', 'warning');
             });
     }
     self.getProfilePicture();

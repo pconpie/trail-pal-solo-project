@@ -1,5 +1,5 @@
 app.controller('LoginController', ['$location', 'UserService', function ($location, UserService) {
-  console.log('LoginController created');
+  // console.log('LoginController created');
   var self = this;
   self.userObject = UserService.userObject;
 

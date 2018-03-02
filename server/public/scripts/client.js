@@ -2,7 +2,7 @@ let app = angular.module('app', ['ngRoute', 'ngRateIt', 'ngMaterial']);
 
 
 app.config(function ($routeProvider, $mdThemingProvider) {
-    console.log('config loaded');
+    // console.log('config loaded');
 
     var newYellowMap = $mdThemingProvider.extendPalette('yellow', {
         '500': '#fbc500',
@@ -49,7 +49,7 @@ app.config(function ($routeProvider, $mdThemingProvider) {
             }
         })
         .otherwise({
-            template: '<h1>404</h1>'
+            template: '<h1>404 Page not found.</h1>'
         })
 
 

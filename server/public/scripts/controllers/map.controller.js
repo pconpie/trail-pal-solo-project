@@ -1,8 +1,7 @@
 app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService', 'UserService', 'StateService', '$route', function ($mdDialog, $http, $compile, MapService, UserService, StateService, $route) {
     const self = this;
-    console.log('in map service');
     self.userService = UserService;
-    document.getElementById('header').style.display = "block";
+    // document.getElementById('header').style.display = "block";
     self.loading = false;
     UserService.landingPage.is = false;
     
@@ -13,7 +12,7 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     let statesData = {};
     StateService.getStateBounds().then((response) => {
         statesData = response;
-        console.log('data ', statesData);
+        // console.log('data ', statesData);
         geojson = L.geoJson(statesData, {
             style: style,
             onEachFeature: onEachFeature
@@ -91,7 +90,7 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     }
 
     function zoomToFeature(e) {
-        console.log('State: ', e.target.feature.properties.name);
+        // console.log('State: ', e.target.feature.properties.name);
         markers.clearLayers();
         map.removeLayer(markers);
         findStateTrails(e.target.feature.properties.name);
@@ -125,7 +124,7 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
         self.loading = true;
         $http.get(`/geoInfo/${state}`)
             .then((response) => {
-                console.log('get geoInfo response ', response);
+                // console.log('get geoInfo response ', response);
                 for (let i = 0; i < response.data.length; i++) {
                     let element = response.data[i];
                     // console.log('data ', element);
@@ -135,11 +134,11 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
                 // console.log('geoJsons ', geoJSONs);
             })
             .catch((err) => {
-                console.log('get geoInfo err ', err);
+                // console.log('get geoInfo err ', err);
+                swal('Error finding trail data! Please try again later.', '', 'warning');
             })
             .finally(function () {
                 // called no matter success or failure
-
                 self.loading = false;
             });
     }

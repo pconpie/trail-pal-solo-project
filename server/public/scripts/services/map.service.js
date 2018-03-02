@@ -1,5 +1,5 @@
 app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, $mdToast, UserService) {
-    console.log('MapService')
+    // console.log('MapService')
     const self = this;
     self.trailInfo = {};
 
@@ -14,9 +14,9 @@ app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, 
 
 
     self.favoriteTrail = function (fave) {
-        console.log('IN map service favorite');
-        console.log('fave to post ', fave);
-        console.log('favorites ', self.favorites.list);
+        // console.log('IN map service favorite');
+        // console.log('fave to post ', fave);
+        // console.log('favorites ', self.favorites.list);
         let repeat = false;
         self.favorites.list.forEach(element => {
             if (element.faveTrailInfo.unique_id === fave.unique_id) {
@@ -27,7 +27,7 @@ app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, 
         if (repeat == false) {
             return $http.post('/favorites', fave)
                 .then((response) => {
-                    console.log(response);
+                    // console.log(response);
                     if (response.status == 201) {
                         self.showSimpleToast();
                         // alert('This is a toast...Trail Favorited!');
@@ -35,8 +35,8 @@ app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, 
                     return response.data;
                 })
                 .catch((err) => {
-                    console.log(err);
-                    alert(`Error favoriting this trail! Please try again later.`);
+                    // console.log(err);
+                    swal('Error favoriting this trail! Please try again later.', '', 'warning');
                 })
         } else {
             return new Promise((resolve, reject) => {
@@ -44,7 +44,6 @@ app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, 
                 resolve('Repeat Fave');
                 } else {
                     resolve('Must be logged in to add items!');
-
                 }
             });
         }
@@ -55,25 +54,26 @@ app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, 
     self.getTrailInfo = function (lat, lon, id) {
         return $http.get(`/geoInfo/single/${lat}/${lon}/${id}`)
             .then((response) => {
-                console.log('get geoInfo response ', response);
+                // console.log('get geoInfo response ', response);
                 return response.data;
             })
             .catch((err) => {
-                console.log('get geoInfo err ', err);
-                alert(`Error getting trail info from server! Please try again later.`);
+                // console.log('get geoInfo err ', err);
+                swal('Error getting trail information from server! Please try again later.', '', 'warning');
+
             })
     }
 
     self.submitComment = function (comment) {
-        console.log('in submit comment ,', comment);
+        // console.log('in submit comment ,', comment);
         return $http.post('/comments', comment)
             .then((response) => {
-                console.log(response);
+                // console.log(response);
                 return response.data;
             })
             .catch((err) => {
-                console.log(err);
-                alert(`Error submitting your comment! Please try again later.`);
+                // console.log(err);
+                swal('Error submitting your comment! Please try again later.', '', 'warning');
             })
     }
 
@@ -82,12 +82,13 @@ app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, 
         return $http.get(`/comments/${trailID}`)
             .then((response) => {
                 self.trailComments.list = response.data;
-                console.log('get comments ', response.data);
+                // console.log('get comments ', response.data);
                 return response.data;
             })
             .catch((err) => {
                 // alert(err + '!');
-                console.log('err on get comments ', err);
+                // console.log('err on get comments ', err);
+                swal('Error getting comments! Please try again later.', '', 'warning');
             })
     }
 
@@ -100,11 +101,12 @@ app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, 
             .then((response) => {
                 self.images.list = response.data;
                 self.totalImages.count = self.images.list.length;
-                console.log('total images ', self.totalImages.count);
-                console.log('get image response ', response);
+                // console.log('total images ', self.totalImages.count);
+                // console.log('get image response ', response);
             })
             .catch((err) => {
-                console.log('get images err ', err);
+                // console.log('get images err ', err);
+                swal('Error getting trail pictures! Please try again later.', '', 'warning');
             })
     }
 
@@ -112,10 +114,11 @@ app.service('MapService', ['$http', '$mdToast', 'UserService', function ($http, 
         return $http.post(`/images/trailImage/${trail}`, image)
             .then((response) => {
                 // self.showImages();
-                console.log('save image response ', response);
+                // console.log('save image response ', response);
             })
             .catch((err) => {
-                console.log('err saving image ', err);
+                // console.log('err saving image ', err);
+                swal('Error saving trail picture! Please try again later.', '', 'warning');
             });
 
     }

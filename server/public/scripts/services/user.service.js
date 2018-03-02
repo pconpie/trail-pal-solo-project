@@ -1,5 +1,5 @@
 app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, $location, $mdDialog) {
-  console.log('UserService Loaded');
+  // console.log('UserService Loaded');
   const self = this;
   self.landingPage = {
     is: false
@@ -23,7 +23,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         swal(`Error marking trail as explored! Please try again later.`, '', 'error', {
           className: "error-alert",
         });
-        console.log('err from explore put ', err);
+        // console.log('err from explore put ', err);
       });
   }
 
@@ -37,7 +37,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         swal(`Error marking trail as explored! Please try again later.`, '', 'error', {
           className: "error-alert",
         });
-        console.log('err from explore put ', err);
+        // console.log('err from explore put ', err);
       });
   };
 
@@ -61,14 +61,14 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         swal('Error deleting favorite! Please try again later.', '', 'error', {
           className: "error-alert",
         });
-        console.log('delete favorite error ', err);
+        // console.log('delete favorite error ', err);
       });
   }
 
   self.getFavorites = function () {
     return $http.get('/favorites')
       .then((response) => {
-        console.log('got all favorites!', response.data);
+        // console.log('got all favorites!', response.data);
         self.favorites.list = response.data;
         return response.data;
       })
@@ -76,7 +76,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         swal(err + '!', '', 'error', {
           className: "error-alert"
         });
-        console.log('err on get favorites ', err);
+        // console.log('err on get favorites ', err);
       });
   }
 
@@ -103,22 +103,24 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
             // console.log('UserService -- getuser -- User Data: ', self.userObject.userName);
             return response.data;
           } else {
-            console.log('UserService -- getuser -- failure');
+            // console.log('UserService -- getuser -- failure');
+            swal('Error getting user information! Please try again later.', '', 'warning');
             // user has no session, bounce them back to the login page
             $location.path("/home");
           }
         },
         function (response) {
-          console.log('UserService -- getuser -- failure: ', response);
+          // console.log('UserService -- getuser -- failure: ', response);
+          swal('Error getting user information! Please try again later.', '', 'warning');
           $location.path("/home");
         });
   }
 
   self.logout = function () {
-    console.log('UserService -- logout');
+    // console.log('UserService -- logout');
     return $http.get('/api/user/logout')
       .then(function (response) {
-        console.log('UserService -- logout -- logged out');
+        // console.log('UserService -- logout -- logged out');
         self.userObject.loggedIn = false;
         localStorage.setItem('loggedIn', false);
         $location.path("/map");
@@ -163,7 +165,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
               // $location.path('/home');
             },
             function (response) {
-              console.log('error');
+              // console.log('error');
               self.error("Username is taken. Please pick a new username and try again.");
             });
       }
@@ -174,7 +176,7 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
     self.getFavorites = UserService.getFavorites;
 
     self.login = function (user) {
-      console.log('user ', user);
+      // console.log('user ', user);
       if (user === undefined || user.username === '' || user.password === '') {
         self.error("Enter your username and password!");
       } else {
@@ -189,12 +191,12 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
                 // $location.path('/profile');
                 self.getFavorites();
               } else {
-                console.log('failure error post: ', response);
+                // console.log('failure error post: ', response);
                 self.error("Incorrect credentials. Please try again.");
               }
             })
           .catch(function (response) {
-            console.log('failure error: ', response);
+            // console.log('failure error: ', response);
             self.error("Incorrect credentials. Please try again.");
           });
       }
@@ -209,14 +211,14 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
     };
 
     self.success = function (answer) {
-      console.log('answer', answer);
+      // console.log('answer', answer);
       swal(answer, '', {
         className: "success-alert",
       });
       // $mdDialog.hide(answer);
     };
     self.error = function (answer) {
-      console.log('answer', answer);
+      // console.log('answer', answer);
       swal(answer, '', 'error', {
         className: "error-alert",
       });
@@ -229,12 +231,13 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
     return $http.get(`/images/user`)
       .then((response) => {
         self.profilePicture.list = response.data;
-        console.log('get profile image response ', response);
+        // console.log('get profile image response ', response);
         // console.log('self list', self.profilePicture);
 
       })
       .catch((err) => {
-        console.log('get profile images err ', err);
+        // console.log('get profile images err ', err);
+        swal('Error retrieving profile picture! Please try again later.', '', 'warning');
       })
   }
 
@@ -244,30 +247,33 @@ app.service('UserService', ['$http', '$location', '$mdDialog', function ($http, 
         // console.log('put request for profile image', response);
       })
       .catch((err) => {
-        console.log('put err for profile image', err);
+        // console.log('put err for profile image', err);
+        swal('Error updating profile picture! Please try again later.', '', 'warning');
       });
   };
 
   self.saveProfilePicture = function (image) {
     return $http.post(`/images/user`, image)
       .then((response) => {
-        console.log('save profile image response ', response);
+        // console.log('save profile image response ', response);
         return response;
       })
       .catch((err) => {
-        console.log('err saving profile image ', err);
+        // console.log('err saving profile image ', err);
+        swal('Error saving profile picture! Please try again later.', '', 'warning');
       });
   }
 
   self.updateUserInfo = function (user) {
-    console.log('user ', user);
+    // console.log('user ', user);
     return $http.put('/api/user', user)
       .then((response) => {
         self.userObject.userFullName = user.userFullName;
         // console.log('put user response ', response);
       })
       .catch((err) => {
-        console.log('put user err ', err);
+        // console.log('put user err ', err);
+        swal('Error updating name! Please try again later.', '', 'warning');
       })
   }
 }]);
