@@ -3,6 +3,7 @@ app.controller('UserController', ['UserService', 'MapService', '$route', functio
   var self = this;
   self.favorites = UserService.favorites;
   // UserService.getFavorites();
+  UserService.landingPage.is = false;
   self.userService = UserService;
   self.removeFavorite = function (fave) {
     // console.log('fave, ', fave);

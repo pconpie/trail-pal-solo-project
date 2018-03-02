@@ -5,6 +5,7 @@ app.controller('ProfileController', ['$location', 'UserService', '$route', funct
     self.pictureChosen = false;
     self.logout = UserService.logout;
     self.loggedIn = UserService.loggedIn;
+    UserService.landingPage.is = false;
 
     self.favorites = UserService.favorites;
     

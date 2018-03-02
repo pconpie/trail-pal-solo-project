@@ -5,6 +5,8 @@ app.controller('DetailsController', ['$mdDialog', '$mdToast', '$http', 'MapServi
     let lat = $routeParams.trail_lat;
     let lon = $routeParams.trail_lon;
     let id = $routeParams.id;
+    UserService.landingPage.is = false;
+    
     console.log($route);
     
     self.getTrail = function () {
