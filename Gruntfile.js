@@ -124,7 +124,7 @@ module.exports = function(grunt) {
         // Current working directory
         cwd: 'server/public/views/',
         // List of files to copy
-        src: ['*.html', '**/*.css'], // [*.*] copies all file extensions
+        src: ['*.html', 'styles/*.css', 'styles/assets/*.*'], // [*.*] copies all file extensions
         // Destination for the files
         dest: 'server/public/views/'
       }
