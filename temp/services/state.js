@@ -9,7 +9,7 @@ app.service('StateService', ['$http', '$mdToast', '$mdDialog', function ($http, 
             return response.data;
         }).catch(function (err) {
             swal('Error loading state data!', '', 'warning');
-            console.log('load get err ', err);
+            // console.log('load get err ', err);
         });
     };
 
@@ -36,14 +36,14 @@ app.service('StateService', ['$http', '$mdToast', '$mdDialog', function ($http, 
         };
 
         self.success = function (answer) {
-            console.log('answer', answer);
+            // console.log('answer', answer);
             swal(answer, '', {
                 className: "success-alert"
             });
             // $mdDialog.hide(answer);
         };
         self.error = function (answer) {
-            console.log('answer', answer);
+            // console.log('answer', answer);
             swal(answer, '', 'error', {
                 className: "error-alert"
             });

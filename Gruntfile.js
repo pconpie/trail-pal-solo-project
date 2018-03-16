@@ -119,16 +119,25 @@ module.exports = function(grunt) {
         src: ['L.Popup.Angular.js'],
         dest: 'server/public/vendors/'
       },
-      htmlcss: {
+      html: {
         expand: true,
         // Current working directory
         cwd: 'server/public/views/',
         // List of files to copy
-        src: ['*.html', 'styles/*.css', 'styles/assets/*.*'], // [*.*] copies all file extensions
+        src: ['*.html'], // [*.*] copies all file extensions
         // Destination for the files
         dest: 'server/public/views/'
-      }
-    }, // end copy
+      },
+    css: {
+      expand: true,
+      // Current working directory
+      cwd: 'server/public/styles/',
+      // List of files to copy
+      src: ['/*.css', '/assets/*.*'], // [*.*] copies all file extensions
+      // Destination for the files
+      dest: 'server/public/styles/'
+    }
+  }, // end copy
     watch: {
       // What files am I looking at?
       files: ['public/**/*.*'],

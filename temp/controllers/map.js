@@ -1,16 +1,20 @@
 'use strict';
 
-app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService', 'UserService', 'StateService', function ($mdDialog, $http, $compile, MapService, UserService, StateService) {
+app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService', 'UserService', 'StateService', '$route', function ($mdDialog, $http, $compile, MapService, UserService, StateService, $route) {
     var self = this;
-    console.log('in map service');
     self.userService = UserService;
-    document.getElementById('header').style.display = "block";
+    // document.getElementById('header').style.display = "block";
     self.loading = false;
+    UserService.landingPage.is = false;
+
+    if ($route.current.loadedTemplateUrl == "/views/map.html") {
+        UserService.currentNavItem.value = "map";
+    }
 
     var statesData = {};
     StateService.getStateBounds().then(function (response) {
         statesData = response;
-        console.log('data ', statesData);
+        // console.log('data ', statesData);
         geojson = L.geoJson(statesData, {
             style: style,
             onEachFeature: onEachFeature
@@ -18,10 +22,14 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     });
 
     var defaultCoords = [37.8, -96];
+
     var map = L.map('mapid', {
         zoomSnap: .2
     }).setView(defaultCoords, 4.5);
+
     self.mapReset = function () {
+        markers.clearLayers();
+        map.removeLayer(markers);
         map.setView(defaultCoords, 4.5);
     };
 
@@ -36,6 +44,25 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     function getColor(d) {
         return d > 400 ? '#00441b' : d > 300 ? '#006d2c' : d > 200 ? '#238b45' : d > 100 ? '#41ab5d' : d > 50 ? '#74c476' : '#a1d99b';
     }
+
+    var legend = L.control({ position: 'bottomright' });
+
+    legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = [0, 50, 100, 200, 300, 400],
+            labels = [];
+        div.innerHTML += '<h3 style="text-align:center;">Number of trails<br> per state</h3>';
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML += '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' + grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        }
+
+        return div;
+    };
+
+    legend.addTo(map);
 
     function highlightFeature(e) {
         var layer = e.target;
@@ -57,7 +84,9 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     }
 
     function zoomToFeature(e) {
-        console.log('State: ', e.target.feature.properties.name);
+        // console.log('State: ', e.target.feature.properties.name);
+        markers.clearLayers();
+        map.removeLayer(markers);
         findStateTrails(e.target.feature.properties.name);
         map.fitBounds(e.target.getBounds());
     }
@@ -87,7 +116,7 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     function findStateTrails(state) {
         self.loading = true;
         $http.get('/geoInfo/' + state).then(function (response) {
-            console.log('get geoInfo response ', response);
+            // console.log('get geoInfo response ', response);
             for (var i = 0; i < response.data.length; i++) {
                 var element = response.data[i];
                 // console.log('data ', element);
@@ -96,7 +125,8 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
             mapGeoJSONs(geoJSONs);
             // console.log('geoJsons ', geoJSONs);
         }).catch(function (err) {
-            console.log('get geoInfo err ', err);
+            // console.log('get geoInfo err ', err);
+            swal('Error finding trail data! Please try again later.', '', 'warning');
         }).finally(function () {
             // called no matter success or failure
             self.loading = false;
@@ -134,11 +164,11 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
     //     });
     // }
 
+    var markers = L.markerClusterGroup({
+        showCoverageOnHover: false
+    });
 
     function mapGeoJSONs(array) {
-        var markers = L.markerClusterGroup({
-            showCoverageOnHover: false
-        });
         for (var i = 0; i < array.length; i++) {
             var element = array[i];
             var popup = L.popup.angular({
@@ -146,7 +176,6 @@ app.controller('MapController', ['$mdDialog', '$http', '$compile', 'MapService',
                 controllerAs: 'vm',
                 controller: PopupInfoController
             });
-
             var marker = L.marker(element.geometry.coordinates).bindPopup(popup).openPopup();
             markers.addLayer(marker);
         }
