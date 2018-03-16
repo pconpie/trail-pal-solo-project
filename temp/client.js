@@ -1,5 +1,6 @@
 'use strict';
 
+var angular = void 0;
 var app = angular.module('app', ['ngRoute', 'ngRateIt', 'ngMaterial']);
 
 app.config(function ($routeProvider, $mdThemingProvider) {

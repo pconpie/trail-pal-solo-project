@@ -15,7 +15,6 @@ Trail Pal is a full stack web application that will enable users to find trails 
     * Passport.js
     * Trailapi for trail info
     * Leaflet.js for interactive map
-    * 
     * Heroku
 
 ## Getting Started
@@ -29,8 +28,6 @@ These instructions will get you a copy of the project up and running on your loc
 Link to software that is required to install the app (e.g. node).
 
 - [Node.js](https://nodejs.org/en/)
-- 
-- List other prerequisites here
 
 
 ### Installing
@@ -41,16 +38,14 @@ Link to software that is required to install the app (e.g. node).
 * Run npm start to get it running on local host
 
 
-## Screen Shot
-
-Include one or two screen shots of your project here (optional). Remove if unused.
-
 ### Completed Features
 
 High level list of items completed.
 
-- [x] Feature a
-- [x] Feature b
+- [x] Interactive map of USA
+- [x] Trailapi sourced for trail details
+- [x] User registration and features
+- [x] Trail detail pages with community interaction
 
 ### Next Steps
 
@@ -58,17 +53,11 @@ Features that you would like to add at some point in the future.
 
 - [ ] Cache data in the database for faster laoding times
 - [ ] User able to add descriptions to trails
-- [ ] 
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+After installing with npm, run npm start to get the server going and then go to localhost on the PORT you setup in the .env file. Remember you may need a trailapi key to get trail data, which can also be placed in the .env file. Alternatively go to the heroku site https://trailpal.herokuapp.com/#!/ for a live demo.
 
 ## Authors
 
 * Patrick Connelly (pconpie)
-
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
