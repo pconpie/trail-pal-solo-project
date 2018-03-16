@@ -1,4 +1,4 @@
-# Name of Project
+# Trail Pal
 
 Trail Pal is a full stack web application that will enable users to find trails easier than ever before. Novice hikers and experienced hikers looking for new trails close by or interesting trails not far off can view trails organized by state and get quick info all in one view. If the user wants more detail on a specific trail they can click on that trail name to open a detailed trail view where comments can be added and viewed by logged in users.
 
