@@ -277,15 +277,17 @@ header {
 }
 .welcome-container {
   z-index: 10;
-  padding: 100px;
+  padding: 10vw;
   background-color: #ffffff00;
   color: black;
+  text-align: center;
   position: absolute;
 }
 
 .welcome-text {
   color: black;
   font-weight: bolder;
+  /* font-size: 1.2em; */
 }
 
 .login-button {
