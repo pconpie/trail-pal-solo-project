@@ -417,3 +417,6 @@ img::before {
 .profile-favorite-card{
   min-width: 100vh;
 }
+.navbar-item {
+  width: 33%;
+}
