@@ -268,7 +268,7 @@ header {}
   height: 100vh;
   width: 100%;
   opacity: 0.59;
-  background: url("assets/landing-trail-pic.JPG");
+  background: url("assets/landing-trail-pic.jpg");
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -430,10 +430,12 @@ img::before {
   width: 300px !important;
   padding: 10px;
 }
+
 .profile-card-title {
   width: 80%;
   margin: 0 auto;
 }
+
 @media screen and (max-width:475px) {
   .profile-card-title {
     display: flex;
@@ -471,6 +473,7 @@ img::before {
   margin-right: 8px;
   opacity: 0.9;
 }
+
 .navbar-item {
   width: 33%;
 }
