@@ -68,7 +68,8 @@ h2 {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 98vw;
+  margin: 0 1vw 0 1vw;
   z-index: 1;
 }
 
@@ -111,10 +112,16 @@ h2 {
 
 .favorite-card {
   width: 80vw;
+  background-color: rgb(85, 85, 85) !important;
 }
-
+.profile-favorite-card-ratings {
+  width: 33%;
+}
 .favorite-card-title-media {
   padding-left: 10px;
+}
+.favorite-card-title {
+  max-width: 50% !important;
 }
 
 .favorite-display {
@@ -484,11 +491,14 @@ img::before {
 .trail-md-card-title {
   padding-bottom: 0px;
 }
-
+.trail-detail-block {
+  width: 90vw;
+  margin: 0 auto;
+} 
+.trail-detail-details {
+  margin: 10px auto 0 auto;
+}
 @media screen and (max-width: 600px) {
-  .trail-detail-block {
-    width: 100vw;
-  }
   .nav-bar-large {
     display: none;
   }
@@ -498,14 +508,9 @@ img::before {
   .trail-details-container {
     width: 100vw;
   }
-  .trail-detail-card {
+  .trail-detail-block {
     width: 80vw;
-    margin: 0 auto;
-  }
-  .trail-detail-details {
-    width: 80vw;
-    margin: 10px auto 0 auto;
-  }
+  } 
 }
 
 .trail-comments-container {
