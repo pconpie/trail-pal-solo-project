@@ -124,6 +124,9 @@ h2 {
 .favorite-card-title-media {
   padding-left: 10px;
 }
+.favorite-card-profile-title {
+  max-width: 50% !important;
+}
 .favorite-card-title-text {
   margin-bottom: 5vh;
 }

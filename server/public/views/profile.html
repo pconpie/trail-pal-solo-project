@@ -33,10 +33,11 @@
         <md-card-content layout="row" layout-align="space-between end">
             <!-- <p>Profile gobbledy gook</p> -->
             <div style="width: 100%;">
+                    <h2>Top Favorites</h2>
                 <ul class="favorite-display center-me">
                     <li flex-xs flex-gt-xs="100" class="profile-favorite-card" layout="column" ng-repeat="favorite in vm.favorites.list |  orderBy : '-rating'| limitTo : 2">
                         <md-card ng-cloak md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch class="favorite-card center-me-row">
-                            <md-card-title layout-align="space-between center" class="favorite-card-title">
+                            <md-card-title layout-align="space-between center" class="favorite-card-profile-title">
                                 <md-card-title-text>
                                     <span class="md-headline">
                                         <a class="trail-title-favorites" ng-href="/#!/details/{{favorite.faveTrailInfo.lat}}/{{favorite.faveTrailInfo.lon}}/{{favorite.faveTrailInfo.unique_id}}">{{favorite.faveTrailInfo.name}}</a>
