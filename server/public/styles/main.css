@@ -108,10 +108,9 @@ h2 {
   align-items: center;
 }
 
-/* 
 .favorite-card {
-  height: 225px;
-} */
+  width: 80vw;
+}
 
 .favorite-card-title-media {
   padding-left: 10px;
@@ -423,13 +422,25 @@ img::before {
 }
 
 .profile-view-card {
-  height: 80vh;
+  height: 100%;
 }
 
 .profile-picture-container {
   height: 200px !important;
   width: 300px !important;
   padding: 10px;
+}
+.profile-card-title {
+  width: 80%;
+  margin: 0 auto;
+}
+@media screen and (max-width:475px) {
+  .profile-card-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .welcome-modal {
@@ -460,11 +471,6 @@ img::before {
   margin-right: 8px;
   opacity: 0.9;
 }
-
-.profile-favorite-card {
-  min-width: 100vh;
-}
-
 .navbar-item {
   width: 33%;
 }
@@ -500,6 +506,7 @@ img::before {
     margin: 0 auto;
   }
 }
+
 .trail-comments-container {
   margin-top: 10px;
 }
