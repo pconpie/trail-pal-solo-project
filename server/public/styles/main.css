@@ -4,14 +4,18 @@
   align-items: center;
   justify-content: center;
 }
-
 .center-me-row {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
 }
-
+.marginize {
+  margin: 0 auto;
+}
+.marginize-top{
+  margin: 10px auto 0 auto;
+}
 md-toast {
   position: fixed !important;
   width: 50%;
@@ -120,8 +124,8 @@ h2 {
 .favorite-card-title-media {
   padding-left: 10px;
 }
-.favorite-card-title {
-  max-width: 50% !important;
+.favorite-card-title-text {
+  margin-bottom: 5vh;
 }
 
 .favorite-display {
@@ -139,7 +143,11 @@ h2 {
 .fave-button {
   color: gold;
 }
-
+@media screen and (max-width:400px) {
+  .remove-favorite-button {
+    font-size: .6em !important;
+  }
+}
 .comment-label {
   color: white;
 }
