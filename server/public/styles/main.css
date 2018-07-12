@@ -22,6 +22,7 @@ md-toast {
 
 .more-trail-info {
   text-decoration: none;
+  word-wrap: break-word;
 }
 
 .more-trail-info:link {
@@ -430,12 +431,10 @@ img::before {
   width: 300px !important;
   padding: 10px;
 }
-
 .profile-card-title {
   width: 80%;
   margin: 0 auto;
 }
-
 @media screen and (max-width:475px) {
   .profile-card-title {
     display: flex;
@@ -473,7 +472,6 @@ img::before {
   margin-right: 8px;
   opacity: 0.9;
 }
-
 .navbar-item {
   width: 33%;
 }
@@ -506,7 +504,7 @@ img::before {
   }
   .trail-detail-details {
     width: 80vw;
-    margin: 0 auto;
+    margin: 10px auto 0 auto;
   }
 }
 
