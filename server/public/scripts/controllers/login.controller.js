@@ -13,7 +13,21 @@ app.controller('LoginController', ['$location', 'UserService', function ($locati
   };
 
   self.currentNavItem = UserService.currentNavItem;
-
+  let menuIcon = document.getElementById('menu-icon');
+  let navMenuLarge = document.getElementById('large-menu-nav');
+  let navActive = false;
   self.logout = UserService.logout;
   self.loggedIn = UserService.loggedIn;
+  self.myFunction = function() {
+    menuIcon.classList.toggle("change");
+    self.toggleNavMenu();
+}
+  self.toggleNavMenu = function () {
+    navActive = !navActive;
+    if (navActive) {
+      navMenuLarge.style.display = 'block';
+    } else {
+      navMenuLarge.style.display = 'none';
+    }
+  }
 }]);

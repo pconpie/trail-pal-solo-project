@@ -1,18 +1,34 @@
 <div ng-controller="LoginController as vm" id="map-show">
     <div class="login-button" layout layout-align="end">
         <!-- {{vm.loggedIn.is}} -->
-        <span flex="5"><md-button ng-click="vm.loginDialog()" ng-if="!vm.userObject.loggedIn" class="login-button">
-            Login
-        </md-button></span>
-        <span flex="5"><md-button ng-click="vm.logout()" ng-if="vm.userObject.loggedIn" class="login-button">
-            Logout
-        </md-button></span>
+        <span flex="5">
+            <md-button ng-click="vm.loginDialog()" ng-if="!vm.userObject.loggedIn" class="login-button">
+                Login
+            </md-button>
+        </span>
+        <span flex="5">
+            <md-button ng-click="vm.logout()" ng-if="vm.userObject.loggedIn" class="login-button">
+                Logout
+            </md-button>
+        </span>
     </div>
-    <div>
-        <a ng-href="#!/" style="float:left; height:50px; width:20px; min-width: 1px !important;">
+    <div class="nav-bar-small">
+        <div id="menu-icon" class="container-menu-icon" ng-click="vm.myFunction()">
+            <div class="bar1">
+                <span class="bar1a"></span>
+                <span class="bar1b"></span>
+            </div>
+            <div class="bar2"></div>
+            <div class="bar3">
+                <span class="bar3a"></span>
+                <span class="bar3b"></span>
+            </div>
+        </div>
+    </div>
+    <div class="nav-bar-large" id="large-menu-nav">
+        <!-- <a ng-href="#!/" style="float:left; height:50px; width:20px; min-width: 1px !important;">
             <md-icon md-svg-icon="./styles/assets/home_icon.svg"></md-icon>
-        </a>
-
+        </a> -->
         <md-content class="md-padding" style="margin:0;">
             <md-nav-bar md-no-ink-bar="true" md-selected-nav-item="vm.currentNavItem.value" nav-bar-aria-label="navigation links">
                 <md-nav-item md-nav-href="#!map" value="map" name="map" class="navbar-item nav-text">
@@ -21,7 +37,7 @@
                 <md-nav-item md-nav-href="#!favorites" ng-if="vm.userObject.loggedIn" value="favorites" name="favorites" class="navbar-item nav-text">
                     Favorites
                 </md-nav-item>
-                <md-nav-item  md-nav-href="#!profile" ng-if="vm.userObject.loggedIn" value="profile" name="profile" class="navbar-item nav-text">
+                <md-nav-item md-nav-href="#!profile" ng-if="vm.userObject.loggedIn" value="profile" name="profile" class="navbar-item nav-text">
                     Profile
                 </md-nav-item>
             </md-nav-bar>

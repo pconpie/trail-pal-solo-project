@@ -1,6 +1,7 @@
-<div layout>
-    <md-card md-theme-watch layout="row" flex="60">
-        <md-card-title flex flex-gt-sm="80" layout>
+<div layout-gt-sm="column" layout-sm="row" class="trail-details-container">
+    <md-card class="trail-detail-block trail-detail-card" md-theme-watch layout-gt-sm="column" layout-sm="row" flex-gt-sm="60"
+        flex-sm="100">
+        <md-card-title flex-gt-sm="80" flex-sm="100" layout-gt-sm="column" layout-sm="row" class="trail-md-card-title">
             <md-card-title-text flex ng-cloak>
                 <span class="md-headline" style="font-weight: bold; text-align:center;">{{vm.trailInfo.name}}</span>
                 <span class="md-subhead" ng-show="vm.trailInfo.description">Description:
@@ -19,18 +20,20 @@
                 </div>
             </md-card-title-text>
         </md-card-title>
-        <md-card-content flex="20" layout="column" layout-align="space-between center">
+        <md-card-content flex-gt-sm="20" flex-sm="100" layout-gt-sm="column" layout-sm="row" layout-align="space-between center">
             <!-- <div class="md-media-xl card-media"></div> -->
             <div flex="33"></div>
-            <md-card-actions layout="column">
-                <md-button class="md-icon-button" aria-label="Favorite" md-no-ink ng-click="vm.favoriteTrail(trail)">
-                    <md-icon class="fave-button" md-svg-icon="./styles/assets/star_empty_icon.svg"></md-icon>
-                </md-button>
-            </md-card-actions>
-            <ng-rate-it resetable="false" read-only="true" ng-model="vm.trailAverageRating"></ng-rate-it>
+            <div class="center-me">
+                <md-card-actions layout="column" class="center-me">
+                    <md-button class="md-icon-button" aria-label="Favorite" md-no-ink ng-click="vm.favoriteTrail(trail)">
+                        <md-icon class="fave-button" md-svg-icon="./styles/assets/star_empty_icon.svg"></md-icon>
+                    </md-button>
+                </md-card-actions>
+                <ng-rate-it resetable="false" read-only="true" ng-model="vm.trailAverageRating"></ng-rate-it>
+            </div>
         </md-card-content>
     </md-card>
-    <div>
+    <div class="trail-detail-block trail-detail-details" md-whiteframe="6">
         <h4>Location:
             <br/>
             <span>{{vm.trailInfo.city}}, {{vm.trailInfo.state}} {{vm.trailInfo.country}}</span>
@@ -49,38 +52,41 @@
                 <a class="more-trail-info" ng-href="http://www.google.com/search#q={{vm.trailInfo.name}}&btnI" target="_blank">Research Trail!</a>
             </span>
         </h4>
-        <span ng-repeat="trail in vm.trailInfo.activities">
-            <img ng-src="{{trail.thumbnail}}" style="max-height:300px; max-width:300px;"></img>
-        </span>
-        <span>
+        <div class="trail-details-photos center-me">
+            <!-- <span ng-repeat="trail in vm.trailInfo.activities">
+                <img ng-src="{{trail.thumbnail}}" style="max-height:300px; max-width:300px;"></img>
+            </span> -->
             <span>
-                <button ng-click="vm.imageBackward()">
-                    <
-                </button>
+                <div class="center-me-row">
+                    <span>
+                        <button ng-click="vm.imageBackward()">
+                            < </button>
+                    </span>
+                    <span>
+                        <button ng-click="vm.imageForward()">
+                            >
+                        </button>
+                    </span>
+                </div>
+                <img ng-cloak style="max-height:300px; max-width:300px;" ng-src="{{vm.images.list[vm.imagePosition].imageUrl}}" alt="Photo not available">
             </span>
-            <span>
-                <button ng-click="vm.imageForward()">
-                    >
-                </button>
-            </span>
-            <img ng-cloak style="max-height:300px; max-width:300px;" ng-src="{{vm.images.list[vm.imagePosition].imageUrl}}" alt="Photo not available">
-        </span>
-        <button style="height:30px; width:30px;" ng-click="vm.openPicker()">+</button>
-
+            <button style="height:30px; width:30px;" ng-click="vm.openPicker()">+</button>
+        </div>
     </div>
 </div>
 
 <!-- Comment input -->
-<div layout="row" layout="column">
+<div layout="row" layout="column" class="center-me trail-comments-container">
     <div flex="60" ng-cloak class="md-inline-form">
         <md-content layout-padding>
             <form name="userForm" ng-submit="vm.submitComment()">
                 <div layout-gt-sm="column">
                     <md-input-container class="md-block">
                         <label class="comment-label">Leave a Comment</label>
-                        <input ng-model="vm.comment" md-maxlength="150" rows="2" md-select-on-focus class="comment-input"></textarea>
+                        <input ng-model="vm.comment" md-maxlength="150" rows="2" md-select-on-focus class="comment-input">
+                        </textarea>
                     </md-input-container>
-                    <div class="submit-button">
+                    <div class="center-me">
                         <md-button ng-click="vm.submitComment()" flex="20">Submit</md-button>
                     </div>
                 </div>
